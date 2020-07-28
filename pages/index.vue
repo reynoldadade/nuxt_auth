@@ -1,77 +1,59 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        wa_auth
-      </h1>
-      <h2 class="subtitle">
-        authentication and payment
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+
+   <div class="w-full flex flex-wrap bg-fixed my-20">
+
+
+        <!-- Login Section -->
+        <div class="w-full md:w-1/2 flex flex-col">
+
+            <div class="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24">
+                <a href="#" class="">
+                  <img src="~assets/images/walulel_black.png" alt="" class="h-12 w-12">
+                </a>
+            </div>
+
+            <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+                <p class="text-center text-3xl text-white">Welcome.</p>
+                <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
+                    <div class="flex flex-col pt-4">
+                        <label for="email" class="text-lg">Email</label>
+                        <input type="email" id="email" placeholder="your@email.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+    
+                    <div class="flex flex-col pt-4">
+                        <label for="password" class="text-lg">Password</label>
+                        <input type="password" id="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+    
+                    <input type="submit" value="Log In" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
+                </form>
+                <div class="text-center pt-12 pb-12">
+                    <p>Don't have an account? <a href="register.html" class="underline font-semibold">Register here.</a></p>
+                </div>
+            </div>
+
+        </div>
+         <div class="w-1/2">
+         <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_Advb2R.json"  background="transparent"  speed="1"  style="width: 100%; height: 100%;"  loop  autoplay></lottie-player>
+            <!-- <img class="object-cover w-full h-screen hidden md:block" src="https://source.unsplash.com/IXUM4cJynP0"> -->
+        </div>
+
+      
     </div>
-  </div>
+
+
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+
 
 export default {
   components: {
-    Logo
+   
   }
 }
 </script>
 
 <style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>
