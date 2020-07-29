@@ -69,8 +69,10 @@
 				<div class="text-center pt-12 pb-12">
 					<p>
 						Don't have an account?
-						<a href="register.html" class="underline font-semibold"
-							>Register here.</a
+						<nuxt-link
+							to="/register"
+							class="underline font-semibold"
+							>Register here.</nuxt-link
 						>
 					</p>
 				</div>
@@ -90,7 +92,7 @@
 import { required, email } from 'vuelidate/lib/validators';
 export default {
 	head() {
-		title: 'Walulel | Login';
+		return { title: 'Walulel | Login' };
 	},
 	data() {
 		return {

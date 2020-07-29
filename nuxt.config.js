@@ -35,12 +35,16 @@ export default {
 	 */
 	css: [
 		'~/assets/css/styles.css',
-		'~/node_modules/@fortawesome/fontawesome-free/js/all.js',
+		'~/node_modules/@fortawesome/fontawesome-free/css/all.css',
 	],
 	/*
 	 ** Plugins to load before mounting the App
 	 */
-	plugins: ['~/plugins/vuelidate.js', '~/plugins/axios.js'],
+	plugins: [
+		'~/plugins/vuelidate.js',
+		'~/plugins/axios.js',
+		{ src: '~/plugins/notify.js', mode: 'client' },
+	],
 	/*
 	 ** Nuxt.js dev-modules
 	 */
