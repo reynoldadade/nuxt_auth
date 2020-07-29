@@ -60,6 +60,9 @@
 							Dont forget to add a cool username, 6 characters or
 							more
 						</p>
+						<p class="text-red-500 text-xs italic" v-if="error">
+							{{ errorMessages.username }}
+						</p>
 					</div>
 				</div>
 				<div class="-mx-3 md:flex mb-6">
@@ -83,6 +86,9 @@
 							v-if="$v.form.email.$error"
 						>
 							This does not look like an email
+						</p>
+						<p class="text-red-500 text-xs italic" v-if="error">
+							{{ errorMessages.email }}
 						</p>
 					</div>
 					<div class="md:w-1/2 px-3">
@@ -163,6 +169,9 @@
 						>
 							Same kind of long and crazy
 						</p>
+						<p class="text-red-500 text-xs italic" v-if="error">
+							{{ errorMessages.password }}
+						</p>
 					</div>
 				</div>
 				<div class="-mx-3 md:flex mb-2">
@@ -220,7 +229,11 @@
 						</p>
 					</div>
 				</div>
-				<div class="text-center" v-if="error">
+				<div
+					class="text-center text-red-500"
+					v-if="error"
+					:class="{ shaker: error }"
+				>
 					<p>
 						<i class="fas fa-exclamation-triangle"></i>
 						{{ registrationError }}
@@ -249,16 +262,7 @@ export default {
 			title: 'Walulel | Register',
 		};
 	},
-	mounted() {
-		this.$notify({
-			group: 'foo',
-			type: 'error',
-			title: '<b><i class="fas fa-exclamation-triangle"></i> Alert</b>',
-			text: 'Hello user! This is a notification!',
-			width: '30%',
-			closeOnClick: true,
-		});
-	},
+	mounted() {},
 	computed: {
 		...mapGetters({
 			countries: 'countries/getCountries',
@@ -269,6 +273,11 @@ export default {
 			loading: false,
 			registrationError: '',
 			error: false,
+			errorMessages: {
+				email: '',
+				password: '',
+				username: '',
+			},
 			form: {
 				name: '',
 				username: '',
@@ -320,11 +329,29 @@ export default {
 				.$post('/auth/register', this.form)
 				.catch(({ message, response }) => {
 					this.error = true;
-					this.registrationError = message;
+					this.registrationError = 'Your form has a few problems';
+					if (response.status === 422) {
+						this.registrationError = 'Your form has a few problems';
+						const errors = Object.keys(response.data.errors);
+						errors.map(
+							item =>
+								(this.errorMessages[item] =
+									response.data.errors[item][0])
+						);
+						//console.log(errorList, 'list');
+					} else {
+						this.registrationError = response.data.error;
+					}
 					console.log(response);
 				})
 				.finally(() => (this.loading = false));
 			if (response && response.data) {
+				this.notify({
+					title: 'Awesome',
+					text:
+						'Your registration was successful, check your inbox for a verification mail',
+					type: 'success',
+				});
 			}
 		},
 	},

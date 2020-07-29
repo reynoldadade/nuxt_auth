@@ -1,15 +1,13 @@
 export default {
 	methods: {
-		notify(title, type, text) {
+		notify(settings) {
+			const { title, type, text } = settings;
 			this.$notify({
 				group: 'foo',
 				type: type,
-				title:
-					'<b><i class="fas fa-exclamation-triangle"></i>' +
-					title +
-					'</b>',
+				title: '<b>' + title + '<b/>',
 				text: text,
-				width: '30%',
+				width: '50%',
 				closeOnClick: true,
 			});
 		},
