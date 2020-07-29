@@ -1,0 +1,64 @@
+image: registry.gitlab.com/walulel-devs/wainsight_client:latest
+
+before_script:
+  - apk add --no-cache rsync openssh
+  - mkdir -p ~/.ssh
+  - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
+  - chmod 600 ~/.ssh/id_dsa
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  
+
+variables:
+  SERVER:  "deployer@ec2-54-187-240-36.us-west-2.compute.amazonaws.com"
+
+stages:
+  - build
+  - stage
+  - prod
+
+
+build site:
+  stage: build
+  script:
+    - git checkout develop
+    - npm install --progress=false
+    - npm run generate
+  artifacts:
+    expire_in: 10 mins
+    paths:
+      - dist
+  when: always
+  only:
+    - develop
+
+
+deploy_staging:
+  stage: stage
+  script:
+    - echo "sync app to server..."
+    - rsync -rav --delete dist/ $SERVER:/var/www/staging/dist
+    - echo "sync done....ssh to server and run script."
+    - ssh $SERVER "cd /var/www && ./deploy-client-app.sh staging && exit"
+  environment:
+    name: staging
+    url: https://staging.secure.walulel.com
+  when: always
+  only:
+    - develop
+
+deploy_production:
+  stage: prod
+  script:
+    - git checkout master
+    - npm install --progress=false
+    - npm run generate
+    - echo "sync app to server..."
+    - rsync -rav --delete dist/ $SERVER:/var/www/production/dist
+    - echo "sync done....ssh to server and run script."
+    - ssh $SERVER "cd /var/www && ./deploy-client-app.sh production && exit"
+  environment:
+    name: production
+    url: https://secure.walulel.com
+  when: always
+  only:
+    - master
