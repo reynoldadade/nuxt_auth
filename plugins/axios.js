@@ -4,7 +4,7 @@ let defaultHeaders = {
 };
 
 export default function({ $axios, redirect, $cookies }) {
-	const token = $cookies.get('cookie-name');
+	const token = $cookies.get('token');
 
 	$axios.onRequest(({ headers }) => {
 		if (token) {

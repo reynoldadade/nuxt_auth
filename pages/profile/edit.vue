@@ -1,12 +1,8 @@
 <template>
 	<div class="w-full flex flex-wrap">
-		<div class="xs:hidden md:w-1/2">
-			<!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_Advb2R.json"  background="transparent"  speed="1"  style="width: 100%; height: 100%;"  loop  autoplay></lottie-player> -->
-			<img
-				class="object-cover w-full h-screen hidden md:block"
-				src="~assets/images/home-splash.jpg"
-			/>
-		</div>
+		<div
+			class="bg-white  px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2"
+		></div>
 		<div
 			class="bg-white  px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2"
 		>
@@ -18,7 +14,7 @@
 						class="h-12 w-12"
 					/>
 				</a>
-				<p class="font-bold text-xl mb-2">Register</p>
+				<p class="font-bold text-xl mb-2">UPDATE PROFILE</p>
 				<p class="italic text-xs mb-2">* all fields are required</p>
 			</div>
 			<form @submit.prevent="register">
@@ -121,66 +117,7 @@
 						</p>
 					</div>
 				</div>
-				<div class="-mx-3 md:flex mb-6">
-					<div class="md:w-1/2 px-3">
-						<label
-							class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-							for="grid-password"
-						>
-							Password
-							<span class="text-xs text-gray-500">
-								({{
-									$v.form.password.$params.minLength.min
-								}}
-								digits or more)</span
-							>
-						</label>
-						<input
-							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-							id="grid-password"
-							type="password"
-							placeholder="******************"
-							v-model="$v.form.password.$model"
-							required
-						/>
-						<p
-							class="text-grey-dark text-xs italic"
-							v-if="$v.form.password.$error"
-						>
-							Make it crazy and
-							{{
-								$v.form.password.$params.minLength.min -
-									$v.form.password.$model.length
-							}}
-							digits to go
-						</p>
-					</div>
-					<div class="md:w-1/2 px-3">
-						<label
-							class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-							for="grid-repeat-password"
-						>
-							Repeat Password
-						</label>
-						<input
-							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-							id="grid-repeat-password"
-							type="password"
-							placeholder="******************"
-							v-model="$v.form.password_confirmation.$model"
-							required
-						/>
-						<p
-							class="text-grey-dark text-xs italic"
-							v-if="$v.form.password_confirmation.$error"
-						>
-							Same kind of long and crazy
-						</p>
-						<p class="text-red-500 text-xs italic" v-if="error">
-							{{ errorMessages.password }}
-						</p>
-					</div>
-				</div>
+
 				<div class="-mx-3 md:flex mb-2">
 					<div class="md:w-1/2 px-3">
 						<label
@@ -246,14 +183,25 @@
 						{{ registrationError }}
 					</p>
 				</div>
-				<button
-					class="block w-full bg-black text-white font-bold p-2 rounded mt-4 disabled:opacity-75 disabled:cursor-not-allowed"
-					type="submit"
-					:disabled="$v.$invalid"
-				>
-					Register
-					<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
-				</button>
+				<div class="flex mt-4">
+					<button
+						class="block w-1/2 bg-black text-white font-bold p-2 rounded  disabled:opacity-75 disabled:cursor-not-allowed m-2"
+						type="submit"
+						:disabled="$v.$invalid"
+					>
+						UPDATE
+						<i
+							class="fas fa-circle-notch fa-spin"
+							v-if="loading"
+						></i>
+					</button>
+					<button
+						class="block w-1/2 bg-black text-white font-bold p-2 rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-gray-700"
+						type="submit"
+					>
+						CANCEL
+					</button>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -264,15 +212,24 @@ import { required, email, sameAs, minLength } from 'vuelidate/lib/validators';
 import { mapGetters } from 'vuex';
 export default {
 	name: 'register',
+	layout: 'main',
 	head() {
 		return {
-			title: 'Walulel | Register',
+			title: 'Walulel | Edit Profile',
 		};
 	},
-	mounted() {},
+	mounted() {
+		this.form.username = this.profile.username;
+		this.form.name = this.profile.name;
+		this.form.phone_number = this.profile.phone_number;
+		this.form.email = this.profile.email;
+		// this.form.post_code= this.profile.postcode
+		this.form.country = this.profile.country;
+	},
 	computed: {
 		...mapGetters({
 			countries: 'countries/getCountries',
+			profile: 'user/getProfile',
 		}),
 	},
 	data() {
@@ -285,13 +242,12 @@ export default {
 				password: '',
 				username: '',
 			},
+
 			form: {
 				name: '',
 				username: '',
 				phone_number: '',
 				email: '',
-				password: '',
-				password_confirmation: '',
 				post_code: '',
 				country: '',
 			},
@@ -313,14 +269,7 @@ export default {
 				required,
 				email,
 			},
-			password: {
-				required,
-				minLength: minLength(8),
-			},
-			password_confirmation: {
-				required,
-				sameAsPassword: sameAs('password'),
-			},
+
 			post_code: {
 				required,
 			},

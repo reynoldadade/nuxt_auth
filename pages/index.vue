@@ -90,10 +90,12 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
 export default {
 	head() {
 		return { title: 'Walulel | Login' };
 	},
+	middleware: ['checkLogin'],
 	data() {
 		return {
 			email: '',
@@ -114,6 +116,9 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions({
+			storePermissions: 'user/storePermissions',
+		}),
 		async login() {
 			this.error = false;
 			this.loading = true;
@@ -124,16 +129,19 @@ export default {
 				})
 				.then(({ data }) => {
 					this.loading = false;
-					//console.log(data);
+					console.log(data);
 					this.$cookies.set('token', data.access_token, {
 						path: '/',
 						sameSite: true,
 						maxAge: 60 * 60 * 24 * 7,
 					});
+					this.$cookies.set('userPermissions', data.user.permissions);
+					this.storePermissions(data.user.permissions);
+					this.$router.push('/profile');
 				})
 				.catch(({ message, response }) => {
 					this.loading = false;
-					if (response.data.error) {
+					if (response && response.data) {
 						this.errorMessage = response.data.error;
 					}
 					this.error = true;
