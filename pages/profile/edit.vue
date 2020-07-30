@@ -1,8 +1,28 @@
 <template>
 	<div class="w-full flex flex-wrap">
 		<div
-			class="bg-white  px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2"
-		></div>
+			class="bg-white px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2 "
+		>
+			<div class="grid grid-cols-6 gap-4">
+				<div class="col-start-3 col-span-4">
+					<div
+						class="border-4 rounded-lg m-2 overflow-hidden border-gray-300"
+					>
+						<img :src="imageToURl" alt="" />
+					</div>
+					<div class="border-2 m-2">
+						<input type="file" @change="updateImage" />
+					</div>
+					<button
+						class="w-full block bg-black text-white rounded-md p-2 font-bold hover:bg-gray-700"
+						@click="changeAvatar()"
+						v-if="this.showUpdateImageButton"
+					>
+						Change picture
+					</button>
+				</div>
+			</div>
+		</div>
 		<div
 			class="bg-white  px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2"
 		>
@@ -225,6 +245,7 @@ export default {
 		this.form.email = this.profile.email;
 		// this.form.post_code= this.profile.postcode
 		this.form.country = this.profile.country;
+		this.imageToURl = this.profile.avatar;
 	},
 	computed: {
 		...mapGetters({
@@ -235,8 +256,11 @@ export default {
 	data() {
 		return {
 			loading: false,
+			imageToURl: '',
 			registrationError: '',
 			error: false,
+			showUpdateImageButton: false,
+			avatarImage: '',
 			errorMessages: {
 				email: '',
 				password: '',
@@ -279,36 +303,44 @@ export default {
 		},
 	},
 	methods: {
-		async register() {
-			this.loading = true;
-			const response = await this.$axios
-				.$post('/auth/register', this.form)
-				.catch(({ message, response }) => {
-					this.error = true;
-					this.registrationError = 'Your form has a few problems';
-					if (response.status === 422) {
-						this.registrationError = 'Your form has a few problems';
-						const errors = Object.keys(response.data.errors);
-						errors.map(
-							item =>
-								(this.errorMessages[item] =
-									response.data.errors[item][0])
-						);
-						//console.log(errorList, 'list');
-					} else {
-						this.registrationError = response.data.error;
-					}
-					console.log(response);
-				})
-				.finally(() => (this.loading = false));
-			if (response && response.data) {
+		updateImage(event) {
+			this.avatarImage = event.target.files[0];
+			if ((this.avatarImage.size > 204, 800)) {
 				this.notify({
-					title: 'Awesome',
-					text:
-						'Your registration was successful, check your inbox for a verification mail',
-					type: 'success',
+					title: 'Psst',
+					text: 'Your image is more than 200KB',
+					type: 'error',
 				});
+			} else {
+				this.showUpdateImageButton = true;
+				this.imageToURl = URL.createObjectURL(this.avatarImage);
 			}
+		},
+
+		changeAvatar() {
+			let formData = new FormData();
+			formData.append('avatar', this.avatarImage);
+			this.notify({
+				title: 'Hey there',
+				type: 'info',
+				text: 'updating profile image',
+			});
+
+			this.$axios
+				.$post('/user/profile/avatar', formData, {
+					'Content-type': 'multipart/form-data',
+				})
+				.then(response => {
+					this.notify({
+						title: 'Great',
+						type: 'success',
+						text: 'Avatar Successfully Updated',
+					});
+					// this.$router.push('/profile');
+				})
+				.catch(error => {
+					console.log(error);
+				});
 		},
 	},
 };
