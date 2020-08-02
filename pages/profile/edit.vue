@@ -8,7 +8,11 @@
 					<div
 						class="border-4 rounded-lg m-2 overflow-hidden border-gray-300"
 					>
-						<img :src="imageToURl" alt="" />
+						<img
+							:src="imageToURl"
+							alt="avatar"
+							class="object-contain"
+						/>
 					</div>
 					<div class="border-2 m-2">
 						<input type="file" @change="updateImage" />
@@ -37,7 +41,7 @@
 				<p class="font-bold text-xl mb-2">UPDATE PROFILE</p>
 				<p class="italic text-xs mb-2">* all fields are required</p>
 			</div>
-			<form @submit.prevent="register">
+			<form @submit.prevent="editProfile">
 				<div class="-mx-3 md:flex mb-6">
 					<div class="md:w-1/2 px-3 mb-6 md:mb-0">
 						<label
@@ -121,14 +125,15 @@
 						>
 							Phone number
 						</label>
-						<input
+						<vue-tel-input
 							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
 							id="grid-telephone"
-							type="tel"
+							validCharactersOnly
+							:mode="'international'"
 							placeholder="+000 XXX XX XX XX"
 							v-model="$v.form.phone_number.$model"
-							required
-						/>
+							:name="'telephone'"
+						></vue-tel-input>
 						<p
 							class="text-black text-xs italic"
 							v-if="$v.form.phone_number.$error"
@@ -200,7 +205,7 @@
 				>
 					<p>
 						<i class="fas fa-exclamation-triangle"></i>
-						{{ registrationError }}
+						{{ updateError }}
 					</p>
 				</div>
 				<div class="flex mt-4">
@@ -229,10 +234,14 @@
 
 <script>
 import { required, email, sameAs, minLength } from 'vuelidate/lib/validators';
+import { VueTelInput } from 'vue-tel-input';
 import { mapGetters } from 'vuex';
 export default {
 	name: 'register',
 	layout: 'main',
+	components: {
+		'vue-tel-input': VueTelInput,
+	},
 	head() {
 		return {
 			title: 'Walulel | Edit Profile',
@@ -241,7 +250,9 @@ export default {
 	mounted() {
 		this.form.username = this.profile.username;
 		this.form.name = this.profile.name;
-		this.form.phone_number = this.profile.phone_number;
+		if (this.profile.phone_number) {
+			this.form.phone_number = this.profile.phone_number;
+		}
 		this.form.email = this.profile.email;
 		// this.form.post_code= this.profile.postcode
 		this.form.country = this.profile.country;
@@ -257,7 +268,7 @@ export default {
 		return {
 			loading: false,
 			imageToURl: '',
-			registrationError: '',
+			updateError: '',
 			error: false,
 			showUpdateImageButton: false,
 			avatarImage: '',
@@ -317,7 +328,7 @@ export default {
 			}
 		},
 
-		changeAvatar() {
+		async changeAvatar() {
 			let formData = new FormData();
 			formData.append('avatar', this.avatarImage);
 			this.notify({
@@ -340,6 +351,28 @@ export default {
 				})
 				.catch(error => {
 					console.log(error);
+				});
+		},
+		async editProfile() {
+			this.loading = true;
+			this.$axios
+				.$patch('/user/profile/', this.form)
+				.then(response => {
+					console.log(response);
+					this.loading = false;
+					this.notify({
+						text: 'Profile Successfully Updated',
+						type: 'success',
+						title: 'Awesome',
+					});
+					this.$router.push('/profile');
+				})
+				.catch(error => {
+					this.error = true;
+					this.loading = false;
+					if (error.response.status === 500) {
+						this.updateError = 'Data Already exists';
+					}
 				});
 		},
 	},

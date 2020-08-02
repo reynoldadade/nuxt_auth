@@ -44,6 +44,7 @@ export default {
 		'~/plugins/vuelidate.js',
 		'~/plugins/axios.js',
 		{ src: '~/plugins/notify.js', mode: 'client' },
+		'~/plugins/vue-tel-input.js',
 	],
 	/*
 	 ** Nuxt.js dev-modules

@@ -105,14 +105,17 @@
 						>
 							Phone number
 						</label>
-						<input
-							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-							id="grid-telephone"
-							type="tel"
-							placeholder="+000 XXX XX XX XX"
-							v-model="$v.form.phone_number.$model"
-							required
-						/>
+						<client-only>
+							<vue-tel-input
+								class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+								id="grid-telephone"
+								validCharactersOnly
+								:mode="'international'"
+								placeholder="+000 XXX XX XX XX"
+								v-model="$v.form.phone_number.$model"
+								:name="'telephone'"
+							></vue-tel-input>
+						</client-only>
 						<p
 							class="text-black text-xs italic"
 							v-if="$v.form.phone_number.$error"
@@ -262,6 +265,7 @@
 <script>
 import { required, email, sameAs, minLength } from 'vuelidate/lib/validators';
 import { mapGetters } from 'vuex';
+import { VueTelInput } from 'vue-tel-input';
 export default {
 	name: 'register',
 	head() {
@@ -274,6 +278,9 @@ export default {
 		...mapGetters({
 			countries: 'countries/getCountries',
 		}),
+	},
+	components: {
+		'vue-tel-input': VueTelInput,
 	},
 	data() {
 		return {
@@ -293,7 +300,7 @@ export default {
 				password: '',
 				password_confirmation: '',
 				post_code: '',
-				country: '',
+				country: 'GB',
 			},
 		};
 	},
@@ -332,6 +339,8 @@ export default {
 	methods: {
 		async register() {
 			this.loading = true;
+			//format form
+			this.form.phone_number = this.form.phone_number.replace(/\s+/g, '');
 			const response = await this.$axios
 				.$post('/auth/register', this.form)
 				.catch(({ message, response }) => {
