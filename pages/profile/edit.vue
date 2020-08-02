@@ -316,7 +316,8 @@ export default {
 	methods: {
 		updateImage(event) {
 			this.avatarImage = event.target.files[0];
-			if ((this.avatarImage.size > 204, 800)) {
+			console.log(this.avatarImage.size);
+			if (this.avatarImage.size > 204800) {
 				this.notify({
 					title: 'Psst',
 					text: 'Your image is more than 200KB',
@@ -347,7 +348,7 @@ export default {
 						type: 'success',
 						text: 'Avatar Successfully Updated',
 					});
-					// this.$router.push('/profile');
+					this.$router.push('/profile');
 				})
 				.catch(error => {
 					console.log(error);

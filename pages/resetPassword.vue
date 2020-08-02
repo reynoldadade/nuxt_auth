@@ -19,12 +19,12 @@
 					/>
 				</a>
 				<p class="font-bold text-xl mb-2">Reset Password</p>
-				<p>
+			</div>
+			<form @submit.prevent="emailReset" v-if="!success">
+				<p class="text-center">
 					Your password will be reset in seconds just provide us with
 					your email
 				</p>
-			</div>
-			<form @submit.prevent="emailReset">
 				<div class="-mx-3 md:flex mb-6">
 					<div class="w-full px-3 mb-6 md:mb-0">
 						<label
@@ -48,6 +48,16 @@
 						>
 							This is not a valid email
 						</p>
+						<div
+							class="text-center text-red-500"
+							v-if="error"
+							:class="{ shaker: error }"
+						>
+							<p>
+								<i class="fas fa-exclamation-triangle"></i>
+								{{ resetError }}
+							</p>
+						</div>
 					</div>
 				</div>
 				<button
@@ -55,10 +65,17 @@
 					type="submit"
 					:disabled="$v.$invalid"
 				>
-					Register
+					Reset Password
 					<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
 				</button>
 			</form>
+			<div v-else class="text-center">
+				<h2 class="text-lg font-bold">You've got mail!</h2>
+				<p class="text-center">
+					We have sent a password reset link to your email. <br />
+					Kindly check your inbox
+				</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -66,6 +83,7 @@
 <script>
 import { required, email } from 'vuelidate/lib/validators';
 import axios from 'axios';
+
 export default {
 	name: 'resetPassword',
 	layout: 'default',
@@ -78,6 +96,9 @@ export default {
 		return {
 			email: '',
 			loading: false,
+			resetError: '',
+			error: false,
+			success: false,
 		};
 	},
 	validations: {
@@ -88,10 +109,27 @@ export default {
 	},
 	methods: {
 		async emailReset() {
-			this.$axios
-				.get('/password/email', { params: { email: this.email } })
-				.then(response => console.log(response))
-				.catch(error => console.log(error.response));
+			this.loading = true;
+			axios
+				.get(process.env.WACOMM_API_ENDPOINT + '/password/email', {
+					params: { email: this.email },
+				})
+				.then(response => {
+					this.notify({
+						text: 'A reset link has been sent to your mail',
+						title: 'Psst',
+						type: 'success',
+					});
+					this.loading = false;
+					this.success = true;
+				})
+				.catch(error => {
+					this.error = true;
+					this.loading = false;
+					if (error.response.status === 422) {
+						this.resetError = 'Email address not found';
+					}
+				});
 		},
 	},
 };
