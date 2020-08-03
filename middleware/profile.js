@@ -13,9 +13,19 @@ export default function({ $axios, store, app, env, redirect, route }) {
 		store.dispatch('user/storeProfile', profile);
 		return;
 	}
-	return $axios.get('/user/profile').then(
+	return $axios({
+		url: '/user/profile',
+		method: 'get',
+		headers: {
+			Authorization: `Bearer ${app.$cookies.get('token')}`,
+		},
+	}).then(
 		({ data }) => {
-			console.log(data);
+			//return array of subscriptions
+			const subscriptions = Object.values(data.data.subscriptions).filter(
+				item => item != null
+			);
+
 			// if (env.APP_URL == 'wa-communicate.com' && window.mixpanel != undefined) {
 			// if (window.mixpanel != undefined) {
 			// 	window.mixpanel.identify(data.data.email);
@@ -36,7 +46,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 			// const subscription = data.data.subscriptions.wainsight
 			// 	? data.data.subscriptions.wainsight.subscription
 			// 	: null;
-			// //set subscriptions in vuex store
+			//set subscriptions in vuex store
 			// store.dispatch('app/setUserSubscription', subscription);
 			const {
 				name,
@@ -47,6 +57,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 				active,
 				username,
 				postcode,
+				country,
 			} = data.data;
 			const profile = {
 				name,
@@ -57,6 +68,8 @@ export default function({ $axios, store, app, env, redirect, route }) {
 				active,
 				username,
 				postcode,
+				country,
+				subscriptions,
 			};
 			store.dispatch('user/storeProfile', profile);
 			app.$cookies.set('cookie-profile', profile, {
@@ -70,5 +83,10 @@ export default function({ $axios, store, app, env, redirect, route }) {
 			// const redirectAuthURL = `${env.LOGIN_URL}?redirect_url=${env.APP_URL}${route.path}&expect_token=true&refresh_token=true`;
 			return redirect('/');
 		}
+
+		//redirect to wa-insight
+		//redirect to patron
+		//redirect to wacomm
+		//based on subscription
 	);
 }

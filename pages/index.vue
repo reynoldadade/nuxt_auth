@@ -17,7 +17,7 @@
 			<div
 				class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32"
 			>
-				<p class="text-center text-3xl text-black">Welcome.</p>
+				<p class="text-center text-3xl text-black">Welcome</p>
 				<form
 					class="flex flex-col pt-3 md:pt-8"
 					:class="{ shaker: error }"
@@ -66,7 +66,19 @@
 						></i>
 					</button>
 				</form>
+
+				<div class="text-center pt-5 pb-12">
+					<p>
+						Forgotten Password?
+						<nuxt-link
+							to="/resetPassword"
+							class="underline font-semibold"
+							>Get help here.</nuxt-link
+						>
+					</p>
+				</div>
 				<div class="text-center pt-12 pb-12">
+					<hr class="h-2" />
 					<p>
 						Don't have an account?
 						<nuxt-link
@@ -129,7 +141,7 @@ export default {
 				})
 				.then(({ data }) => {
 					this.loading = false;
-					console.log(data);
+					// console.log(data);
 					this.$cookies.set('token', data.access_token, {
 						path: '/',
 						sameSite: true,
