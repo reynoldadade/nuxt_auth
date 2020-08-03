@@ -12,9 +12,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "nuxt": "^2.0.0",
     "@nuxtjs/axios": "^5.3.6",
-    "@nuxtjs/dotenv": "^1.4.0"
+    "@nuxtjs/dotenv": "^1.4.0",
+    "@stripe/stripe-js": "^1.8.0",
+    "cookie-universal-nuxt": "^2.1.4",
+    "nuxt": "^2.0.0",
+    "vue-sweetalert2": "^3.0.6"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^1.0.0",
