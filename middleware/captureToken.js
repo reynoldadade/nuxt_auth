@@ -14,7 +14,7 @@ export default function({ route, app }) {
       app.$cookies.set("wa_temp_token", token, {
         sameSite: "Strict",
         path: "/",
-        maxAge: 1800
+        maxAge: 3600
       });
       res(true);
     }).then(_ => {
