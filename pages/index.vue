@@ -19,28 +19,17 @@
 			>
 				<p class="text-center text-3xl text-black">Welcome</p>
 				<LoginForm />
-
-				<div class="text-center pt-5 pb-12">
-					<p>
-						Forgotten Password?
-						<nuxt-link
-							to="/resetPassword"
-							class="underline font-semibold"
-							>Get help here.</nuxt-link
-						>
-					</p>
-				</div>
-				<div class="text-center pt-12 pb-12">
-					<hr class="h-2" />
-					<p>
-						Don't have an account?
-						<nuxt-link
-							to="/register"
-							class="underline font-semibold"
-							>Register here.</nuxt-link
-						>
-					</p>
-				</div>
+				<Link
+					link="/resetPassword"
+					mainText="Forgotten Password?"
+					linkText="Get help here."
+				/>
+				<hr class="h-2" />
+				<Link
+					link="/register"
+					mainText="Don't have an account?"
+					linkText="Register here."
+				/>
 			</div>
 		</div>
 		<div class="xs:hidden md:w-1/2">
@@ -55,6 +44,7 @@
 
 <script>
 import LoginForm from '~/components/LoginForm';
+import Link from '~/components/common/Link';
 export default {
 	head() {
 		return { title: 'Walulel | Login' };
@@ -62,6 +52,7 @@ export default {
 	middleware: ['checkLogin'],
 	components: {
 		LoginForm,
+		Link,
 	},
 };
 </script>

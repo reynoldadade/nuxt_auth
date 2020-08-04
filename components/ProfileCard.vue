@@ -24,11 +24,16 @@
 					>
 				</p>
 			</div>
-			<div>
+			<div class="flex flex-col">
 				<button
-					class="block border-blue-500 border-2 rounded uppercase text-blue-500 p-1 m-2 hover:border-red-500 hover:text-red-500"
+					class="block border-blue-500 border-2 rounded uppercase text-blue-500 p-1 m-2 hover:border-red-500 hover:text-red-500 flex-auto"
 				>
 					change plan
+				</button>
+				<button
+					class="block border-green-500 border-2 rounded uppercase text-green-500 p-1 m-2 hover:border-orange-500 hover:text-orange-500 flex-auto"
+				>
+					Go to app <i class="fas fa-external-link-alt"></i>
 				</button>
 			</div>
 		</div>
