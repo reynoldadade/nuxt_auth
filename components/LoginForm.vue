@@ -87,8 +87,7 @@ export default {
 						sameSite: true,
 						maxAge: 60 * 60 * 24 * 7,
 					});
-					this.$cookies.set('userPermissions', data.user.permissions);
-					this.storePermissions(data.user.permissions);
+
 					this.$router.push('/profile');
 				})
 				.catch(({ message, response }) => {

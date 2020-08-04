@@ -1,49 +1,67 @@
 <template>
-	<div class="mx-auto  overflow-hidden shadow my-2 bg-white p-4">
-		<div class="flex justify-between flex-wrap">
+	<div
+		class="container mx-10 max-w-sm rounded-lg overflow-hidden shadow-lg my-2 bg-white md:col-span-1 col-span-3"
+	>
+		<div
+			class="relative z-10"
+			style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 5vw));"
+		>
+			<img class="w-full" :src="profile.avatar" alt="Profile image" />
+		</div>
+		<div
+			class="relative flex justify-between items-center flex-row px-6 z-50 -mt-10"
+		>
+			<p class="flex items-center text-gray-400">
+				<span
+					class="inline-block w-3 h-3 rounded-full mr-2"
+					:class="profile.active ? 'bg-green-500' : 'bg-red-500'"
+				></span
+				>active
+			</p>
+			<button
+				@click="$router.push('/profile/edit')"
+				class="p-4 bg-black rounded-full hover:bg-red-500 focus:bg-red-700 transition ease-in duration-200 focus:outline-none"
+			>
+				<i class="fas fa-user-edit w-6 h-6 text-white"></i>
+			</button>
+		</div>
+		<div class="pt-6 pb-8 text-gray-600 text-center">
+			<p>{{ profile.name }}</p>
+			<p class="text-sm font-bold">{{ profile.email }}</p>
+			<p class="text-lg font-semibold text-blue-300">
+				{{ profile.phone_number }}
+			</p>
+		</div>
+
+		<div
+			class="pb-10 uppercase text-center tracking-wide flex justify-around"
+		>
 			<div>
-				<p class="font-bold text-lg text-gray-700">
-					{{ subscription.package_name }}
+				<p class="text-gray-400 text-sm">Country</p>
+				<p class="text-lg font-semibold text-blue-400">
+					{{ profile.country }}
 				</p>
-				<p class="text-gray-500 text-sm mt-1">
-					expires on
-					<span class="font-bold text-gray-600">{{
-						subscription.expires | momentFilter
-					}}</span>
-				</p>
-				<p class="font-bold mt-1 text-gray-700">
-					{{ subscription.consulting_duration
-					}}<span class="text-xs text-gray-500"
-						>/ consulting hours left</span
-					>
-				</p>
-				<p class="font-bold mt-1 text-gray-700">
-					{{ subscription.admins_remaining }}
-					<span class="text-xs text-gray-500">
-						/admins remaining</span
-					>
+			</div>
+
+			<div>
+				<p class="text-gray-400 text-sm">Username</p>
+				<p class="text-lg font-semibold text-blue-400">
+					@{{ profile.username }}
 				</p>
 			</div>
 			<div>
-				<button
-					class="block border-blue-500 border-2 rounded uppercase text-blue-500 p-1 m-2 hover:border-red-500 hover:text-red-500"
-				>
-					change plan
-				</button>
+				<p class="text-gray-400 text-sm">PostCode</p>
+				<p class="text-lg font-semibold text-blue-400">
+					{{ profile.postcode }}
+				</p>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import moment from 'moment';
 export default {
-	props: ['subscription'],
-	filters: {
-		momentFilter: function(date) {
-			return moment(date).format('YYYY-MM-DD');
-		},
-	},
+	props: ['profile'],
 };
 </script>
 
