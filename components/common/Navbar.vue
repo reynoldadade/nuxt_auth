@@ -22,7 +22,18 @@
 					v-show="isOpen"
 				>
 					<ul>
-						<li class="hover:bg-gray-200 p-1" @click="logout">
+						<li
+							class="hover:bg-gray-200 p-1"
+							@click="$router.push('/profile')"
+							role="button"
+						>
+							Profile
+						</li>
+						<li
+							class="hover:bg-gray-200 p-1"
+							@click="logout"
+							role="button"
+						>
 							Sign Out
 						</li>
 					</ul>
@@ -49,7 +60,7 @@ export default {
 		logout() {
 			this.$cookies.remove('token');
 			this.$cookies.remove('auth-profile');
-			this.$router.path('/');
+			this.$router.push('/');
 		},
 	},
 };

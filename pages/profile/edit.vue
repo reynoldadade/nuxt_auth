@@ -1,8 +1,6 @@
 <template>
 	<div class="w-full flex flex-wrap">
-		<div
-			class="bg-white px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2 "
-		>
+		<div class="px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2 ">
 			<div class="grid grid-cols-6 gap-4">
 				<div class="col-start-3 col-span-4">
 					<div
@@ -31,9 +29,7 @@
 				</div>
 			</div>
 		</div>
-		<div
-			class="bg-white  px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2"
-		>
+		<div class="px-8 pt-6 pb-8 mb-4 flex flex-col my-2 w-full md:w-1/2">
 			<EditProfileComponent :profile="profile" />
 		</div>
 	</div>
@@ -41,7 +37,6 @@
 
 <script>
 import { required, email, sameAs, minLength } from 'vuelidate/lib/validators';
-import { VueTelInput } from 'vue-tel-input';
 import { mapGetters } from 'vuex';
 import EditProfileComponent from '@/components/EditProfile';
 export default {
