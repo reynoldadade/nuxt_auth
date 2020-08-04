@@ -20,6 +20,9 @@ import PlansComponent from '~/components/Plans';
 import ProfileCard from '~/components/ProfileCard';
 export default {
 	layout: 'main',
+	head() {
+		return { title: 'Walulel | Account' };
+	},
 	data() {
 		return {};
 	},

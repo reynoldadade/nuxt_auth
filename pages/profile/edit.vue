@@ -23,6 +23,10 @@
 						v-if="this.showUpdateImageButton"
 					>
 						Change picture
+						<i
+							class="fas fa-circle-notch fa-spin"
+							v-if="loading"
+						></i>
 					</button>
 				</div>
 			</div>
@@ -56,7 +60,6 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			countries: 'countries/getCountries',
 			profile: 'user/getProfile',
 		}),
 	},
@@ -64,24 +67,8 @@ export default {
 		return {
 			loading: false,
 			imageToURl: '',
-			updateError: '',
-			error: false,
 			showUpdateImageButton: false,
 			avatarImage: '',
-			errorMessages: {
-				email: '',
-				password: '',
-				username: '',
-			},
-
-			form: {
-				name: '',
-				username: '',
-				phone_number: '',
-				email: '',
-				post_code: '',
-				country: '',
-			},
 		};
 	},
 	validations: {
@@ -126,6 +113,7 @@ export default {
 		},
 
 		async changeAvatar() {
+			this.loading = true;
 			let formData = new FormData();
 			formData.append('avatar', this.avatarImage);
 			this.notify({
@@ -145,31 +133,15 @@ export default {
 						text: 'Avatar Successfully Updated',
 					});
 					this.$router.push('/profile');
+					this.loading = false;
 				})
 				.catch(error => {
 					console.log(error);
-				});
-		},
-		async editProfile() {
-			this.loading = true;
-			this.$axios
-				.$patch('/user/profile/', this.form)
-				.then(response => {
-					console.log(response);
-					this.loading = false;
 					this.notify({
-						text: 'Profile Successfully Updated',
-						type: 'success',
-						title: 'Awesome',
+						title: 'Sorry',
+						type: 'error',
+						text: 'update failed',
 					});
-					this.$router.push('/profile');
-				})
-				.catch(error => {
-					this.error = true;
-					this.loading = false;
-					if (error.response.status === 500) {
-						this.updateError = 'Data Already exists';
-					}
 				});
 		},
 	},

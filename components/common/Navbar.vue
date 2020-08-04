@@ -1,5 +1,7 @@
 <template>
-	<div class="flex p-3 justify-between text-blue-700 font-bold bg-white">
+	<div
+		class="flex p-3 justify-between text-blue-700 font-bold bg-white shadow"
+	>
 		<div class="flex-1">
 			<img
 				src="~assets/images/walulel_black.png"
