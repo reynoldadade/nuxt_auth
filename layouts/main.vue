@@ -12,7 +12,8 @@ import Vue from 'vue';
 import global from '~/mixins/global.js';
 Vue.mixin(global);
 export default {
-	// middleware: ['checkLogin'],
+	middleware: ['profile'],
 };
 </script>
+
 <style></style>
