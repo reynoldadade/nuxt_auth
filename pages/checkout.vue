@@ -92,18 +92,9 @@
 import { mapGetters } from 'vuex';
 
 export default {
-	head() {
-		return {
-			title: 'Secure Checkout | Walulel Company Limited',
-			link: [
-				{
-					href:
-						'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap',
-					rel: 'stylesheet',
-				},
-			],
-		};
-	},
+
+	layout:"checkout",
+	
 	components: {
 		Loader: () => import('~/components/common/Loader.vue'),
 		StripeForm: () => import('~/components/common/StripeForm.vue'),
