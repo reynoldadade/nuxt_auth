@@ -68,7 +68,10 @@ export default {
 	 ** Axios module configuration
 	 ** See https://axios.nuxtjs.org/options
 	 */
-	axios: {},
+	axios: {
+    https: true,
+    baseURL: process.env.WACOMM_API_ENDPOINT
+  },
 	/*
 	 ** Build configuration
 	 */
