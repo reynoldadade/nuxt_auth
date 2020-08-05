@@ -9,9 +9,9 @@ export default function({ route, app }) {
   const { token } = route.query;
   if (token) {
     new Promise(res => {
-      app.$cookies.remove("wa_temp_token");
+      app.$cookies.remove("token");
       //set token to store and cookie for future use.
-      app.$cookies.set("wa_temp_token", token, {
+      app.$cookies.set("token", token, {
         sameSite: "Strict",
         path: "/",
         maxAge: 3600

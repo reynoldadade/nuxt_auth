@@ -555,7 +555,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: "user"
+      user: "checkout/user"
     })
   },
 
@@ -585,5 +585,14 @@ export default {
 .btn:disabled {
   background-color: #b0b0b0;
   cursor: not-allowed;
+}
+
+.wa-input {
+	@apply appearance-none border rounded border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight m-0;
+}
+
+.wa-input:focus,
+.wa-input:active {
+	@apply outline-none border border-gray-500 shadow-inner;
 }
 </style>

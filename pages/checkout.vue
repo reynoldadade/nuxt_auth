@@ -1,327 +1,368 @@
 <template>
-  <div class="w-screen h-screen relative overflow-x-hidden">
-    <Loader
-      v-if="loading && !preError"
-      class="w-full h-full absolute top-0 left-0 right-0 bottom-0"
-    />
-    <div v-if="preError" class="flex w-full h-full items-center justify-center">
-      <div class="rounded border bg-gray-100 p-8 text-center">
-        <h3 class="text-2xl">Something went wrong...</h3>
-        <p class="text-gray-700 text-sm mb-1">
-          Sorry we cannot process your request at this time, try again later.
-        </p>
-        <code class="text-xs bg-red-200 p-1 rounded">{{ preError }}</code>
-      </div>
-    </div>
-    <section
-      class="w-full h-full flex flex-wrap relative lg:overflow-hidden"
-      v-if="appReady"
-    >
-      <div
-        class="w-full lg:border-r lg:bg-gray-100 xl:w-2/3 lg:w-7/12 lg:h-full flex flex-col p-10 lg:p-16"
-      >
-        <div class="rounded border bg-white w-full p-8">
-          <h2 class="text-2xl mb-1 uppercase">Checkout</h2>
-          <div class="bg-gray-400 w-32" style="height:3px"></div>
-          <div class="mt-10 flex">
-            <div class="flex-1">
-              <h3 class="text-xl">{{ vPackage.name }}</h3>
-              <span class="text-xs italic text-gray-600">Features</span>
-              <ul class="block mt-2">
-                <li
-                  v-for="(feature, key) in vFeatures"
-                  :key="key"
-                  class="captialize"
-                  style="padding-bottom:8px"
-                >
-                  <div class="text-gray-600 capitalize">
-                    <span class="font-bold ">{{ feature }}</span>
-                    {{ key.replace("_", " ") }}
-                  </div>
-                </li>
-              </ul>
-              <span>Valid for {{ vPackage.valid_period }}</span>
-            </div>
-            <div class="lg:px-16 flex items-start font-bold text-xl">
-              <span class="text-gray-700 mr-2">x{{ quantity }}</span>
-              <select
-                v-if="isAddon"
-                name="quantity"
-                id="quantity"
-                class="wa-input px-2 py-1 text-sm"
-                v-model="quantity"
-              >
-                <option :value="1">1</option>
-                <option :value="2">2</option>
-                <option :value="3">3</option>
-                <option :value="4">4</option>
-                <option :value="5">5</option>
-                <option :value="6">6</option>
-                <option :value="7">7</option>
-                <option :value="8">8</option>
-                <option :value="9">9</option>
-                <option :value="10">10</option>
-              </select>
-            </div>
-            <h3 class="text-xl text-gray-700">{{ stripePrice }}</h3>
-          </div>
-          <div class="flex justify-end mt-4 pt-2 border-t-2">
-            <h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
-          </div>
-        </div>
-      </div>
-      <div
-        class="w-full relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto flex flex-col justify-center items-center p-10 xl:p-16"
-      >
-        <StripeForm :amount="stripeAmount" :price="stripePrice" />
-        <div class="w-full lg:pb-20" v-if="showMomo">
-          <div class="flex items-center justify-center my-10">
-            <div style="height:2px" class="w-32 bg-gray-300"></div>
-            <h4 class="mx-3 text-sm font-bold text-gray-500">OR</h4>
-            <div style="height:2px" class="w-32 bg-gray-300"></div>
-          </div>
-          <MoMoPayButton
-            :plan="paystackPlanCode"
-            :amount="paystackAmount"
-            :label="vPackage.name"
-            :currency="paystackCurrency"
-            :meta="meta"
-            :verifyPayment="verifyPayment"
-          />
-        </div>
-      </div>
-    </section>
-  </div>
+	<div class="w-screen h-screen relative overflow-x-hidden">
+		<Loader v-if="loading && !preError" class="w-full h-full absolute top-0 left-0 right-0 bottom-0" />
+		<div v-if="preError" class="flex w-full h-full items-center justify-center">
+			<div class="rounded border bg-gray-100 p-8 text-center">
+				<h3 class="text-2xl">Something went wrong...</h3>
+				<p
+					class="text-gray-700 text-sm mb-1"
+				>Sorry we cannot process your request at this time, try again later.</p>
+				<code class="text-xs bg-red-200 p-1 rounded">{{ preError }}</code>
+			</div>
+		</div>
+		<section class="w-full h-full flex flex-wrap relative lg:overflow-hidden" v-if="appReady">
+			<div
+				class="w-full lg:border-r lg:bg-gray-100 xl:w-2/3 lg:w-7/12 lg:h-full flex flex-col p-10 lg:p-16"
+			>
+				<div class="rounded border bg-white w-full p-8">
+					<h2 class="text-2xl mb-1 uppercase">Checkout</h2>
+					<div class="bg-gray-400 w-32" style="height:3px"></div>
+					<div class="mt-10 flex">
+						<div class="flex-1">
+							<h3 class="text-xl">{{ vPackage.name }}</h3>
+							<span class="text-xs italic text-gray-600">Features</span>
+							<ul class="block mt-2">
+								<li
+									v-for="(feature, key) in vFeatures"
+									:key="key"
+									class="captialize"
+									style="padding-bottom:8px"
+								>
+									<div class="text-gray-600 capitalize">
+										<span class="font-bold">{{ feature }}</span>
+										{{ key.replace("_", " ") }}
+									</div>
+								</li>
+							</ul>
+							<span>Valid for {{ vPackage.valid_period }}</span>
+						</div>
+						<div class="lg:px-16 flex items-start font-bold text-xl">
+							<span class="text-gray-700 mr-2">x{{ quantity }}</span>
+							<select
+								v-if="isAddon"
+								name="quantity"
+								id="quantity"
+								class="wa-input px-2 py-1 text-sm"
+								v-model="quantity"
+							>
+								<option :value="1">1</option>
+								<option :value="2">2</option>
+								<option :value="3">3</option>
+								<option :value="4">4</option>
+								<option :value="5">5</option>
+								<option :value="6">6</option>
+								<option :value="7">7</option>
+								<option :value="8">8</option>
+								<option :value="9">9</option>
+								<option :value="10">10</option>
+							</select>
+						</div>
+						<h3 class="text-xl text-gray-700">{{ stripePrice }}</h3>
+					</div>
+					<div class="flex justify-end mt-4 pt-2 border-t-2">
+						<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
+					</div>
+				</div>
+			</div>
+			<div
+				class="w-full relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto flex flex-col justify-center items-center p-10 xl:p-16"
+			>
+				<StripeForm :amount="stripeAmount" :price="stripePrice" :toggleLoading="toggleLoading" />
+				<div class="w-full lg:pb-20" v-if="showMomo">
+					<div class="flex items-center justify-center my-10">
+						<div style="height:2px" class="w-32 bg-gray-300"></div>
+						<h4 class="mx-3 text-sm font-bold text-gray-500">OR</h4>
+						<div style="height:2px" class="w-32 bg-gray-300"></div>
+					</div>
+					<MoMoPayButton
+						:plan="paystackPlanCode"
+						:amount="paystackAmount"
+						:label="vPackage.name"
+						:currency="paystackCurrency"
+						:meta="meta"
+						:verifyPayment="verifyPayment"
+					/>
+				</div>
+			</div>
+		</section>
+	</div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  components: {
-    Loader: () => import("~/components/common/Loader.vue"),
-    StripeForm: () => import("~/components/common/StripeForm.vue")
-  },
+	head() {
+		return {
+			title: 'Secure Checkout | Walulel Company Limited',
+			link: [
+				{
+					href:
+						'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap',
+					rel: 'stylesheet',
+				},
+			],
+		};
+	},
+	components: {
+		Loader: () => import('~/components/common/Loader.vue'),
+		StripeForm: () => import('~/components/common/StripeForm.vue'),
+	},
 
-  middleware: ["getAuthUser"],
+	middleware: ['capturePackage', 'captureToken', 'getAuthUser'],
 
-  asyncData({ app }) {
-    const _package_ = app.$cookies.get("_package_");
-    return { pack: _package_ };
-  },
+	asyncData({ app }) {
+		const _package_ = app.$cookies.get('_package_');
+		return { pack: _package_ };
+	},
 
-  data() {
-    return {
-      pack: null,
-      package_detail: null,
-      preError: null,
-      loading: true,
-      quantity: 1,
-      isVerifyingPayment: false,
-      isVerified: false
-    };
-  },
-  computed: {
-    ...mapGetters({
-      user: "user"
-    }),
+	data() {
+		return {
+			pack: null,
+			package_detail: null,
+			preError: null,
+			loading: true,
+			quantity: 1,
+			isVerifyingPayment: false,
+			isVerified: false,
+		};
+	},
+	computed: {
+		...mapGetters({
+			user: 'checkout/user',
+		}),
 
-    loading_text() {
-      return this.isVerified ? "Payment verified" : "Processing payment...";
-    },
+		loading_text() {
+			return this.isVerified
+				? 'Payment verified'
+				: 'Processing payment...';
+		},
 
-    appReady() {
-      return this.package_detail != null && this.user != null;
-    },
-    vPackage() {
-      if (this.package_detail) {
-        const { id, name, product, valid_period } = this.package_detail;
-        return { id, name, product, valid_period };
-      }
-      return null;
-    },
+		appReady() {
+			return this.package_detail != null && this.user != null;
+		},
+		vPackage() {
+			if (this.package_detail) {
+				const { id, name, product, valid_period } = this.package_detail;
+				return { id, name, product, valid_period };
+			}
+			return null;
+		},
 
-    vFeatures() {
-      return this.package_detail ? this.package_detail.features : null;
-    },
+		vFeatures() {
+			return this.package_detail ? this.package_detail.features : null;
+		},
 
-    product() {
-      return this.package_detail ? this.package_detail.product : null;
-    },
-    vPricing() {
-      return this.package_detail ? this.package_detail.pricing : null;
-    },
+		product() {
+			return this.package_detail ? this.package_detail.product : null;
+		},
+		vPricing() {
+			return this.package_detail ? this.package_detail.pricing : null;
+		},
 
-    stripePricing() {
-      return this.vPricing ? this.vPricing.gb : null;
-    },
+		stripePricing() {
+			return this.vPricing ? this.vPricing.gb : null;
+		},
 
-    payStackPricing() {
-      return this.vPricing ? this.vPricing.gh : null;
-    },
+		payStackPricing() {
+			return this.vPricing ? this.vPricing.gh : null;
+		},
 
-    currentCountryPricing() {
-      let country = "gb";
-      if (this.product == "WaCommunicate") {
-        if (this.user && this.user.country) {
-          country = this.user.country.toLowerCase();
-        }
-      }
-      return this.vPricing ? this.vPricing[country] : null;
-    },
+		currentCountryPricing() {
+			let country = 'gb';
+			if (this.product == 'WaCommunicate') {
+				if (this.user && this.user.country) {
+					country = this.user.country.toLowerCase();
+				}
+			}
+			return this.vPricing ? this.vPricing[country] : null;
+		},
 
-    selectedStripePlan() {
-      return this.stripePricing && this.pack
-        ? this.stripePricing[this.pack.payment_type]
-        : null;
-    },
+		selectedStripePlan() {
+			return this.stripePricing && this.pack
+				? this.stripePricing[this.pack.payment_type]
+				: null;
+		},
 
-    selectedPayStackPlan() {
-      return this.payStackPricing && this.pack
-        ? this.payStackPricing[this.pack.payment_type]
-        : null;
-    },
+		selectedPayStackPlan() {
+			return this.payStackPricing && this.pack
+				? this.payStackPricing[this.pack.payment_type]
+				: null;
+		},
 
-    stripePrice() {
-      return this.selectedStripePlan
-        ? Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: this.stripeCurrency
-          }).format((this.stripeAmount * this.quantity) / 100)
-        : null;
-    },
+		stripePrice() {
+			return this.selectedStripePlan
+				? Intl.NumberFormat('en-US', {
+						style: 'currency',
+						currency: this.stripeCurrency,
+				  }).format((this.stripeAmount * this.quantity) / 100)
+				: null;
+		},
 
-    stripeAmount() {
-      return this.selectedStripePlan ? this.selectedStripePlan.amount : 0;
-    },
+		stripeAmount() {
+			return this.selectedStripePlan ? this.selectedStripePlan.amount : 0;
+		},
 
-    stripeCurrency() {
-      return this.selectedStripePlan ? this.selectedStripePlan.currency : null;
-    },
+		stripeCurrency() {
+			return this.selectedStripePlan
+				? this.selectedStripePlan.currency
+				: null;
+		},
 
-    paystackPrice() {
-      return this.selectedStripePlan
-        ? Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: this.paystackCurrency
-          }).format((this.paystackAmount * this.quantity) / 100)
-        : null;
-    },
+		paystackPrice() {
+			return this.selectedStripePlan
+				? Intl.NumberFormat('en-US', {
+						style: 'currency',
+						currency: this.paystackCurrency,
+				  }).format((this.paystackAmount * this.quantity) / 100)
+				: null;
+		},
 
-    paystackAmount() {
-      return this.selectedPayStackPlan ? this.selectedPayStackPlan.amount : 0;
-    },
+		paystackAmount() {
+			return this.selectedPayStackPlan
+				? this.selectedPayStackPlan.amount
+				: 0;
+		},
 
-    paystackCurrency() {
-      return this.selectedPayStackPlan
-        ? this.selectedPayStackPlan.currency
-        : null;
-    },
+		paystackCurrency() {
+			return this.selectedPayStackPlan
+				? this.selectedPayStackPlan.currency
+				: null;
+		},
 
-    isAddon() {
-      return this.package_detail && this.package_detail.type == "Addon";
-    },
+		isAddon() {
+			return this.package_detail && this.package_detail.type == 'Addon';
+		},
 
-    showMomo() {
-      return (
-        this.product === "WaCommunicate" &&
-        this.currency === "GHS" &&
-        this.amount <= 500000 &&
-        this.isAddon
-      );
-    },
+		showMomo() {
+			return (
+				this.product === 'WaCommunicate' &&
+				this.currency === 'GHS' &&
+				this.amount <= 500000 &&
+				this.isAddon
+			);
+		},
 
-    meta() {
-      return this.package_detail
-        ? {
-            product: this.product,
-            package_id: this.package_detail.id,
-            payment_type: this.pack.payment_type,
-            addon_quantity: this.quantity
-          }
-        : null;
-    },
+		meta() {
+			return this.package_detail
+				? {
+						product: this.product,
+						package_id: this.package_detail.id,
+						payment_type: this.pack.payment_type,
+						addon_quantity: this.quantity,
+				  }
+				: null;
+		},
 
-    stripePlanCode() {
-      if (this.selectedStripePlan) {
-        return process.env.APP_ENV == "local"
-          ? this.selectedStripePlan.stripe_plan_code.test
-          : this.selectedStripePlan.stripe_plan_code.live;
-      }
-      return null;
-    },
+		stripePlanCode() {
+			if (this.selectedStripePlan) {
+				return process.env.APP_ENV == 'local'
+					? this.selectedStripePlan.stripe_plan_code.test
+					: this.selectedStripePlan.stripe_plan_code.live;
+			}
+			return null;
+		},
 
-    paystackPlanCode() {
-      return null;
-    }
-  },
+		paystackPlanCode() {
+			return null;
+		},
+	},
 
-  mounted() {
-    this.user && this.pack ? this.loadPackage() : this.onPreError();
-  },
+	mounted() {
+		this.user && this.pack ? this.loadPackage() : this.onPreError();
+	},
 
-  methods: {
-    loadPackage() {
-      this.$axios
-        .$get(`/checkout/packages/${this.pack.package_id}`)
-        .then(
-          response => {
-            if (response && response.data) {
-              this.package_detail = response.data;
-            }
-          },
-          error => {
-            console.log(error);
-            this.onPreError();
-          }
-        )
-        .finally(_ => (this.loading = false));
-    },
+	methods: {
+		loadPackage() {
+			this.$axios
+				.$get(`/checkout/packages/${this.pack.package_id}`)
+				.then(
+					(response) => {
+						if (response && response.data) {
+							this.package_detail = response.data;
+						}
+					},
+					(error) => {
+						console.log(error);
+						this.onPreError();
+					}
+				)
+				.finally((_) => (this.loading = false));
+		},
 
-    verifyPayment(reference) {
-      this.isVerifyingPayment = true;
-      this.$axios
-        .$get(`/checkout/verify?reference=${reference}`)
-        .then(
-          response => {
-            if (response && response.data) {
-              if (!response.data.error) {
-                this.isVerified = true;
-                //close window
-              }
-              return this.$store.dispatch("addNotification", {
-                message: response.data.message,
-                type: "error"
-              });
-            }
-          },
-          error => {
-            console.log(error);
-            this.$store.dispatch("addNotification", {
-              message: "Something went wrong, try again later",
-              type: "error"
-            });
-          }
-        )
-        .finally(_ => (this.isVerifyingPayment = false));
-    },
+		verifyPayment(reference) {
+			this.isVerifyingPayment = true;
+			this.$axios
+				.$get(`/checkout/verify?reference=${reference}`)
+				.then(
+					(response) => {
+						if (response && response.data) {
+							if (!response.data.error) {
+								this.isVerified = true;
+								//close window
+							}
+							return this.$store.dispatch('addNotification', {
+								message: response.data.message,
+								type: 'error',
+							});
+						}
+					},
+					(error) => {
+						console.log(error);
+						this.$store.dispatch('addNotification', {
+							message: 'Something went wrong, try again later',
+							type: 'error',
+						});
+					}
+				)
+				.finally((_) => (this.isVerifyingPayment = false));
+		},
 
-    toggleLoading(visibile, done) {
-      this.isVerifyingPayment = visibile;
-      this.isVerified = done;
+		toggleLoading(visibile, done) {
+			this.isVerifyingPayment = visibile;
+			this.isVerified = done;
 
-      if (visibile && done) {
-        //close window;
-      }
-    },
+			if (visibile && done) {
+				//close window;
+			}
+		},
 
-    onPreError() {
-      this.preError = !this.user
-        ? "Authentication failed"
-        : "Invalid transaction information";
-    }
-  }
+		onPreError() {
+			this.preError = !this.user
+				? 'Authentication failed'
+				: 'Invalid transaction information';
+		},
+	},
 };
 </script>
 
-<style></style>
+<style scoped>
+
+*,
+body {
+	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+		'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+		'Helvetica Neue', sans-serif;
+}
+
+html {
+	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+		'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	font-size: 16px;
+	word-spacing: 1px;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	box-sizing: border-box;
+}
+
+.wa-input {
+	@apply appearance-none border rounded border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight m-0;
+}
+
+.wa-input:focus,
+.wa-input:active {
+	@apply outline-none border border-gray-500 shadow-inner;
+}
+</style>
