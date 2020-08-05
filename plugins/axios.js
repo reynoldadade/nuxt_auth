@@ -31,6 +31,6 @@ export default function({ $axios, redirect, $cookies }) {
 		}
 	});
 
-	// $axios.setBaseURL(process.env.WACOMM_API_ENDPOINT);
+	$axios.setBaseURL(process.env.WACOMM_API_ENDPOINT);
 	// $axios.setBaseURL('http://bf9b3997d389.ngrok.io/');
 }
