@@ -1,37 +1,38 @@
 {
-  "name": "wa_auth",
-  "version": "1.0.0",
-  "description": "authentication and payment",
-  "author": "Reynold Osei Adade",
-  "private": true,
-  "scripts": {
-    "dev": "nuxt",
-    "dev-dry": "nuxt --hostname 192.168.8.112 --port 4200",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "test": "jest"
-  },
-  "dependencies": {
-    "@stripe/stripe-js": "^1.8.0",
-    "cookie-universal-nuxt": "^2.1.4",
-    "nuxt": "^2.0.0",
-    "vue-sweetalert2": "^3.0.6",
-    "@fortawesome/fontawesome-free": "^5.14.0",
-    "@nuxtjs/axios": "^5.3.6",
-    "@nuxtjs/dotenv": "^1.4.0",
-    "lodash": "^4.17.19",
-    "moment": "^2.27.0",
-    "vue-notification": "^1.3.20",
-    "vue-tel-input": "^4.4.0",
-    "vuelidate": "^0.7.5"
-  },
-  "devDependencies": {
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
-    "@nuxtjs/tailwindcss": "^1.0.0",
-    "@vue/test-utils": "^1.0.0-beta.27",
-    "babel-jest": "^24.1.0",
-    "jest": "^24.1.0",
-    "vue-jest": "^4.0.0-0"
-  }
+	"name": "wa_auth",
+	"version": "1.0.0",
+	"description": "authentication and payment",
+	"author": "Reynold Osei Adade",
+	"private": true,
+	"scripts": {
+		"dev": "nuxt",
+		"dev-dry": "nuxt --hostname 192.168.8.112 --port 4200",
+		"build": "nuxt build",
+		"start": "nuxt start",
+		"generate": "nuxt generate",
+		"test": "jest --collectCoverage=false --noStackTrace --silent",
+		"test-dry": "jest --watch --silent  --collectCoverage=false"
+	},
+	"dependencies": {
+		"@stripe/stripe-js": "^1.8.0",
+		"cookie-universal-nuxt": "^2.1.4",
+		"nuxt": "^2.0.0",
+		"vue-sweetalert2": "^3.0.6",
+		"@fortawesome/fontawesome-free": "^5.14.0",
+		"@nuxtjs/axios": "^5.3.6",
+		"@nuxtjs/dotenv": "^1.4.0",
+		"lodash": "^4.17.19",
+		"moment": "^2.27.0",
+		"vue-notification": "^1.3.20",
+		"vue-tel-input": "^4.4.0",
+		"vuelidate": "^0.7.5"
+	},
+	"devDependencies": {
+		"@fortawesome/free-solid-svg-icons": "^5.14.0",
+		"@nuxtjs/tailwindcss": "^1.0.0",
+		"@vue/test-utils": "^1.0.0-beta.27",
+		"babel-jest": "^24.1.0",
+		"jest": "^24.1.0",
+		"vue-jest": "^4.0.0-0"
+	}
 }
