@@ -87,15 +87,17 @@
 					>
 						Phone number
 					</label>
-					<vue-tel-input
-						class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-						id="grid-telephone"
-						validCharactersOnly
-						:mode="'international'"
-						placeholder="+000 XXX XX XX XX"
-						v-model="$v.form.phone_number.$model"
-						:name="'telephone'"
-					></vue-tel-input>
+					<client-only>
+						<vue-tel-input
+							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+							id="grid-telephone"
+							validCharactersOnly
+							:mode="'international'"
+							placeholder="+000 XXX XX XX XX"
+							v-model="$v.form.phone_number.$model"
+							:name="'telephone'"
+						></vue-tel-input>
+					</client-only>
 					<p
 						class="text-black text-xs italic"
 						v-if="$v.form.phone_number.$error"
