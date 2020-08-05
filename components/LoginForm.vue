@@ -73,6 +73,7 @@ export default {
 		}),
 
 		async login() {
+			const { redirect_url, expect_token } = this.$route.query;
 			this.error = false;
 			this.loading = true;
 			this.$axios
@@ -88,7 +89,10 @@ export default {
 						sameSite: true,
 						maxAge: 60 * 60 * 24 * 7,
 					});
-
+					if (redirect_url) {
+						const outURL = `http://${redirect_url}?token=${data.access_token}`;
+						return window.location.replace(outURL);
+					}
 					this.$router.push('/profile');
 				})
 				.catch(({ message, response }) => {
