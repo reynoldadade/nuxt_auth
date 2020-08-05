@@ -14,6 +14,18 @@ import global from '~/mixins/global.js';
 Vue.mixin(global);
 export default {
 	// middleware: ['checkLogin'],
+
+	head() {
+		return {
+			script: [
+				{
+					src:
+						'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+					body: true,
+				},
+			],
+		};
+	},
 };
 </script>
 <style></style>

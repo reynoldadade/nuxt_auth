@@ -1,10 +1,10 @@
 export default {
-	mode: 'universal',
+	mode: 'spa',
 	/*
 	 ** Headers of the page
 	 */
 	head: {
-		title: process.env.npm_package_name || '',
+		title: 'Walulel Company Limited',
 		meta: [
 			{ charset: 'utf-8' },
 			{
@@ -18,13 +18,13 @@ export default {
 			},
 		],
 		link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
-		script: [
-			{
-				src:
-					'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
-				body: true,
-			},
-		],
+		// script: [
+		// 	{
+		// 		src:
+		// 			'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+		// 		body: true,
+		// 	},
+		// ],
 	},
 	/*
 	 ** Customize the progress-bar color
@@ -68,7 +68,10 @@ export default {
 	 ** Axios module configuration
 	 ** See https://axios.nuxtjs.org/options
 	 */
-	axios: {},
+	axios: {
+		https: true,
+		baseURL: process.env.API_ENDPOINT,
+	},
 	/*
 	 ** Build configuration
 	 */
@@ -84,9 +87,9 @@ export default {
 	 */
 
 	env: {
-		API_ENDPOINT: process.env.API_ENDPOINT,
-		WACOMM_API_ENDPOINT: process.env.WACOMM_API_ENDPOINT,
-		WACOMM_LINK: process.env.WACOMM_LINK,
-		WAINSIGHT_LINK: process.env.WAINSIGHT_LINK,
+		// API_ENDPOINT: process.env.API_ENDPOINT,
+		// WACOMM_API_ENDPOINT: process.env.WACOMM_API_ENDPOINT,
+		// WACOMM_LINK: process.env.WACOMM_LINK,
+		// WAINSIGHT_LINK: process.env.WAINSIGHT_LINK,
 	},
 };
