@@ -29,14 +29,14 @@ export default {
 		if (logout) {
 			this.$cookies.removeAll();
 			window.localStorage.clear();
-			return this.$router.replace('/');
+			return this.$router.push('/');
 		}
 
 		if (refresh_token) {
-			return this.$router.replace(loginUrl);
+			return this.$router.push(loginUrl);
 		}
 
-		const access_token = this.$cookies.get('cookie-name');
+		const access_token = this.$cookies.get('token');
 		if (access_token) {
 			/**
 			 *  Redirect base on @redirct_url or @host
@@ -46,9 +46,9 @@ export default {
 				const outURL = `http://${redirect_url}?token=${access_token}`;
 				return window.location.replace(outURL);
 			}
-			return this.$router.replace('/profile');
+			return this.$router.push('/profile');
 		} else {
-			return this.$router.replace(loginUrl);
+			return this.$router.push(loginUrl);
 		}
 	},
 };
