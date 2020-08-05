@@ -70,7 +70,7 @@ export default {
 	 */
 	axios: {
 		https: true,
-		baseURL: process.env.WACOMM_API_ENDPOINT,
+		baseURL: process.env.API_ENDPOINT,
 	},
 	/*
 	 ** Build configuration
