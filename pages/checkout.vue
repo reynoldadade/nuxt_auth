@@ -100,7 +100,7 @@ export default {
 		StripeForm: () => import('~/components/common/StripeForm.vue'),
 	},
 
-	middleware: ['capturePackage', 'captureToken', 'getAuthUser'],
+	middleware: ['getAuthUser'],
 
 	asyncData({ app }) {
 		const _package_ = app.$cookies.get('_package_');
@@ -266,7 +266,7 @@ export default {
 	methods: {
 		loadPackage() {
 			this.$axios
-				.$get(`/checkout/packages/${this.pack.package_id}`)
+				.$get(`${process.env.API_ENDPOINT}/checkout/packages/${this.pack.package_id}`)
 				.then(
 					(response) => {
 						if (response && response.data) {
@@ -284,7 +284,7 @@ export default {
 		verifyPayment(reference) {
 			this.isVerifyingPayment = true;
 			this.$axios
-				.$get(`/checkout/verify?reference=${reference}`)
+				.$get(`${process.env.API_ENDPOINT}/checkout/verify?reference=${reference}`)
 				.then(
 					(response) => {
 						if (response && response.data) {

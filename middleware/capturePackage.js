@@ -5,7 +5,7 @@ export default function({app,route}){
         app.$cookies.set("_package_", {package_id,payment_type}, {
           sameSite: "Strict",
           path: "/",
-          maxAge: 1800
+          maxAge: 3600
         });
     }
 }

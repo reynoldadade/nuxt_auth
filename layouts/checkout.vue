@@ -17,6 +17,8 @@ export default {
 				},
 			],
 		};
-	},
+    },
+    
+    middleware: ['capturePackage', 'captureToken']
 };
 </script>
