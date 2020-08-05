@@ -6,7 +6,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 	// 	store.dispatch('app/setUserID', user_id);
 	// }
 	if (profile == undefined || profile == null) {
-		profile = app.$cookies.get('cookie-profile');
+		profile = app.$cookies.get('auth-profile');
 	}
 
 	if (profile != undefined) {
@@ -72,7 +72,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 				subscriptions,
 			};
 			store.dispatch('user/storeProfile', profile);
-			app.$cookies.set('cookie-profile', profile, {
+			app.$cookies.set('auth-profile', profile, {
 				path: '/',
 				sameSite: true,
 			});

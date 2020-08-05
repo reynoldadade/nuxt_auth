@@ -1,7 +1,16 @@
 export default ({ app, env, route, redirect }) => {
 	const redirectAuthUrl = '';
-	const token = app.$cookies.get('token');
-	if (token) {
-		return redirect('/profile');
+	const { redirect_url, expect_token, refresh_token, logout } = route.query;
+	if (!redirect_url) {
+		const token = app.$cookies.get('token');
+		if (token) {
+			return redirect('/profile');
+		} else {
+			if (route.path !== '/') {
+				return redirect('/');
+			} else {
+				console.log('/');
+			}
+		}
 	}
 };
