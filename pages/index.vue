@@ -49,7 +49,7 @@ export default {
 	head() {
 		return { title: 'Walulel | Login' };
 	},
-	middleware: [],
+	middleware: ['checkLogin'],
 	components: {
 		LoginForm,
 		Link,
