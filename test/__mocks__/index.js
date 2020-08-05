@@ -1,7 +1,6 @@
 let _cookies = {
-    profile: undefined,
-    authToken: undefined,
-    user_id: undefined
+	token: undefined,
+	_package_: undefined,
 };
 
 const createCookies = ()=>({
@@ -17,7 +16,8 @@ const createCookies = ()=>({
 
 const createRouter = ()=>({
     replace: jest.fn(),
-    back: jest.fn()
+    back: jest.fn(),
+    push: jest.fn()
 });
 
 const createSwal = ()=> jest.fn()
