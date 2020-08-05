@@ -91,7 +91,7 @@ export default {
 		async emailReset() {
 			this.loading = true;
 			axios
-				.get(process.env.WACOMM_API_ENDPOINT + '/password/email', {
+				.get(process.env.API_ENDPOINT + '/password/email', {
 					params: { email: this.email },
 				})
 				.then(response => {
