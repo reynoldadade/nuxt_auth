@@ -33,10 +33,7 @@ export default {
 	/*
 	 ** Global CSS
 	 */
-	css: [
-		'~/assets/css/styles.css',
-		'~/node_modules/@fortawesome/fontawesome-free/css/all.css',
-	],
+	css: ['~/node_modules/@fortawesome/fontawesome-free/css/all.css'],
 	/*
 	 ** Plugins to load before mounting the App
 	 */
@@ -63,6 +60,7 @@ export default {
 		// Doc: https://github.com/nuxt-community/dotenv-module
 		'@nuxtjs/dotenv',
 		'cookie-universal-nuxt',
+		'vue-sweetalert2/nuxt',
 	],
 	/*
 	 ** Axios module configuration
@@ -86,6 +84,5 @@ export default {
 	 ** Environment Variables
 	 */
 
-	env: {
-	},
+	env: {},
 };

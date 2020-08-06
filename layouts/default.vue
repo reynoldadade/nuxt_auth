@@ -24,6 +24,17 @@ export default {
 					body: true,
 				},
 			],
+			link: [
+				{
+					href:
+						'https://fonts.googleapis.com/css?family=Karla:400,700&display=swap',
+					rel: 'stylesheet',
+				},
+				{
+					href: '/css/styles.css',
+					rel: 'stylesheet',
+				},
+			],
 		};
 	},
 };
