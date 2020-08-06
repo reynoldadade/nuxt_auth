@@ -2,7 +2,7 @@ import { createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 
 import Checkout from '@/pages/checkout.vue';
-import * as storex from '@/store/checkout.js';
+import * as checkout from '@/store/checkout.js';
 import FactoryCreator from '../../__factory__';
 import { FakeUser, FakePackage } from '../../__faker__';
 import { createCookies, createRouter } from '../../__mocks__';
@@ -11,10 +11,17 @@ const localVue = createLocalVue();
 
 localVue.use(Vuex);
 
-describe('Checkout page beforeLoad interactions', () => {
+describe('checkout page interactions', () => {
 	let store, wrapper, stubs;
 	beforeEach(() => {
-		store = new Vuex.Store(storex);
+		store = new Vuex.Store({
+			modules : {
+				checkout : {
+					namespaced : true,
+					...checkout
+				}
+			}
+		});
 		stubs = {
 			StripeForm: true,
 			MoMoPayButton: true,
@@ -31,7 +38,7 @@ describe('Checkout page beforeLoad interactions', () => {
 		}
 	});
 
-	it('should validate token and package information', () => {
+	it('should validate token and package information and computed values', () => {
     const factory = FactoryCreator(Checkout, { 
       store, localVue, stubs,
       mocks : {
@@ -44,9 +51,21 @@ describe('Checkout page beforeLoad interactions', () => {
      });
 
     wrapper = factory();
-    
-    expect(wrapper.vm.preError).toBe("Authentication failed");
-	});
+	
+	//check initial prop values without the token and package info
+	expect(wrapper.vm.preError).toBe("Authentication failed");
+	expect(wrapper.vm.package_detail).toBe(null);
+
+	const fakeUser = FakeUser();
+	
+	//set fake user in store
+	wrapper.vm.$store.dispatch('checkout/setUser',fakeUser);
+
+	expect(wrapper.vm.user).toBe(fakeUser);
+	wrapper.vm.onPreError();
+	expect(wrapper.vm.preError).toBe('Invalid transaction information');
+
+});
 
 	// it('should validate form and register showing document upload', async () => {
 	// 	const factory = FactoryCreator(Register, {
