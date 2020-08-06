@@ -15,7 +15,9 @@ export default {
 						'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap',
 					rel: 'stylesheet',
 				},
+				{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' },
 			],
+			
 		};
     },
     

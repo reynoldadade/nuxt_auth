@@ -1,6 +1,12 @@
 <template>
 	<div class="w-screen h-screen relative overflow-x-hidden">
-		<Loader v-if="loading && !preError" class="w-full h-full absolute top-0 left-0 right-0 bottom-0" />
+		<Loader
+			v-if="isVerifyingPayment"
+			:done="isVerified"
+			:loading_text="loading_text"
+			style="background-color:rgba(255,255,255,0.8);z-index:100"
+			class="w-full h-full absolute top-0 left-0 right-0 bottom-0"
+		/>
 		<div v-if="preError" class="flex w-full h-full items-center justify-center">
 			<div class="rounded border bg-gray-100 p-8 text-center">
 				<h3 class="text-2xl">Something went wrong...</h3>
@@ -67,7 +73,13 @@
 			<div
 				class="w-full relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto flex flex-col justify-center items-center p-10 xl:p-16"
 			>
-				<StripeForm :amount="stripeAmount" :price="stripePrice" :toggleLoading="toggleLoading" />
+				<StripeForm
+					:amount="stripeAmount"
+					:price="stripePrice"
+					:isSubscription="!isAddon"
+					:meta="meta"
+					:toggleLoading="toggleLoading"
+				/>
 				<div class="w-full lg:pb-20" v-if="showMomo">
 					<div class="flex items-center justify-center my-10">
 						<div style="height:2px" class="w-32 bg-gray-300"></div>
@@ -92,9 +104,8 @@
 import { mapGetters } from 'vuex';
 
 export default {
+	layout: 'checkout',
 
-	layout:"checkout",
-	
 	components: {
 		Loader: () => import('~/components/common/Loader.vue'),
 		StripeForm: () => import('~/components/common/StripeForm.vue'),
@@ -124,9 +135,11 @@ export default {
 		}),
 
 		loading_text() {
-			return this.isVerified
-				? 'Payment verified'
-				: 'Processing payment...';
+			return this.appReady
+				? this.isVerified
+					? 'Payment verified'
+					: 'Processing payment...'
+				: 'Please wait...';
 		},
 
 		appReady() {
@@ -266,7 +279,9 @@ export default {
 	methods: {
 		loadPackage() {
 			this.$axios
-				.$get(`${process.env.API_ENDPOINT}/checkout/packages/${this.pack.package_id}`)
+				.$get(
+					`${process.env.API_ENDPOINT}/checkout/packages/${this.pack.package_id}`
+				)
 				.then(
 					(response) => {
 						if (response && response.data) {
@@ -284,7 +299,9 @@ export default {
 		verifyPayment(reference) {
 			this.isVerifyingPayment = true;
 			this.$axios
-				.$get(`${process.env.API_ENDPOINT}/checkout/verify?reference=${reference}`)
+				.$get(
+					`${process.env.API_ENDPOINT}/checkout/verify?reference=${reference}`
+				)
 				.then(
 					(response) => {
 						if (response && response.data) {
@@ -292,17 +309,27 @@ export default {
 								this.isVerified = true;
 								//close window
 							}
-							return this.$store.dispatch('addNotification', {
-								message: response.data.message,
-								type: 'error',
+							this.$swal({
+								toast: true,
+								position: 'top-end',
+								showConfirmButton: false,
+								timer: 3000,
+								icon: 'error',
+								text: response.data.message,
 							});
+							return;
 						}
 					},
 					(error) => {
 						console.log(error);
-						this.$store.dispatch('addNotification', {
-							message: 'Something went wrong, try again later',
-							type: 'error',
+
+						this.$swal({
+							toast: true,
+							position: 'top-end',
+							showConfirmButton: false,
+							timer: 3000,
+							icon: 'error',
+							text: 'Something went wrong, try again later',
 						});
 					}
 				)
@@ -328,7 +355,6 @@ export default {
 </script>
 
 <style scoped>
-
 *,
 body {
 	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
