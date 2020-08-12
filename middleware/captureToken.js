@@ -7,14 +7,15 @@
 export default function({ route, app }) {
   //Get token from route query
   const { token } = route.query;
+
+  console.log(token);
   if (token) {
     new Promise(res => {
       app.$cookies.remove("token");
       //set token to store and cookie for future use.
       app.$cookies.set("token", token, {
-        sameSite: "Strict",
         path: "/",
-        maxAge: 3600
+        maxAge: 3600,
       });
       res(true);
     }).then(_ => {

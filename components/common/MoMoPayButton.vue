@@ -38,7 +38,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: "app/user"
+      user: "checkout/user"
     }),
     metadata() {
       return { ...this.meta, user_id: this.user.id };

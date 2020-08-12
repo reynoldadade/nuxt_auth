@@ -1,7 +1,7 @@
 <template>
 	<div class="w-screen h-screen relative overflow-x-hidden">
 		<Loader
-			v-if="isVerifyingPayment"
+			v-if="(!appReady && !preError) || isVerifyingPayment"
 			:done="isVerified"
 			:loading_text="loading_text"
 			style="background-color:rgba(255,255,255,0.8);z-index:100"
@@ -23,7 +23,29 @@
 				<div class="rounded border bg-white w-full p-8">
 					<h2 class="text-2xl mb-1 uppercase">Checkout</h2>
 					<div class="bg-gray-400 w-32" style="height:3px"></div>
-					<div class="mt-10 flex">
+					<!-- WAPATRON -->
+					<div class="mt-10 flex flex-wrap xl:w-10/12" v-if="run_detail">
+						<img
+							v-if="run_detail.offer.banner"
+							:src="run_detail.offer.banner"
+							:alt="run_detail.offer.title"
+							class="rounded w-full lg:w-64"
+						/>
+						<div class="p-5 flex-1">
+							<h3 class="text-2xl text-black">{{run_detail.offer.title}}</h3>
+							<p class="text-gray-700 mt-1 mb-4">{{run_detail.offer.description}}</p>
+							<span
+								title="Promo Code"
+								v-if="run_detail.offer.promo_code"
+								class="py-1 px-2 rounded text-gray-600 bg-gray-200 font-bold border-2"
+							>{{run_detail.offer.promo_code}}</span>
+							<div class="bg-gray-400 my-5" style="height:1px"></div>
+						</div>
+					</div>
+					<!-- END OF WAPATRON -->
+
+					<!-- WACOMMUNICATE/WAINSIGHT PACKAGES -->
+					<div v-if="vPackage" class="mt-10 flex">
 						<div class="flex-1">
 							<h3 class="text-xl">{{ vPackage.name }}</h3>
 							<span class="text-xs italic text-gray-600">Features</span>
@@ -71,8 +93,10 @@
 				</div>
 			</div>
 			<div
-				class="w-full relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto flex flex-col justify-center items-center p-10 xl:p-16"
+				class="w-full bg-white relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto justify-center items-center p-10 xl:p-16"
 			>
+			
+			<br>
 				<StripeForm
 					:amount="stripeAmount"
 					:price="stripePrice"
@@ -89,7 +113,7 @@
 					<MoMoPayButton
 						:plan="paystackPlanCode"
 						:amount="paystackAmount"
-						:label="vPackage.name"
+						:label="label"
 						:currency="paystackCurrency"
 						:meta="meta"
 						:verifyPayment="verifyPayment"
@@ -109,19 +133,23 @@ export default {
 	components: {
 		Loader: () => import('~/components/common/Loader.vue'),
 		StripeForm: () => import('~/components/common/StripeForm.vue'),
+		MoMoPayButton: ()=>import('~/components/common/MoMoPayButton.vue'),
 	},
 
 	middleware: ['getAuthUser'],
 
 	asyncData({ app }) {
 		const _package_ = app.$cookies.get('_package_');
-		return { pack: _package_ };
+		const _run_id_ = app.$cookies.get('_run_id_');
+		const _referrer_ = app.$cookies.get('_referrer_');
+		return { pack: _package_, referrer: _referrer_, run_id: _run_id_ };
 	},
 
 	data() {
 		return {
 			pack: null,
 			package_detail: null,
+			run_detail: null,
 			preError: null,
 			loading: true,
 			quantity: 1,
@@ -133,7 +161,9 @@ export default {
 		...mapGetters({
 			user: 'checkout/user',
 		}),
-
+		label() {
+			return this.vPackage ? this.vPackage.name : 'WaPatron Ads';
+		},
 		loading_text() {
 			return this.appReady
 				? this.isVerified
@@ -143,7 +173,10 @@ export default {
 		},
 
 		appReady() {
-			return this.package_detail != null && this.user != null;
+			return (
+				(this.package_detail != null || this.run_detail != null) &&
+				this.user != null
+			);
 		},
 		vPackage() {
 			if (this.package_detail) {
@@ -158,7 +191,9 @@ export default {
 		},
 
 		product() {
-			return this.package_detail ? this.package_detail.product : null;
+			return this.package_detail
+				? this.package_detail.product
+				: this.referrer;
 		},
 		vPricing() {
 			return this.package_detail ? this.package_detail.pricing : null;
@@ -195,7 +230,7 @@ export default {
 		},
 
 		stripePrice() {
-			return this.selectedStripePlan
+			return this.selectedStripePlan || this.run_detail
 				? Intl.NumberFormat('en-US', {
 						style: 'currency',
 						currency: this.stripeCurrency,
@@ -204,13 +239,17 @@ export default {
 		},
 
 		stripeAmount() {
-			return this.selectedStripePlan ? this.selectedStripePlan.amount : 0;
+			return this.selectedStripePlan
+				? this.selectedStripePlan.amount
+				: this.run_detail
+				? this.run_detail.paid_amount
+				: 0;
 		},
 
 		stripeCurrency() {
 			return this.selectedStripePlan
 				? this.selectedStripePlan.currency
-				: null;
+				: 'GBP';
 		},
 
 		paystackPrice() {
@@ -225,25 +264,31 @@ export default {
 		paystackAmount() {
 			return this.selectedPayStackPlan
 				? this.selectedPayStackPlan.amount
+				: this.run_detail
+				? this.run_detail.paid_amount
 				: 0;
 		},
 
 		paystackCurrency() {
 			return this.selectedPayStackPlan
 				? this.selectedPayStackPlan.currency
+				: this.run_detail
+				? 'GHS'
 				: null;
 		},
 
 		isAddon() {
-			return this.package_detail && this.package_detail.type == 'Addon';
+			return (
+				(this.package_detail && this.package_detail.type == 'Addon') ||
+				false
+			);
 		},
 
 		showMomo() {
 			return (
-				this.product === 'WaCommunicate' &&
-				this.currency === 'GHS' &&
-				this.amount <= 500000 &&
-				this.isAddon
+				this.product !== 'WaInsight' &&
+				this.paystackAmount <= 500000 &&
+				(this.isAddon || this.run_detail)
 			);
 		},
 
@@ -254,6 +299,12 @@ export default {
 						package_id: this.package_detail.id,
 						payment_type: this.pack.payment_type,
 						addon_quantity: this.quantity,
+				  }
+				: this.run_detail
+				? {
+						product: this.product,
+						run_token: this.run_id,
+						payment_type: 'onetime',
 				  }
 				: null;
 		},
@@ -273,27 +324,60 @@ export default {
 	},
 
 	mounted() {
-		this.user && this.pack ? this.loadPackage() : this.onPreError();
+		this.user ? this.intitateTransaction() : this.onPreError();
 	},
 
 	methods: {
-		loadPackage() {
-			this.$axios
-				.$get(
-					`${process.env.API_ENDPOINT}/checkout/packages/${this.pack.package_id}`
-				)
-				.then(
-					(response) => {
-						if (response && response.data) {
-							this.package_detail = response.data;
+		intitateTransaction() {
+			if (this.referrer == 'wapatron') {
+				return this.intiateWaPatronTransaction();
+			}
+			return this.initiateWaCommunicateTransaction();
+		},
+
+		initiateWaCommunicateTransaction() {
+			if (this.pack) {
+				this.$axios
+					.$get(
+						`${process.env.API_ENDPOINT}/checkout/packages/${this.pack.package_id}`
+					)
+					.then(
+						(response) => {
+							if (response && response.data) {
+								this.package_detail = response.data;
+							}
+						},
+						(error) => {
+							console.log(error);
+							this.onPreError();
 						}
-					},
-					(error) => {
-						console.log(error);
-						this.onPreError();
-					}
-				)
-				.finally((_) => (this.loading = false));
+					)
+					.finally((_) => (this.loading = false));
+			} else {
+				this.onPreError();
+			}
+		},
+
+		intiateWaPatronTransaction() {
+			if (this.run_id) {
+				this.$axios
+					.$get(
+						`${process.env.WA_PATRON_API}/published-offers?token=${this.run_id}`
+					)
+					.then(
+						(response) => {
+							if (response && response.data) {
+								this.run_detail = response.data;
+								return;
+							}
+							this.onPreError();
+						},
+						(error) => {
+							console.log({ error });
+							this.onPreError();
+						}
+					);
+			}
 		},
 
 		verifyPayment(reference) {

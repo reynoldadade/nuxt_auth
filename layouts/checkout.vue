@@ -21,6 +21,6 @@ export default {
 		};
     },
     
-    middleware: ['capturePackage', 'captureToken']
+    middleware: ['caputreTransactionInfo', 'captureToken']
 };
 </script>
