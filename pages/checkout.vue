@@ -242,7 +242,7 @@ export default {
 			return this.selectedStripePlan
 				? this.selectedStripePlan.amount
 				: this.run_detail
-				? this.run_detail.paid_amount
+				? this.run_detail.paid_amount['GBP']
 				: 0;
 		},
 
@@ -265,7 +265,7 @@ export default {
 			return this.selectedPayStackPlan
 				? this.selectedPayStackPlan.amount
 				: this.run_detail
-				? this.run_detail.paid_amount
+				? this.run_detail.paid_amount['GHS']
 				: 0;
 		},
 
