@@ -1,10 +1,11 @@
 <template>
-  <form @submit.prevent="initMoMoPay" class="w-full">
+  <form @submit.prevent="initMoMoPay" class="w-full text-center">
     <button
       class="block px-4 py-3 border-2 font-semibold rounded text-xl hover:shadow-xl w-full bg-black text-white hover:bg-gray-800"
     >
       <i class="fa fa-mobile mr-2"></i>Mobile Money
     </button>
+    <span class="text-sm text-gray-600">Pay {{currency}} {{amount/100}}</span>
     <script src="https://js.paystack.co/v1/inline.js"></script>
   </form>
 </template>
