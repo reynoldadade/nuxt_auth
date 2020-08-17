@@ -88,15 +88,17 @@
 						<h3 class="text-xl text-gray-700">{{ stripePrice }}</h3>
 					</div>
 					<div class="flex justify-end mt-4 pt-2 border-t-2">
-						<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
+						<div class="text-right">
+							<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
+							<span class="text-sm text-gray-600" v-show="paystackAmount">{{ paystackPrice }}</span>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div
 				class="w-full bg-white relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto justify-center items-center p-10 xl:p-16"
 			>
-			
-			<br>
+				<br />
 				<StripeForm
 					:amount="stripeAmount"
 					:price="stripePrice"
@@ -111,7 +113,6 @@
 						<div style="height:2px" class="w-32 bg-gray-300"></div>
 					</div>
 					<MoMoPayButton
-						:plan="paystackPlanCode"
 						:amount="paystackAmount"
 						:label="label"
 						:currency="paystackCurrency"
@@ -133,7 +134,7 @@ export default {
 	components: {
 		Loader: () => import('~/components/common/Loader.vue'),
 		StripeForm: () => import('~/components/common/StripeForm.vue'),
-		MoMoPayButton: ()=>import('~/components/common/MoMoPayButton.vue'),
+		MoMoPayButton: () => import('~/components/common/MoMoPayButton.vue'),
 	},
 
 	middleware: ['getAuthUser'],
@@ -307,19 +308,6 @@ export default {
 						payment_type: 'onetime',
 				  }
 				: null;
-		},
-
-		stripePlanCode() {
-			if (this.selectedStripePlan) {
-				return process.env.APP_ENV == 'local'
-					? this.selectedStripePlan.stripe_plan_code.test
-					: this.selectedStripePlan.stripe_plan_code.live;
-			}
-			return null;
-		},
-
-		paystackPlanCode() {
-			return null;
 		},
 	},
 
