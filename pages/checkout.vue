@@ -102,7 +102,7 @@
 				<StripeForm
 					:amount="stripeAmount"
 					:price="stripePrice"
-					:isSubscription="!isAddon"
+					:isSubscription="isSubscription"
 					:meta="meta"
 					:toggleLoading="toggleLoading"
 				/>
@@ -118,6 +118,7 @@
 						:currency="paystackCurrency"
 						:meta="meta"
 						:verifyPayment="verifyPayment"
+						:price="paystackPrice"
 					/>
 				</div>
 			</div>
@@ -162,6 +163,11 @@ export default {
 		...mapGetters({
 			user: 'checkout/user',
 		}),
+
+		userCurrency(){
+			return this.user.country == "GH" ? "cedis" : "pounds";
+		},
+
 		label() {
 			return this.vPackage ? this.vPackage.name : 'WaPatron Ads';
 		},
@@ -197,41 +203,20 @@ export default {
 				: this.referrer;
 		},
 		vPricing() {
-			return this.package_detail ? this.package_detail.pricing : null;
+			return this.package_detail ? this.package_detail.pricing[this.pack.payment_type] : null;
 		},
 
 		stripePricing() {
-			return this.vPricing ? this.vPricing.gb : null;
+			return this.vPricing ? this.vPricing.pounds : null;
 		},
 
 		payStackPricing() {
-			return this.vPricing ? this.vPricing.gh : null;
+			return this.vPricing ? this.vPricing.cedis : null;
 		},
 
-		currentCountryPricing() {
-			let country = 'gb';
-			if (this.product == 'WaCommunicate') {
-				if (this.user && this.user.country) {
-					country = this.user.country.toLowerCase();
-				}
-			}
-			return this.vPricing ? this.vPricing[country] : null;
-		},
-
-		selectedStripePlan() {
-			return this.stripePricing && this.pack
-				? this.stripePricing[this.pack.payment_type]
-				: null;
-		},
-
-		selectedPayStackPlan() {
-			return this.payStackPricing && this.pack
-				? this.payStackPricing[this.pack.payment_type]
-				: null;
-		},
 
 		stripePrice() {
-			return this.selectedStripePlan || this.run_detail
+			return this.stripePricing || this.run_detail
 				? Intl.NumberFormat('en-US', {
 						style: 'currency',
 						currency: this.stripeCurrency,
@@ -240,21 +225,21 @@ export default {
 		},
 
 		stripeAmount() {
-			return this.selectedStripePlan
-				? this.selectedStripePlan.amount
+			return this.stripePricing
+				? this.stripePricing.amount
 				: this.run_detail
 				? this.run_detail.paid_amount['GBP']
 				: 0;
 		},
 
 		stripeCurrency() {
-			return this.selectedStripePlan
-				? this.selectedStripePlan.currency
+			return this.stripePricing
+				? this.stripePricing.currency
 				: 'GBP';
 		},
 
 		paystackPrice() {
-			return this.selectedStripePlan
+			return this.payStackPricing
 				? Intl.NumberFormat('en-US', {
 						style: 'currency',
 						currency: this.paystackCurrency,
@@ -263,16 +248,16 @@ export default {
 		},
 
 		paystackAmount() {
-			return this.selectedPayStackPlan
-				? this.selectedPayStackPlan.amount
+			return this.payStackPricing
+				? this.payStackPricing.amount
 				: this.run_detail
 				? this.run_detail.paid_amount['GHS']
 				: 0;
 		},
 
 		paystackCurrency() {
-			return this.selectedPayStackPlan
-				? this.selectedPayStackPlan.currency
+			return this.payStackPricing
+				? this.payStackPricing.currency
 				: this.run_detail
 				? 'GHS'
 				: null;
@@ -285,11 +270,15 @@ export default {
 			);
 		},
 
+		isSubscription(){
+			return !this.isAddon && !this.run_detail;
+		},
+
 		showMomo() {
 			return (
 				this.product !== 'WaInsight' &&
 				this.paystackAmount <= 500000 &&
-				(this.isAddon || this.run_detail)
+				(this.run_detail || this.pack.package_id ==1)
 			);
 		},
 

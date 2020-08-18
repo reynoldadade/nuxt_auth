@@ -411,14 +411,16 @@ export default {
 	methods: {
 		onCardFormSubmit() {
 			if (this.cardError == 1 || this.cardError != null) {
-      
-      this.$swal({
+				this.$swal({
 					toast: true,
 					position: 'top-end',
 					showConfirmButton: false,
 					timer: 3000,
 					icon: 'error',
-					text:  this.cardError == 1 ? 'Complete card information!' : this.cardError,
+					text:
+						this.cardError == 1
+							? 'Complete card information!'
+							: this.cardError,
 				});
 				return;
 			}
@@ -426,8 +428,8 @@ export default {
 			this.toggleLoading(true, false);
 
 			return this.isSubscription
-			  ? this.createStripeSubscription()
-			  : this.createStripePayment();
+				? this.createStripeSubscription()
+				: this.createStripePayment();
 		},
 
 		async createStripeSubscription() {
@@ -555,15 +557,14 @@ export default {
 			this.toggleLoading(true, true);
 			this.$swal({
 				title: 'Thank you',
-				text:
-					'Payment has been received, check your mail for confirmation!',
+				text: 'Payment has been received, check your mail for confirmation!',
 				icon: 'success',
 				// allowOutsideClick: false,
 				// allowEscapeKey: false,
 				showConfirmButton: false,
 				timer: 3000,
 				onClose: () => {
-					window.location.replace('/boards');
+					// window.location.replace('/boards');
 				},
 			});
 		},
@@ -612,26 +613,28 @@ export default {
 	@apply outline-none border border-gray-500 shadow-inner;
 }
 
-.swal2-toast.swal2-icon-error{
-  background-color: #9e3d3d!important;
-  border-width: .2em;
-  max-width: 380px;
+.swal2-toast.swal2-icon-error {
+	background-color: #9e3d3d !important;
+	border-width: 0.2em;
+	max-width: 380px;
 }
 
-.swal2-toast.swal2-icon-error>.swal2-content{
-  @apply text-white mx-2 capitalize text-sm text-left;
-  font-family:  'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.swal2-toast.swal2-icon-error > .swal2-content {
+	@apply text-white mx-2 capitalize text-sm text-left;
+	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+		'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+		'Helvetica Neue', sans-serif;
 }
 
-.swal2-icon.swal2-error{
-  border-color: #ffb9b9;
+.swal2-icon.swal2-error {
+	border-color: #ffb9b9;
 }
 
-.swal2-icon.swal2-error [class^="swal2-x-mark-line"]{
-  background-color: #ffb9b9;
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+	background-color: #ffb9b9;
 }
 
-.swal2-icon.swal2-error [class^="swal2-x-mark-line"]{
-  height: 0.13em;
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+	height: 0.13em;
 }
 </style>

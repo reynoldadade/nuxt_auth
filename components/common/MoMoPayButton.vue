@@ -5,7 +5,7 @@
     >
       <i class="fa fa-mobile mr-2"></i>Mobile Money
     </button>
-    <span class="text-sm text-gray-600">Pay {{currency}} {{amount/100}}</span>
+    <span class="text-sm text-gray-600">Pay {{price}}</span>
     <script src="https://js.paystack.co/v1/inline.js"></script>
   </form>
 </template>
@@ -45,6 +45,6 @@ export default {
       return { ...this.meta, user_id: this.user.id };
     }
   },
-  props: ["amount", "label", "currency", "meta", "plan", "verifyPayment"]
+  props: ["amount", "label", "currency", "meta", "plan", "verifyPayment", "price"]
 };
 </script>
