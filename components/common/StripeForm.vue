@@ -555,18 +555,7 @@ export default {
 
 		onCallStripeSuccess() {
 			this.toggleLoading(true, true);
-			this.$swal({
-				title: 'Thank you',
-				text: 'Payment has been received, check your mail for confirmation!',
-				icon: 'success',
-				// allowOutsideClick: false,
-				// allowEscapeKey: false,
-				showConfirmButton: false,
-				timer: 3000,
-				onClose: () => {
-					// window.location.replace('/boards');
-				},
-			});
+			this.onPaymentDone();
 		},
 	},
 
@@ -576,7 +565,7 @@ export default {
 		}),
 	},
 
-	props: ['price', 'amount', 'meta', 'isSubscription', 'toggleLoading'],
+	props: ['price', 'amount', 'meta', 'isSubscription', 'toggleLoading', 'onPaymentDone'],
 };
 </script>
 

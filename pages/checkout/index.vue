@@ -105,6 +105,7 @@
 					:isSubscription="isSubscription"
 					:meta="meta"
 					:toggleLoading="toggleLoading"
+					:onPaymentDone="onPaymentDone"
 				/>
 				<div class="w-full lg:pb-20" v-if="showMomo">
 					<div class="flex items-center justify-center my-10">
@@ -164,8 +165,8 @@ export default {
 			user: 'checkout/user',
 		}),
 
-		userCurrency(){
-			return this.user.country == "GH" ? "cedis" : "pounds";
+		userCurrency() {
+			return this.user.country == 'GH' ? 'cedis' : 'pounds';
 		},
 
 		label() {
@@ -200,10 +201,14 @@ export default {
 		product() {
 			return this.package_detail
 				? this.package_detail.product
-				: this.referrer;
+				: this.referrer == 'wapatron'
+				? 'WaPatron'
+				: 'WaArtisan';
 		},
 		vPricing() {
-			return this.package_detail ? this.package_detail.pricing[this.pack.payment_type] : null;
+			return this.package_detail
+				? this.package_detail.pricing[this.pack.payment_type]
+				: null;
 		},
 
 		stripePricing() {
@@ -213,7 +218,6 @@ export default {
 		payStackPricing() {
 			return this.vPricing ? this.vPricing.cedis : null;
 		},
-
 
 		stripePrice() {
 			return this.stripePricing || this.run_detail
@@ -233,9 +237,7 @@ export default {
 		},
 
 		stripeCurrency() {
-			return this.stripePricing
-				? this.stripePricing.currency
-				: 'GBP';
+			return this.stripePricing ? this.stripePricing.currency : 'GBP';
 		},
 
 		paystackPrice() {
@@ -270,15 +272,15 @@ export default {
 			);
 		},
 
-		isSubscription(){
-			return !this.isAddon && !this.run_detail;
+		isSubscription() {
+			return !this.isAddon && !this.product == 'WaPatron';
 		},
 
 		showMomo() {
 			return (
 				this.product !== 'WaInsight' &&
 				this.paystackAmount <= 500000 &&
-				(this.run_detail || this.pack.package_id ==1)
+				(this.run_detail || this.pack.package_id == 1)
 			);
 		},
 
@@ -293,7 +295,7 @@ export default {
 				: this.run_detail
 				? {
 						product: this.product,
-						run_token: this.run_id,
+						run_id: this.run_id,
 						payment_type: 'onetime',
 				  }
 				: null;
@@ -368,7 +370,7 @@ export default {
 						if (response && response.data) {
 							if (!response.data.error) {
 								this.isVerified = true;
-								//close window
+								this.onPaymentDone();
 							}
 							this.$swal({
 								toast: true,
@@ -400,16 +402,37 @@ export default {
 		toggleLoading(visibile, done) {
 			this.isVerifyingPayment = visibile;
 			this.isVerified = done;
-
-			if (visibile && done) {
-				//close window;
-			}
 		},
 
 		onPreError() {
 			this.preError = !this.user
 				? 'Authentication failed'
 				: 'Invalid transaction information';
+		},
+
+		onPaymentDone() {
+			this.$swal({
+				title: 'Thank you',
+				text:
+					'Payment has been received, check your mail for confirmation!',
+				icon: 'success',
+				showConfirmButton: false,
+				timer: 4000,
+				onClose: () => this.onSuccessClose(),
+			});
+		},
+
+		onSuccessClose() {
+			new Promise((res) => {
+				this.$cookies.removeAll();
+				res(true);
+			}).then((_) => {
+				if (window.top) {
+					window.top.postMessage({ status: 200 }, '*');
+				} else {
+					return this.$router.replace(`/checkout/success?refer=${this.referrer}`);
+				}
+			});
 		},
 	},
 };
