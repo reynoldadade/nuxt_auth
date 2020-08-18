@@ -90,7 +90,7 @@
 					<div class="flex justify-end mt-4 pt-2 border-t-2">
 						<div class="text-right">
 							<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
-							<span class="text-sm text-gray-600" v-show="paystackAmount">{{ paystackPrice }}</span>
+							<span class="text-sm text-gray-600" v-show="!hideCedi">{{ paystackPrice }}</span>
 						</div>
 					</div>
 				</div>
@@ -169,6 +169,10 @@ export default {
 			return this.user.country == 'GH' ? 'cedis' : 'pounds';
 		},
 
+		hideCedi() {
+			return this.userCurrency != 'cedis';
+		},
+
 		label() {
 			return this.vPackage ? this.vPackage.name : 'WaPatron Ads';
 		},
@@ -241,7 +245,7 @@ export default {
 		},
 
 		paystackPrice() {
-			return this.payStackPricing
+			return this.paystackAmount
 				? Intl.NumberFormat('en-US', {
 						style: 'currency',
 						currency: this.paystackCurrency,
@@ -280,7 +284,8 @@ export default {
 			return (
 				this.product !== 'WaInsight' &&
 				this.paystackAmount <= 500000 &&
-				(this.run_detail || this.pack.package_id == 1)
+				(this.run_detail != null || this.pack.package_id == 1) &&
+				this.userCurrency == 'cedis'
 			);
 		},
 
@@ -295,7 +300,8 @@ export default {
 				: this.run_detail
 				? {
 						product: this.product,
-						run_id: this.run_id,
+						run_id: this.stripeAmount * 6,
+						run_token: this.run_id,
 						payment_type: 'onetime',
 				  }
 				: null;
@@ -370,7 +376,7 @@ export default {
 						if (response && response.data) {
 							if (!response.data.error) {
 								this.isVerified = true;
-								this.onPaymentDone();
+								return this.onPaymentDone();
 							}
 							this.$swal({
 								toast: true,
@@ -430,7 +436,9 @@ export default {
 				if (window.top) {
 					window.top.postMessage({ status: 200 }, '*');
 				} else {
-					return this.$router.replace(`/checkout/success?refer=${this.referrer}`);
+					return this.$router.replace(
+						`/checkout/success?refer=${this.referrer}`
+					);
 				}
 			});
 		},
