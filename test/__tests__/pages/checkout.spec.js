@@ -1,7 +1,7 @@
 import { createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 
-import Checkout from '@/pages/checkout.vue';
+import Checkout from '@/pages/checkout/index.vue';
 import * as checkout from '@/store/checkout.js';
 import FactoryCreator from '../../__factory__';
 import { FakeUser, FakePackage } from '../../__faker__';

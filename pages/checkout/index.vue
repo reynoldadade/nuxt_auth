@@ -88,21 +88,24 @@
 						<h3 class="text-xl text-gray-700">{{ stripePrice }}</h3>
 					</div>
 					<div class="flex justify-end mt-4 pt-2 border-t-2">
-						<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
+						<div class="text-right">
+							<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
+							<span class="text-sm text-gray-600" v-show="!hideCedi">{{ paystackPrice }}</span>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div
 				class="w-full bg-white relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto justify-center items-center p-10 xl:p-16"
 			>
-			
-			<br>
+				<br />
 				<StripeForm
 					:amount="stripeAmount"
 					:price="stripePrice"
-					:isSubscription="!isAddon"
+					:isSubscription="isSubscription"
 					:meta="meta"
 					:toggleLoading="toggleLoading"
+					:onPaymentDone="onPaymentDone"
 				/>
 				<div class="w-full lg:pb-20" v-if="showMomo">
 					<div class="flex items-center justify-center my-10">
@@ -111,12 +114,12 @@
 						<div style="height:2px" class="w-32 bg-gray-300"></div>
 					</div>
 					<MoMoPayButton
-						:plan="paystackPlanCode"
 						:amount="paystackAmount"
 						:label="label"
 						:currency="paystackCurrency"
 						:meta="meta"
 						:verifyPayment="verifyPayment"
+						:price="paystackPrice"
 					/>
 				</div>
 			</div>
@@ -133,7 +136,7 @@ export default {
 	components: {
 		Loader: () => import('~/components/common/Loader.vue'),
 		StripeForm: () => import('~/components/common/StripeForm.vue'),
-		MoMoPayButton: ()=>import('~/components/common/MoMoPayButton.vue'),
+		MoMoPayButton: () => import('~/components/common/MoMoPayButton.vue'),
 	},
 
 	middleware: ['getAuthUser'],
@@ -161,6 +164,15 @@ export default {
 		...mapGetters({
 			user: 'checkout/user',
 		}),
+
+		userCurrency() {
+			return this.user.country == 'GH' ? 'cedis' : 'pounds';
+		},
+
+		hideCedi() {
+			return this.userCurrency != 'cedis';
+		},
+
 		label() {
 			return this.vPackage ? this.vPackage.name : 'WaPatron Ads';
 		},
@@ -193,44 +205,26 @@ export default {
 		product() {
 			return this.package_detail
 				? this.package_detail.product
-				: this.referrer;
+				: this.referrer == 'wapatron'
+				? 'WaPatron'
+				: 'WaArtisan';
 		},
 		vPricing() {
-			return this.package_detail ? this.package_detail.pricing : null;
+			return this.package_detail
+				? this.package_detail.pricing[this.pack.payment_type]
+				: null;
 		},
 
 		stripePricing() {
-			return this.vPricing ? this.vPricing.gb : null;
+			return this.vPricing ? this.vPricing.pounds : null;
 		},
 
 		payStackPricing() {
-			return this.vPricing ? this.vPricing.gh : null;
-		},
-
-		currentCountryPricing() {
-			let country = 'gb';
-			if (this.product == 'WaCommunicate') {
-				if (this.user && this.user.country) {
-					country = this.user.country.toLowerCase();
-				}
-			}
-			return this.vPricing ? this.vPricing[country] : null;
-		},
-
-		selectedStripePlan() {
-			return this.stripePricing && this.pack
-				? this.stripePricing[this.pack.payment_type]
-				: null;
-		},
-
-		selectedPayStackPlan() {
-			return this.payStackPricing && this.pack
-				? this.payStackPricing[this.pack.payment_type]
-				: null;
+			return this.vPricing ? this.vPricing.cedis : null;
 		},
 
 		stripePrice() {
-			return this.selectedStripePlan || this.run_detail
+			return this.stripePricing || this.run_detail
 				? Intl.NumberFormat('en-US', {
 						style: 'currency',
 						currency: this.stripeCurrency,
@@ -239,21 +233,19 @@ export default {
 		},
 
 		stripeAmount() {
-			return this.selectedStripePlan
-				? this.selectedStripePlan.amount
+			return this.stripePricing
+				? this.stripePricing.amount
 				: this.run_detail
 				? this.run_detail.paid_amount['GBP']
 				: 0;
 		},
 
 		stripeCurrency() {
-			return this.selectedStripePlan
-				? this.selectedStripePlan.currency
-				: 'GBP';
+			return this.stripePricing ? this.stripePricing.currency : 'GBP';
 		},
 
 		paystackPrice() {
-			return this.selectedStripePlan
+			return this.paystackAmount
 				? Intl.NumberFormat('en-US', {
 						style: 'currency',
 						currency: this.paystackCurrency,
@@ -262,16 +254,16 @@ export default {
 		},
 
 		paystackAmount() {
-			return this.selectedPayStackPlan
-				? this.selectedPayStackPlan.amount
+			return this.payStackPricing
+				? this.payStackPricing.amount
 				: this.run_detail
 				? this.run_detail.paid_amount['GHS']
 				: 0;
 		},
 
 		paystackCurrency() {
-			return this.selectedPayStackPlan
-				? this.selectedPayStackPlan.currency
+			return this.payStackPricing
+				? this.payStackPricing.currency
 				: this.run_detail
 				? 'GHS'
 				: null;
@@ -284,11 +276,16 @@ export default {
 			);
 		},
 
+		isSubscription() {
+			return !this.isAddon && !this.product == 'WaPatron';
+		},
+
 		showMomo() {
 			return (
 				this.product !== 'WaInsight' &&
 				this.paystackAmount <= 500000 &&
-				(this.isAddon || this.run_detail)
+				(this.run_detail != null || this.pack.package_id == 1) &&
+				this.userCurrency == 'cedis'
 			);
 		},
 
@@ -303,23 +300,11 @@ export default {
 				: this.run_detail
 				? {
 						product: this.product,
+						run_id: this.stripeAmount * 6,
 						run_token: this.run_id,
 						payment_type: 'onetime',
 				  }
 				: null;
-		},
-
-		stripePlanCode() {
-			if (this.selectedStripePlan) {
-				return process.env.APP_ENV == 'local'
-					? this.selectedStripePlan.stripe_plan_code.test
-					: this.selectedStripePlan.stripe_plan_code.live;
-			}
-			return null;
-		},
-
-		paystackPlanCode() {
-			return null;
 		},
 	},
 
@@ -391,7 +376,7 @@ export default {
 						if (response && response.data) {
 							if (!response.data.error) {
 								this.isVerified = true;
-								//close window
+								return this.onPaymentDone();
 							}
 							this.$swal({
 								toast: true,
@@ -423,16 +408,39 @@ export default {
 		toggleLoading(visibile, done) {
 			this.isVerifyingPayment = visibile;
 			this.isVerified = done;
-
-			if (visibile && done) {
-				//close window;
-			}
 		},
 
 		onPreError() {
 			this.preError = !this.user
 				? 'Authentication failed'
 				: 'Invalid transaction information';
+		},
+
+		onPaymentDone() {
+			this.$swal({
+				title: 'Thank you',
+				text:
+					'Payment has been received, check your mail for confirmation!',
+				icon: 'success',
+				showConfirmButton: false,
+				timer: 4000,
+				onClose: () => this.onSuccessClose(),
+			});
+		},
+
+		onSuccessClose() {
+			new Promise((res) => {
+				this.$cookies.removeAll();
+				res(true);
+			}).then((_) => {
+				if (window.top) {
+					window.top.postMessage({ status: 200 }, '*');
+				} else {
+					return this.$router.replace(
+						`/checkout/success?refer=${this.referrer}`
+					);
+				}
+			});
 		},
 	},
 };
