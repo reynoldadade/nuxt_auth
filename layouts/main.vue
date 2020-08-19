@@ -1,7 +1,7 @@
 <template>
 	<div>
+		<Navbar />
 		<nuxt />
-
 		<client-only>
 			<notifications group="foo" />
 		</client-only>
@@ -11,19 +11,16 @@
 <script>
 import Vue from 'vue';
 import global from '~/mixins/global.js';
+import Navbar from '@/components/common/Navbar';
 Vue.mixin(global);
 export default {
-	// middleware: ['checkLogin'],
+	middleware: ['profile'],
+	components: {
+		Navbar,
+	},
 
 	head() {
 		return {
-			script: [
-				{
-					src:
-						'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
-					body: true,
-				},
-			],
 			link: [
 				{
 					href:
@@ -31,7 +28,7 @@ export default {
 					rel: 'stylesheet',
 				},
 				{
-					href: '/css/styles.css',
+					href:'/css/styles.css',
 					rel: 'stylesheet',
 				},
 			],
@@ -39,4 +36,5 @@ export default {
 	},
 };
 </script>
+
 <style></style>

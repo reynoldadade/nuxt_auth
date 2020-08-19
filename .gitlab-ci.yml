@@ -12,29 +12,16 @@ variables:
   SERVER:  "deployer@ec2-54-187-240-36.us-west-2.compute.amazonaws.com"
 
 stages:
-  - build
   - stage
   - prod
-
-
-build site:
-  stage: build
-  script:
-    - git checkout develop
-    - npm install --progress=false
-    - npm run generate
-  artifacts:
-    expire_in: 10 mins
-    paths:
-      - dist
-  when: always
-  only:
-    - develop
-
 
 deploy_staging:
   stage: stage
   script:
+    - git checkout develop
+    - npm install --progress=false
+    - npm test
+    - npm run generate
     - echo "sync app to server..."
     - rsync -rav --delete dist/ $SERVER:/var/www/staging/dist
     - echo "sync done....ssh to server and run script."
