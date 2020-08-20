@@ -8,7 +8,6 @@ export default function({ route, app }) {
   //Get token from route query
   const { token } = route.query;
 
-  console.log(token);
   if (token) {
     new Promise(res => {
       app.$cookies.remove("s_token");
