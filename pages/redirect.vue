@@ -36,7 +36,7 @@ export default {
 			return this.$router.push(loginUrl);
 		}
 
-		const access_token = this.$cookies.get('token');
+		const access_token = this.$cookies.get('s_token');
 		if (access_token) {
 			/**
 			 *  Redirect base on @redirct_url or @host
