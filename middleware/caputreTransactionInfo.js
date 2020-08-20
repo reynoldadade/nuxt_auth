@@ -9,6 +9,7 @@ export default function({ app, route }) {
 				path: '/',
 				maxAge: 3600,
 				sameSite: 'none',
+				secure:true
 			}
 		);
 	}
@@ -27,6 +28,7 @@ function saveReferrer($cookies, referrer) {
 			path: '/',
 			maxAge: 3600,
 			sameSite: 'none',
+			secure:true
 		});
 	}
 }
@@ -37,6 +39,7 @@ function saveRun($cookies, run_id) {
 			path: '/',
 			maxAge: 3600,
 			sameSite: 'none',
+			secure:true
 		});
 	}
 }
