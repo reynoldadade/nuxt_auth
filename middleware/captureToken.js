@@ -15,6 +15,7 @@ export default function({ route, app }) {
       app.$cookies.set("s_token", token, {
         path: "/",
         maxAge: 3600,
+        sameSite="none"
       });
       res(true);
     }).then(_ => {
