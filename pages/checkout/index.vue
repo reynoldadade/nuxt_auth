@@ -433,7 +433,7 @@ export default {
 				this.$cookies.removeAll();
 				res(true);
 			}).then((_) => {
-				if (window.top) {
+				if (!this.referrer && window.top) {
 					window.top.postMessage({ status: 200 }, '*');
 				} else {
 					return this.$router.replace(
