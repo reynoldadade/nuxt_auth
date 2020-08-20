@@ -17,7 +17,7 @@ export default {
 		url() {
             const {refer} = this.$route.query;
             let url = process.env.WALULEL_LINK;
-			switch (this.refer) {
+			switch (refer) {
 				case 'wapatron':
 					return url = process.env.WAPATRON_LINK;
 				case 'wacommunicate':

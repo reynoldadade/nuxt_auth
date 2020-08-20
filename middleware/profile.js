@@ -17,7 +17,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 		url: '/user/profile',
 		method: 'get',
 		headers: {
-			Authorization: `Bearer ${app.$cookies.get('token')}`,
+			Authorization: `Bearer ${app.$cookies.get('s_token')}`,
 		},
 	}).then(
 		({ data }) => {
