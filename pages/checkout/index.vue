@@ -7,16 +7,25 @@
 			style="background-color:rgba(255,255,255,0.8);z-index:100"
 			class="w-full h-full absolute top-0 left-0 right-0 bottom-0"
 		/>
-		<div v-if="preError" class="flex w-full h-full items-center justify-center">
+		<div
+			v-if="preError"
+			class="flex w-full h-full items-center justify-center"
+		>
 			<div class="rounded border bg-gray-100 p-8 text-center">
 				<h3 class="text-2xl">Something went wrong...</h3>
-				<p
-					class="text-gray-700 text-sm mb-1"
-				>Sorry we cannot process your request at this time, try again later.</p>
-				<code class="text-xs bg-red-200 p-1 rounded">{{ preError }}</code>
+				<p class="text-gray-700 text-sm mb-1">
+					Sorry we cannot process your request at this time, try again
+					later.
+				</p>
+				<code class="text-xs bg-red-200 p-1 rounded">{{
+					preError
+				}}</code>
 			</div>
 		</div>
-		<section class="w-full h-full flex flex-wrap relative lg:overflow-hidden" v-if="appReady">
+		<section
+			class="w-full h-full flex flex-wrap relative lg:overflow-hidden"
+			v-if="appReady"
+		>
 			<div
 				class="w-full lg:border-r lg:bg-gray-100 xl:w-2/3 lg:w-7/12 lg:h-full flex flex-col p-10 lg:p-16"
 			>
@@ -24,7 +33,10 @@
 					<h2 class="text-2xl mb-1 uppercase">Checkout</h2>
 					<div class="bg-gray-400 w-32" style="height:3px"></div>
 					<!-- WAPATRON -->
-					<div class="mt-10 flex flex-wrap xl:w-10/12" v-if="run_detail">
+					<div
+						class="mt-10 flex flex-wrap xl:w-10/12"
+						v-if="run_detail"
+					>
 						<img
 							v-if="run_detail.offer.banner"
 							:src="run_detail.offer.banner"
@@ -32,14 +44,22 @@
 							class="rounded w-full lg:w-64"
 						/>
 						<div class="p-5 flex-1">
-							<h3 class="text-2xl text-black">{{run_detail.offer.title}}</h3>
-							<p class="text-gray-700 mt-1 mb-4">{{run_detail.offer.description}}</p>
+							<h3 class="text-2xl text-black">
+								{{ run_detail.offer.title }}
+							</h3>
+							<p class="text-gray-700 mt-1 mb-4">
+								{{ run_detail.offer.description }}
+							</p>
 							<span
 								title="Promo Code"
 								v-if="run_detail.offer.promo_code"
 								class="py-1 px-2 rounded text-gray-600 bg-gray-200 font-bold border-2"
-							>{{run_detail.offer.promo_code}}</span>
-							<div class="bg-gray-400 my-5" style="height:1px"></div>
+								>{{ run_detail.offer.promo_code }}</span
+							>
+							<div
+								class="bg-gray-400 my-5"
+								style="height:1px"
+							></div>
 						</div>
 					</div>
 					<!-- END OF WAPATRON -->
@@ -48,7 +68,9 @@
 					<div v-if="vPackage" class="mt-10 flex">
 						<div class="flex-1">
 							<h3 class="text-xl">{{ vPackage.name }}</h3>
-							<span class="text-xs italic text-gray-600">Features</span>
+							<span class="text-xs italic text-gray-600"
+								>Features</span
+							>
 							<ul class="block mt-2">
 								<li
 									v-for="(feature, key) in vFeatures"
@@ -57,15 +79,21 @@
 									style="padding-bottom:8px"
 								>
 									<div class="text-gray-600 capitalize">
-										<span class="font-bold">{{ feature }}</span>
-										{{ key.replace("_", " ") }}
+										<span class="font-bold">{{
+											feature
+										}}</span>
+										{{ key.replace('_', ' ') }}
 									</div>
 								</li>
 							</ul>
 							<span>Valid for {{ vPackage.valid_period }}</span>
 						</div>
-						<div class="lg:px-16 flex items-start font-bold text-xl">
-							<span class="text-gray-700 mr-2">x{{ quantity }}</span>
+						<div
+							class="lg:px-16 flex items-start font-bold text-xl"
+						>
+							<span class="text-gray-700 mr-2"
+								>x{{ quantity }}</span
+							>
 							<select
 								v-if="isAddon"
 								name="quantity"
@@ -89,8 +117,14 @@
 					</div>
 					<div class="flex justify-end mt-4 pt-2 border-t-2">
 						<div class="text-right">
-							<h3 class="text-2xl font-bold">{{ stripePrice }}</h3>
-							<span class="text-sm text-gray-600" v-show="!hideCedi">{{ paystackPrice }}</span>
+							<h3 class="text-2xl font-bold">
+								{{ stripePrice }}
+							</h3>
+							<span
+								class="text-sm text-gray-600"
+								v-show="!hideCedi"
+								>{{ paystackPrice }}</span
+							>
 						</div>
 					</div>
 				</div>
@@ -98,7 +132,6 @@
 			<div
 				class="w-full bg-white relative lg:w-5/12 xl:w-1/3 lg:h-full lg:overflow-y-auto justify-center items-center p-10 xl:p-16"
 			>
-				<br />
 				<StripeForm
 					:amount="stripeAmount"
 					:price="stripePrice"
@@ -327,17 +360,17 @@ export default {
 						`${process.env.API_ENDPOINT}/checkout/packages/${this.pack.package_id}`
 					)
 					.then(
-						(response) => {
+						response => {
 							if (response && response.data) {
 								this.package_detail = response.data;
 							}
 						},
-						(error) => {
+						error => {
 							console.log(error);
 							this.onPreError();
 						}
 					)
-					.finally((_) => (this.loading = false));
+					.finally(_ => (this.loading = false));
 			} else {
 				this.onPreError();
 			}
@@ -350,14 +383,14 @@ export default {
 						`${process.env.WA_PATRON_API}/published-offers?token=${this.run_id}`
 					)
 					.then(
-						(response) => {
+						response => {
 							if (response && response.data) {
 								this.run_detail = response.data;
 								return;
 							}
 							this.onPreError();
 						},
-						(error) => {
+						error => {
 							console.log({ error });
 							this.onPreError();
 						}
@@ -372,7 +405,7 @@ export default {
 					`${process.env.API_ENDPOINT}/checkout/verify?reference=${reference}`
 				)
 				.then(
-					(response) => {
+					response => {
 						if (response && response.data) {
 							if (!response.data.error) {
 								this.isVerified = true;
@@ -389,7 +422,7 @@ export default {
 							return;
 						}
 					},
-					(error) => {
+					error => {
 						console.log(error);
 
 						this.$swal({
@@ -402,7 +435,7 @@ export default {
 						});
 					}
 				)
-				.finally((_) => (this.isVerifyingPayment = false));
+				.finally(_ => (this.isVerifyingPayment = false));
 		},
 
 		toggleLoading(visibile, done) {
@@ -429,10 +462,10 @@ export default {
 		},
 
 		onSuccessClose() {
-			new Promise((res) => {
+			new Promise(res => {
 				this.$cookies.removeAll();
 				res(true);
-			}).then((_) => {
+			}).then(_ => {
 				if (window.top) {
 					window.top.postMessage({ status: 200 }, '*');
 				} else {
