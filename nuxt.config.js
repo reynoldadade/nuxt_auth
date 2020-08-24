@@ -24,6 +24,7 @@ export default {
 					'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
 				body: true,
 			},
+			{ src: '/scripts/mixpanel.js' },
 		],
 	},
 	/*
