@@ -4,7 +4,7 @@ let defaultHeaders = {
 };
 
 export default function({ $axios, redirect, $cookies }) {
-	const token = $cookies.get('token');
+	const token = $cookies.get('s_token');
 
 	$axios.onRequest(({ headers }) => {
 		if (token) {
@@ -31,6 +31,4 @@ export default function({ $axios, redirect, $cookies }) {
 		}
 	});
 
-	// $axios.setBaseURL(process.env.API_ENDPOINT);
-	// $axios.setBaseURL('http://bf9b3997d389.ngrok.io/');
 }

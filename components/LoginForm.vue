@@ -84,7 +84,7 @@ export default {
 				.then(({ data }) => {
 					this.loading = false;
 					// console.log(data);
-					this.$cookies.set('token', data.access_token, {
+					this.$cookies.set('s_token', data.access_token, {
 						path: '/',
 						sameSite: true,
 						maxAge: 60 * 60 * 24 * 7,

@@ -1,10 +1,10 @@
 export default {
-	mode: 'universal',
+	mode: 'spa',
 	/*
 	 ** Headers of the page
 	 */
 	head: {
-		title: process.env.npm_package_name || '',
+		title: 'Walulel Company Limited',
 		meta: [
 			{ charset: 'utf-8' },
 			{
@@ -18,14 +18,13 @@ export default {
 			},
 		],
 		link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
-		script: [
-			{
-				src:
-					'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
-				body: true,
-			},
-			{ src: '/scripts/mixpanel.js' },
-		],
+		// script: [
+		// 	{
+		// 		src:
+		// 			'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+		// 		body: true,
+		// 	},
+		// ],
 	},
 	/*
 	 ** Customize the progress-bar color
@@ -34,10 +33,7 @@ export default {
 	/*
 	 ** Global CSS
 	 */
-	css: [
-		'~/assets/css/styles.css',
-		'~/node_modules/@fortawesome/fontawesome-free/css/all.css',
-	],
+	css: ['~/node_modules/@fortawesome/fontawesome-free/css/all.css'],
 	/*
 	 ** Plugins to load before mounting the App
 	 */
@@ -64,6 +60,7 @@ export default {
 		// Doc: https://github.com/nuxt-community/dotenv-module
 		'@nuxtjs/dotenv',
 		'cookie-universal-nuxt',
+		'vue-sweetalert2/nuxt',
 	],
 	/*
 	 ** Axios module configuration
@@ -87,10 +84,5 @@ export default {
 	 ** Environment Variables
 	 */
 
-	env: {
-		API_ENDPOINT: process.env.API_ENDPOINT,
-		API_ENDPOINT: process.env.API_ENDPOINT,
-		WACOMM_LINK: process.env.WACOMM_LINK,
-		WAINSIGHT_LINK: process.env.WAINSIGHT_LINK,
-	},
+	env: {},
 };

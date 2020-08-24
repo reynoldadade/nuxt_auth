@@ -18,6 +18,22 @@ export default {
 	components: {
 		Navbar,
 	},
+
+	head() {
+		return {
+			link: [
+				{
+					href:
+						'https://fonts.googleapis.com/css?family=Karla:400,700&display=swap',
+					rel: 'stylesheet',
+				},
+				{
+					href:'/css/styles.css',
+					rel: 'stylesheet',
+				},
+			],
+		};
+	},
 };
 </script>
 

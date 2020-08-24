@@ -61,7 +61,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.token = this.$cookies.get('token');
+		this.token = this.$cookies.get('s_token');
 
 		this.wacommURL = process.env.WACOMM_LINK + '/?token=' + this.token;
 		this.wainsightURL =
