@@ -58,7 +58,7 @@ export default {
 	},
 	methods: {
 		logout() {
-			this.$cookies.remove('token');
+			this.$cookies.remove('s_token');
 			this.$cookies.remove('auth-profile');
 			this.$router.push('/');
 		},
