@@ -73,6 +73,7 @@ export default {
 		}),
 
 		async login() {
+			const { redirect_url, expect_token } = this.$route.query;
 			this.error = false;
 			this.loading = true;
 			this.$axios
@@ -95,10 +96,11 @@ export default {
 
 					mixpanel.identify(data.user.name);
 
+					if (redirect_url) {
+						const outURL = `http://${redirect_url}?token=${data.access_token}`;
+						return window.location.replace(outURL);
+					}
 					this.$router.push('/profile');
-					// window.location(
-					// 	`https://staging.walulel.com/products?token=${data.access_token}`
-					// );
 				})
 				.catch(({ message, response }) => {
 					this.loading = false;
