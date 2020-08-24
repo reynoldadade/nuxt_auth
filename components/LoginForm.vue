@@ -96,6 +96,9 @@ export default {
 					mixpanel.identify(data.user.name);
 
 					this.$router.push('/profile');
+					// window.location(
+					// 	`https://staging.walulel.com/products?token=${data.access_token}`
+					// );
 				})
 				.catch(({ message, response }) => {
 					this.loading = false;
