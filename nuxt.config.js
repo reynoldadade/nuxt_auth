@@ -18,13 +18,7 @@ export default {
 			},
 		],
 		link: [{ rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
-		// script: [
-		// 	{
-		// 		src:
-		// 			'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
-		// 		body: true,
-		// 	},
-		// ],
+		script: [{ src: '/js/mixpanel.js' }],
 	},
 	/*
 	 ** Customize the progress-bar color

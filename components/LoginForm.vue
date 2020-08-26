@@ -89,6 +89,13 @@ export default {
 						sameSite: true,
 						maxAge: 60 * 60 * 24 * 7,
 					});
+					mixpanel.track('User Logged', {
+						User: data.user.name,
+						'Login time': new Date().toLocaleString(),
+					});
+
+					mixpanel.identify(data.user.name);
+
 					if (redirect_url) {
 						const outURL = `http://${redirect_url}?token=${data.access_token}`;
 						return window.location.replace(outURL);
