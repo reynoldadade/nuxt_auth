@@ -88,6 +88,7 @@ export default {
 						path: '/',
 						sameSite: true,
 						maxAge: 60 * 60 * 24 * 7,
+						// secure: true,
 					});
 					mixpanel.track('User Logged', {
 						User: data.user.name,
