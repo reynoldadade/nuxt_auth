@@ -479,6 +479,7 @@ export default {
 			return this.$axios
 				.$post('/checkout/stripe/intent', {
 					...this.meta,
+					user_id: this.user.id
 				})
 				.catch((error) => {
 					console.log(error);
