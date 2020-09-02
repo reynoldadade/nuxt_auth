@@ -2,7 +2,7 @@
 	<div class="h-screen bg-gray-200">
 		<div class="grid grid-cols-3 gap-4  mx-40">
 			<ProfileCard :profile="profile" />
-			<div class="my-2  md:col-span-2 col-span-3">
+			<div class="my-2  md:col-span-2 col-span-3 mx-10">
 				<p class="uppercase text-gray-500 font-bold">Your plans</p>
 				<PlansComponent
 					v-for="(sub, index) in profile.subscriptions"
