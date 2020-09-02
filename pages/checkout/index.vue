@@ -465,13 +465,8 @@ export default {
 			new Promise(res => {
 				this.$cookies.removeAll();
 				res(true);
-<<<<<<< HEAD
-			}).then(_ => {
-				if (window.top) {
-=======
 			}).then((_) => {
 				if ((!this.referrer || this.referrer != "wainsight" )  && window.top) {
->>>>>>> 0fba8dab04d8ba8511645cdd31186ace30016431
 					window.top.postMessage({ status: 200 }, '*');
 				} else {
 					return this.$router.replace(
