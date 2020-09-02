@@ -27,7 +27,7 @@ export default {
 			: '/';
 
 		if (logout) {
-			this.$cookies.remove('s_token');
+			this.$cookies.removeAll();
 			window.localStorage.clear();
 			return this.$router.push('/');
 		}
