@@ -86,7 +86,7 @@ export default {
 					// console.log(data);
 					this.$cookies.set('s_token', data.access_token, {
 						path: '/',
-						sameSite: true,
+
 						maxAge: 60 * 60 * 24 * 7,
 						// secure: true,
 					});

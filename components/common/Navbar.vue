@@ -58,9 +58,8 @@ export default {
 	},
 	methods: {
 		logout() {
-			this.$cookies.remove('s_token');
-			this.$cookies.remove('auth-profile');
-			this.$router.push('/');
+			this.$cookies.removeAll();
+			window.location.replace('/');
 		},
 	},
 };
