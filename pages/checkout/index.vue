@@ -466,7 +466,7 @@ export default {
 				this.$cookies.removeAll();
 				res(true);
 			}).then((_) => {
-				if ((!this.referrer || this.referrer != "wainsight" )  && window.top) {
+				if (this.referrer != "wainsight" && window.top) {
 					window.top.postMessage({ status: 200 }, '*');
 				} else {
 					return this.$router.replace(
