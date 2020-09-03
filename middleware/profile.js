@@ -80,6 +80,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 		},
 		error => {
 			console.log(error);
+			app.$cookies.remove('s_token');
 			// const redirectAuthURL = `${env.LOGIN_URL}?redirect_url=${env.APP_URL}${route.path}&expect_token=true&refresh_token=true`;
 			return redirect('/');
 		}
