@@ -277,7 +277,7 @@ export default {
 		},
 
 		isSubscription() {
-			return !this.isAddon && !this.product == 'WaPatron';
+			return !this.isAddon && this.product != 'WaPatron';
 		},
 
 		showMomo() {
