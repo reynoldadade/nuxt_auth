@@ -398,9 +398,10 @@ export default {
 			...this.formData,
 			name: this.user.name,
 			email: this.user.email,
-			phone: this.user.phone_number
-				? this.user.phone_number.replace('0', '+233')
-				: this.user.phone_number,
+			phone:
+				this.user.phone_number && this.user.country == 'GH'
+					? this.user.phone_number.replace(/^0/, '+233')
+					: this.user.phone_number,
 			address: {
 				...this.formData.address,
 				country: this.user.country,
@@ -471,6 +472,7 @@ export default {
 						billing_details: this.formData,
 					},
 				});
+				
 				return this.processPayment(paymentIntent, error);
 			}
 		},
@@ -479,7 +481,7 @@ export default {
 			return this.$axios
 				.$post('/checkout/stripe/intent', {
 					...this.meta,
-					user_id: this.user.id
+					user_id: this.user.id,
 				})
 				.catch((error) => {
 					console.log(error);
@@ -566,7 +568,30 @@ export default {
 		}),
 	},
 
-	props: ['price', 'amount', 'meta', 'isSubscription', 'toggleLoading', 'onPaymentDone'],
+	props: {
+		price: {
+			type: String,
+		},
+
+		amount: {
+			type: Number,
+			required: true,
+		},
+		meta: {
+			type: Object,
+		},
+
+		isSubscription: {
+			type: Boolean,
+		},
+		toggleLoading: {
+			type: Function,
+		},
+		onPaymentDone: {
+			type: Function,
+			required: true,
+		},
+	},
 };
 </script>
 
