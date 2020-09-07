@@ -113,6 +113,9 @@
 					>
 						Please fill out this field.
 					</p>
+					<p class="text-red-500 text-xs italic" v-if="error">
+						{{ errorMessages.phone_number }}
+					</p>
 				</div>
 			</div>
 			<div class="-mx-3 md:flex mb-6">
@@ -166,7 +169,7 @@
 						class="text-red-500 text-xs italic"
 						v-if="$v.form.password_confirmation.$error"
 					>
-						Same kind of long and crazy
+						Password is not the same
 					</p>
 					<p class="text-red-500 text-xs italic" v-if="error">
 						{{ errorMessages.password }}
@@ -274,6 +277,7 @@ export default {
 				email: '',
 				password: '',
 				username: '',
+				phone_number: '',
 			},
 			form: {
 				name: '',
@@ -323,6 +327,13 @@ export default {
 	methods: {
 		async register() {
 			this.loading = true;
+			this.error = false;
+			this.errorMessages = {
+				email: '',
+				password: '',
+				username: '',
+				phone_number: '',
+			};
 			//format form
 			this.form.phone_number = this.form.phone_number.replace(/\s+/g, '');
 			const response = await this.$axios
@@ -331,7 +342,6 @@ export default {
 					this.error = true;
 					this.registrationError = 'Your form has a few problems';
 					if (response.status === 422) {
-						this.registrationError = 'Your form has a few problems';
 						const errors = Object.keys(response.data.errors);
 						errors.map(
 							item =>
@@ -352,6 +362,14 @@ export default {
 						'Your registration was successful, check your inbox for a verification mail',
 					type: 'success',
 				});
+
+				this.notify({
+					title: 'Redirecting',
+					text: 'Redirecting to homepage in 5s',
+					type: 'info',
+				});
+
+				setTimeout(() => window.location.replace('/'), 5000);
 			}
 		},
 	},

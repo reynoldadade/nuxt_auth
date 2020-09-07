@@ -12,7 +12,7 @@
 			></span>
 		</div>
 
-		<div class="pt-6 pb-8 text-gray-600">
+		<div class="pt-6 pb-8 text-gray-600 w-full">
 			<p>
 				<i class="far fa-user"></i> {{ profile.name }} ({{
 					profile.username
@@ -21,9 +21,7 @@
 			<p class="text-sm font-bold">
 				<i class="far fa-envelope"></i> {{ profile.email }}
 			</p>
-			<p class="text-lg font-semibold text-blue-300">
-				{{ profile.phone_number }}
-			</p>
+
 			<p class="text-sm font-semibold">
 				<i class="fas fa-globe-europe"></i> {{ profile.country }}
 			</p>
