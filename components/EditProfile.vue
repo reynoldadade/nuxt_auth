@@ -237,6 +237,10 @@ export default {
 	methods: {
 		async editProfile() {
 			const token = this.$cookies.get('s_token');
+			if (!token) {
+				const { routeToken } = this.$route.query;
+				token = routeToken;
+			}
 			this.loading = true;
 			axios({
 				url: process.env.API_ENDPOINT + '/user/profile',
@@ -247,7 +251,6 @@ export default {
 				params: this.form,
 			})
 				.then(({ data }) => {
-					console.log(data);
 					this.loading = false;
 					this.notify({
 						text: 'Profile Successfully Updated',

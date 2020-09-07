@@ -101,7 +101,11 @@ export default {
 						const outURL = `http://${redirect_url}?token=${data.access_token}`;
 						return window.location.replace(outURL);
 					}
-					this.$router.push('/profile');
+					window.location.replace(
+						process.env.WALULEL_LINK +
+							'/products?token=' +
+							data.access_token
+					);
 				})
 				.catch(({ message, response }) => {
 					this.loading = false;
