@@ -5,8 +5,11 @@ export default ({ app, env, route, redirect }) => {
 		const token = app.$cookies.get('s_token');
 		if (token) {
 			if (route.path !== '/profile')
+				// return window.location.replace(
+				// 	env.WALULEL_LINK + '/products?token=' + token
+				// );
 				return window.location.replace(
-					env.WALULEL_LINK + '/products?token=' + token
+					'http://localhost:3001/products/?token=' + token
 				);
 		} else {
 			if (route.path !== '/') {
