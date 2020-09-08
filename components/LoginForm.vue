@@ -35,7 +35,7 @@
 		<button
 			id="loginButton"
 			type="submit"
-			:disabled="$v.$invalid"
+			:disabled="formValid"
 			class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed"
 		>
 			Log In
@@ -65,6 +65,11 @@ export default {
 		},
 		password: {
 			required,
+		},
+	},
+	computed: {
+		formValid() {
+			return this.$v.email.$invalid && this.$v.password.$invalid;
 		},
 	},
 	methods: {
@@ -101,6 +106,7 @@ export default {
 						const outURL = `http://${redirect_url}?token=${data.access_token}`;
 						return window.location.replace(outURL);
 					}
+					// this.$cookies.removeAll();
 					window.location.replace(
 						process.env.WALULEL_LINK +
 							'/products?token=' +
