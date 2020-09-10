@@ -4,15 +4,15 @@
 			<div class="grid grid-cols-6 gap-4">
 				<div class="col-start-3 col-span-4">
 					<div
-						class="border-4 rounded-lg m-2 overflow-hidden border-gray-300"
+						class="border-4 rounded-lg m-2 overflow-hidden border-gray-300 w-64 h-64"
 					>
 						<img
 							:src="imageToURl"
 							alt="avatar"
-							class="object-contain"
+							class=" w-64 h-64"
 						/>
 					</div>
-					<div class="border-2 m-2">
+					<div class="border-2 m-2 w-64">
 						<input type="file" @change="updateImage" />
 					</div>
 					<button

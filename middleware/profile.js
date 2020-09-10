@@ -1,6 +1,7 @@
-export default function({ $axios, store, app, env, redirect, route }) {
+export default function({ $axios, store, app, redirect, route }) {
 	let profile = store.getters['user/getProfile'];
 	const user_id = app.$cookies.get('USER_ID');
+	let userToken = app.$cookies.get('s_token');
 
 	// if (user_id != undefined) {
 	// 	store.dispatch('app/setUserID', user_id);
@@ -13,6 +14,18 @@ export default function({ $axios, store, app, env, redirect, route }) {
 		store.dispatch('user/storeProfile', profile);
 		return;
 	}
+	if (userToken == undefined || userToken == null) {
+		if (route.query.token) {
+			userToken = route.query.token;
+			app.$cookies.remove('s_token');
+			app.$cookies.set('s_token', userToken, {
+				maxAge: 604800,
+				path: '/',
+				sameSite: true,
+			});
+		}
+	}
+
 	return $axios({
 		url: '/user/profile',
 		method: 'get',
@@ -80,6 +93,7 @@ export default function({ $axios, store, app, env, redirect, route }) {
 		},
 		error => {
 			console.log(error);
+			app.$cookies.remove('s_token');
 			// const redirectAuthURL = `${env.LOGIN_URL}?redirect_url=${env.APP_URL}${route.path}&expect_token=true&refresh_token=true`;
 			return redirect('/');
 		}

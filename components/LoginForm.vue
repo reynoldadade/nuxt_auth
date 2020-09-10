@@ -35,7 +35,7 @@
 		<button
 			id="loginButton"
 			type="submit"
-			:disabled="$v.$invalid"
+			:disabled="formValid"
 			class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed"
 		>
 			Log In
@@ -67,6 +67,11 @@ export default {
 			required,
 		},
 	},
+	computed: {
+		formValid() {
+			return this.$v.email.$invalid && this.$v.password.$invalid;
+		},
+	},
 	methods: {
 		...mapActions({
 			storePermissions: 'user/storePermissions',
@@ -86,14 +91,27 @@ export default {
 					// console.log(data);
 					this.$cookies.set('s_token', data.access_token, {
 						path: '/',
-						sameSite: true,
+
 						maxAge: 60 * 60 * 24 * 7,
+						// secure: true,
 					});
+					mixpanel.track('User Logged', {
+						User: data.user.name,
+						'Login time': new Date().toLocaleString(),
+					});
+
+					mixpanel.identify(data.user.name);
+
 					if (redirect_url) {
 						const outURL = `http://${redirect_url}?token=${data.access_token}`;
 						return window.location.replace(outURL);
 					}
-					this.$router.push('/profile');
+					// this.$cookies.removeAll();
+					window.location.replace(
+						process.env.WALULEL_LINK +
+							'/products?token=' +
+							data.access_token
+					);
 				})
 				.catch(({ message, response }) => {
 					this.loading = false;

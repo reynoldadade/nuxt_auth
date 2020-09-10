@@ -58,59 +58,6 @@
 				<div class="md:w-1/2 px-3">
 					<label
 						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-						for="grid-email"
-					>
-						Email
-					</label>
-					<input
-						class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-						id="grid-email"
-						type="email"
-						placeholder="nobody@somebody.com"
-						v-model="$v.form.email.$model"
-						required
-					/>
-					<p
-						class="text-black text-xs italic"
-						v-if="$v.form.email.$error"
-					>
-						This does not look like an email
-					</p>
-					<p class="text-red-500 text-xs italic" v-if="error">
-						{{ errorMessages.email }}
-					</p>
-				</div>
-				<div class="md:w-1/2 px-3">
-					<label
-						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-						for="grid-telephone"
-					>
-						Phone number
-					</label>
-					<client-only>
-						<vue-tel-input
-							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-							id="grid-telephone"
-							validCharactersOnly
-							:mode="'international'"
-							placeholder="+000 XXX XX XX XX"
-							v-model="$v.form.phone_number.$model"
-							:name="'telephone'"
-						></vue-tel-input>
-					</client-only>
-					<p
-						class="text-black text-xs italic"
-						v-if="$v.form.phone_number.$error"
-					>
-						Please fill out this field.
-					</p>
-				</div>
-			</div>
-
-			<div class="-mx-3 md:flex mb-2">
-				<div class="md:w-1/2 px-3">
-					<label
-						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
 						for="grid-country"
 					>
 						Country
@@ -137,6 +84,35 @@
 						Select a country
 					</p>
 				</div>
+
+				<div class="md:w-1/2 px-3">
+					<label
+						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+						for="grid-telephone"
+					>
+						Phone number
+					</label>
+					<client-only>
+						<vue-tel-input
+							class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-2 px-4"
+							id="grid-telephone"
+							validCharactersOnly
+							:mode="'international'"
+							placeholder="+000 XXX XX XX XX"
+							v-model="$v.form.phone_number.$model"
+							:name="'telephone'"
+						></vue-tel-input>
+					</client-only>
+					<p
+						class="text-black text-xs italic"
+						v-if="$v.form.phone_number.$error"
+					>
+						Please fill out this field.
+					</p>
+				</div>
+			</div>
+
+			<div class="-mx-3 md:flex mb-2">
 				<div class="md:w-1/2 px-3">
 					<label
 						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
@@ -194,6 +170,7 @@
 import { required, email, sameAs, minLength } from 'vuelidate/lib/validators';
 import { VueTelInput } from 'vue-tel-input';
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 export default {
 	props: ['profile'],
 	mounted() {
@@ -202,7 +179,7 @@ export default {
 		if (this.profile.phone_number) {
 			this.form.phone_number = this.profile.phone_number;
 		}
-		this.form.email = this.profile.email;
+
 		this.form.post_code = this.profile.postcode;
 		this.form.country = this.profile.country;
 	},
@@ -230,7 +207,7 @@ export default {
 				name: '',
 				username: '',
 				phone_number: '',
-				email: '',
+
 				post_code: '',
 				country: '',
 			},
@@ -248,10 +225,6 @@ export default {
 			phone_number: {
 				required,
 			},
-			email: {
-				required,
-				email,
-			},
 
 			post_code: {
 				required,
@@ -263,25 +236,65 @@ export default {
 	},
 	methods: {
 		async editProfile() {
+			const token = this.$cookies.get('s_token');
+			if (!token) {
+				const { routeToken } = this.$route.query;
+				token = routeToken;
+			}
 			this.loading = true;
-			this.$axios
-				.$patch('/user/profile/', this.form)
-				.then(response => {
-					console.log(response);
+			axios({
+				url: process.env.API_ENDPOINT + '/user/profile',
+				method: 'patch',
+				headers: {
+					Authorization: 'Bearer ' + token,
+				},
+				params: this.form,
+			})
+				.then(({ data }) => {
 					this.loading = false;
 					this.notify({
 						text: 'Profile Successfully Updated',
 						type: 'success',
 						title: 'Awesome',
 					});
+					const subscriptions = Object.values(
+						data.data.subscriptions
+					).filter(item => item != null);
+					const {
+						name,
+						email,
+						phone_number,
+						avatar,
+						id,
+						active,
+						username,
+						postcode,
+						country,
+					} = data.data;
+
+					const profile = {
+						name,
+						email,
+						phone_number,
+						avatar,
+						id,
+						active,
+						username,
+						postcode,
+						country,
+						subscriptions,
+					};
+					this.$store.dispatch('user/storeProfile', profile);
+					this.$cookies.set('auth-profile', profile, {
+						path: '/',
+						sameSite: true,
+					});
 					this.$router.push('/profile');
 				})
 				.catch(error => {
 					this.error = true;
 					this.loading = false;
-					if (error.response.status === 500) {
-						this.updateError = 'Data Already exists';
-					}
+					console.log(error);
 				});
 		},
 	},

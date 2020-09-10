@@ -1,5 +1,5 @@
 <template>
-	<div class="mx-auto  overflow-hidden shadow my-2 bg-white p-4">
+	<div class="mx-auto overflow-hidden shadow my-2 bg-white p-4">
 		<div class="flex justify-between flex-wrap">
 			<div>
 				<p class="font-bold text-lg text-gray-700">

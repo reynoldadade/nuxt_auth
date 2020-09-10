@@ -5,9 +5,9 @@ function FakeUser() {
 		email: 'staging.wacommunicategratis@walulel.com',
 		active: true,
 		username: 'wacommunicategratis',
-		phone_number: null,
+		phone_number: '0234567890',
 		postcode: null,
-		country: null,
+		country: 'GH',
 		avatar:
 			'https://walulel-photos.s3.us-east-2.amazonaws.com/avatars/profile.png',
 		created_at: '2020-06-26T14:55:28.000000Z',
@@ -58,4 +58,40 @@ function FakePackage() {
 	};
 }
 
-export { FakeUser, FakePackage };
+function FakeAddress() {
+	return {
+		line1: '123 Test Street',
+		city: 'Test City',
+		state: 'Test State',
+		country: null,
+	};
+}
+
+function FakeStripe() {
+	return {
+		elements: jest.fn().mockReturnValue({
+			create: jest.fn().mockReturnValue({
+				on: jest.fn(),
+				mount: jest.fn(),
+				id: 'my_id',
+			}),
+		}),
+		confirmCardPayment: jest.fn().mockResolvedValue({
+			error: null,
+			paymentIntent: {
+				status: 'succeeded',
+				payment_method: 'test_stripe_payment',
+			},
+		}),
+
+		confirmCardSetup: jest.fn().mockResolvedValue({
+			error: null,
+			setupIntent: {
+				status: 'succeeded',
+				payment_method: 'test_stripe_payment',
+			},
+		}),
+	};
+}
+
+export { FakeUser, FakePackage, FakeAddress, FakeStripe };
