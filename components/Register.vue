@@ -40,26 +40,34 @@
 				<div class="md:w-1/2 px-3">
 					<label
 						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-						for="grid-username"
+						for="grid-product"
 					>
-						Username
+						Interested in (Product)
 					</label>
-					<input
-						class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-						id="grid-username"
-						type="text"
-						placeholder="Gulliver"
-						v-model="$v.form.username.$model"
-						required
-					/>
+					<div
+						class="flex w-full justify-around border border-gray-400 rounded flex-col"
+					>
+						<div
+							v-for="products in tagged_products"
+							:key="products"
+						>
+							<input
+								type="checkbox"
+								name="products"
+								v-model="$v.form.tagged_products.$model"
+								:value="products"
+							/>
+							<label>{{ products }}</label>
+						</div>
+					</div>
 					<p
 						class="text-red-500 text-xs italic"
-						v-if="$v.form.username.$error"
+						v-if="$v.form.tagged_products.$error"
 					>
-						Dont forget to add a cool username, 6 characters or more
+						Select at least one
 					</p>
 					<p class="text-red-500 text-xs italic" v-if="error">
-						{{ errorMessages.username }}
+						{{ errorMessages.tagged_products }}
 					</p>
 				</div>
 			</div>
@@ -276,7 +284,7 @@ export default {
 			errorMessages: {
 				email: '',
 				password: '',
-				username: '',
+				tagged_products: '',
 				phone_number: '',
 			},
 			form: {
@@ -288,7 +296,9 @@ export default {
 				password_confirmation: '',
 				post_code: '',
 				country: 'GB',
+				tagged_products: ['WaCommunicate', 'WaInsight'],
 			},
+			tagged_products: ['WaCommunicate', 'WaInsight'],
 		};
 	},
 	validations: {
@@ -297,9 +307,8 @@ export default {
 				required,
 				minLength: minLength(3),
 			},
-			username: {
+			tagged_products: {
 				required,
-				minLength: minLength(6),
 			},
 			phone_number: {
 				required,
