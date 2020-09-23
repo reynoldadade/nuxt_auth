@@ -130,6 +130,7 @@ export default {
 						this.error = true;
 					}
 				)
+				.catch(_=>null)
 				.finally(() => {
 					this.loading = false;
 				});
