@@ -153,14 +153,14 @@
 					:disabled="$v.$invalid"
 				>
 					UPDATE
-					<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+					<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
 				</button>
-				<button
-					class="block w-1/2 bg-black text-white font-bold p-2 rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-gray-700"
-					type="submit"
+				<nuxt-link
+					class="block w-1/2 bg-gray-700 text-white font-bold p-2 text-center rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-black"
+					to="/profile"
 				>
 					CANCEL
-				</button>
+				</nuxt-link>
 			</div>
 		</form>
 	</div>
@@ -237,6 +237,10 @@ export default {
 	methods: {
 		async editProfile() {
 			const token = this.$cookies.get('s_token');
+			if (!token) {
+				const { routeToken } = this.$route.query;
+				token = routeToken;
+			}
 			this.loading = true;
 			axios({
 				url: process.env.API_ENDPOINT + '/user/profile',
@@ -247,7 +251,6 @@ export default {
 				params: this.form,
 			})
 				.then(({ data }) => {
-					console.log(data);
 					this.loading = false;
 					this.notify({
 						text: 'Profile Successfully Updated',

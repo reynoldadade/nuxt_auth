@@ -40,26 +40,34 @@
 				<div class="md:w-1/2 px-3">
 					<label
 						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-						for="grid-username"
+						for="grid-product"
 					>
-						Username
+						Interested in (Product)
 					</label>
-					<input
-						class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-						id="grid-username"
-						type="text"
-						placeholder="Gulliver"
-						v-model="$v.form.username.$model"
-						required
-					/>
+					<div
+						class="flex w-full justify-around border border-gray-400 rounded flex-col"
+					>
+						<div
+							v-for="products in tagged_products"
+							:key="products"
+						>
+							<input
+								type="checkbox"
+								name="products"
+								v-model="$v.form.tagged_products.$model"
+								:value="products"
+							/>
+							<label>{{ products }}</label>
+						</div>
+					</div>
 					<p
 						class="text-red-500 text-xs italic"
-						v-if="$v.form.username.$error"
+						v-if="$v.form.tagged_products.$error"
 					>
-						Dont forget to add a cool username, 6 characters or more
+						Select at least one
 					</p>
 					<p class="text-red-500 text-xs italic" v-if="error">
-						{{ errorMessages.username }}
+						{{ errorMessages.tagged_products }}
 					</p>
 				</div>
 			</div>
@@ -112,6 +120,9 @@
 						v-if="$v.form.phone_number.$error"
 					>
 						Please fill out this field.
+					</p>
+					<p class="text-red-500 text-xs italic" v-if="error">
+						{{ errorMessages.phone_number }}
 					</p>
 				</div>
 			</div>
@@ -166,7 +177,7 @@
 						class="text-red-500 text-xs italic"
 						v-if="$v.form.password_confirmation.$error"
 					>
-						Same kind of long and crazy
+						Password is not the same
 					</p>
 					<p class="text-red-500 text-xs italic" v-if="error">
 						{{ errorMessages.password }}
@@ -273,7 +284,8 @@ export default {
 			errorMessages: {
 				email: '',
 				password: '',
-				username: '',
+				tagged_products: '',
+				phone_number: '',
 			},
 			form: {
 				name: '',
@@ -284,7 +296,9 @@ export default {
 				password_confirmation: '',
 				post_code: '',
 				country: 'GB',
+				tagged_products: ['WaCommunicate', 'WaInsight'],
 			},
+			tagged_products: ['WaCommunicate', 'WaInsight'],
 		};
 	},
 	validations: {
@@ -293,9 +307,8 @@ export default {
 				required,
 				minLength: minLength(3),
 			},
-			username: {
+			tagged_products: {
 				required,
-				minLength: minLength(6),
 			},
 			phone_number: {
 				required,
@@ -323,6 +336,13 @@ export default {
 	methods: {
 		async register() {
 			this.loading = true;
+			this.error = false;
+			this.errorMessages = {
+				email: '',
+				password: '',
+				username: '',
+				phone_number: '',
+			};
 			//format form
 			this.form.phone_number = this.form.phone_number.replace(/\s+/g, '');
 			const response = await this.$axios
@@ -331,7 +351,6 @@ export default {
 					this.error = true;
 					this.registrationError = 'Your form has a few problems';
 					if (response.status === 422) {
-						this.registrationError = 'Your form has a few problems';
 						const errors = Object.keys(response.data.errors);
 						errors.map(
 							item =>
@@ -352,6 +371,14 @@ export default {
 						'Your registration was successful, check your inbox for a verification mail',
 					type: 'success',
 				});
+
+				this.notify({
+					title: 'Redirecting',
+					text: 'Redirecting to homepage in 5s',
+					type: 'info',
+				});
+
+				setTimeout(() => window.location.replace('/'), 5000);
 			}
 		},
 	},

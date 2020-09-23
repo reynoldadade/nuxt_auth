@@ -5,7 +5,8 @@
 			<label
 				class="uppercase font-semibold text-xs text-gray-700 mb-1 inline-block"
 				for="billing_name"
-			>Name</label>
+				>Name</label
+			>
 			<input
 				class="wa-input"
 				id="billing_name"
@@ -22,7 +23,8 @@
 			<label
 				class="uppercase font-semibold text-xs text-gray-700 mb-1 inline-block"
 				for="billing_address"
-			>Address</label>
+				>Address</label
+			>
 			<input
 				class="wa-input"
 				id="billing_address"
@@ -39,7 +41,8 @@
 				<label
 					class="uppercase font-semibold text-xs text-gray-700 mb-1 inline-block"
 					for="billing_city"
-				>City</label>
+					>City</label
+				>
 				<input
 					class="wa-input"
 					id="billing_city"
@@ -54,7 +57,8 @@
 				<label
 					class="uppercase font-semibold text-xs text-gray-700 mb-1 inline-block"
 					for="billing_state"
-				>State/Province</label>
+					>State/Province</label
+				>
 				<input
 					class="wa-input"
 					id="billing_state"
@@ -67,11 +71,15 @@
 			</div>
 		</div>
 		<div class="mb-8 relative">
-			<i class="fa fa-chevron-down absolute text-gray-500" style="top:60%;right:10px"></i>
+			<i
+				class="fa fa-chevron-down absolute text-gray-500"
+				style="top:60%;right:10px"
+			></i>
 			<label
 				class="uppercase font-semibold text-xs text-gray-700 mb-1 inline-block"
 				for="billing_country"
-			>Country</label>
+				>Country</label
+			>
 			<select
 				class="w-full bg-white wa-input"
 				v-model="formData.address.country"
@@ -130,7 +138,9 @@
 				<option value="CO">Colombia</option>
 				<option value="KM">Comoros</option>
 				<option value="CG">Congo</option>
-				<option value="CD">Congo, the Democratic Republic of the</option>
+				<option value="CD"
+					>Congo, the Democratic Republic of the</option
+				>
 				<option value="CK">Cook Islands</option>
 				<option value="CR">Costa Rica</option>
 				<option value="CI">Côte d'Ivoire</option>
@@ -196,7 +206,9 @@
 				<option value="KZ">Kazakhstan</option>
 				<option value="KE">Kenya</option>
 				<option value="KI">Kiribati</option>
-				<option value="KP">Korea, Democratic People's Republic of</option>
+				<option value="KP"
+					>Korea, Democratic People's Republic of</option
+				>
 				<option value="KR">Korea, Republic of</option>
 				<option value="KW">Kuwait</option>
 				<option value="KG">Kyrgyzstan</option>
@@ -210,7 +222,9 @@
 				<option value="LT">Lithuania</option>
 				<option value="LU">Luxembourg</option>
 				<option value="MO">Macao</option>
-				<option value="MK">Macedonia, the Former Yugoslav Republic of</option>
+				<option value="MK"
+					>Macedonia, the Former Yugoslav Republic of</option
+				>
 				<option value="MG">Madagascar</option>
 				<option value="MW">Malawi</option>
 				<option value="MY">Malaysia</option>
@@ -264,7 +278,9 @@
 				<option value="RU">Russian Federation</option>
 				<option value="RW">Rwanda</option>
 				<option value="BL">Saint Barthélemy</option>
-				<option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+				<option value="SH"
+					>Saint Helena, Ascension and Tristan da Cunha</option
+				>
 				<option value="KN">Saint Kitts and Nevis</option>
 				<option value="LC">Saint Lucia</option>
 				<option value="MF">Saint Martin (French part)</option>
@@ -285,7 +301,9 @@
 				<option value="SB">Solomon Islands</option>
 				<option value="SO">Somalia</option>
 				<option value="ZA">South Africa</option>
-				<option value="GS">South Georgia and the South Sandwich Islands</option>
+				<option value="GS"
+					>South Georgia and the South Sandwich Islands</option
+				>
 				<option value="SS">South Sudan</option>
 				<option value="ES">Spain</option>
 				<option value="LK">Sri Lanka</option>
@@ -340,15 +358,15 @@
 			style="color:#eb1c26"
 			role="alert"
 		>
-			{{
-			cardError
-			}}
+			{{ cardError }}
 		</span>
 		<p class="mt-2 text-sm text-gray-600">Secured by Stripe</p>
 
 		<button
 			class="block mt-8 px-4 py-3 font-semibold rounded text-lg hover:shadow-xl w-full btn text-white"
-		>Pay {{ price }}</button>
+		>
+			Pay {{ price }}
+		</button>
 		<p class="text-sm text-gray-700 text-center mt-1">
 			All card transactions are charged in
 			<b>Great Britian Pound (GBP)</b>
@@ -472,7 +490,7 @@ export default {
 						billing_details: this.formData,
 					},
 				});
-				
+
 				return this.processPayment(paymentIntent, error);
 			}
 		},
@@ -483,7 +501,7 @@ export default {
 					...this.meta,
 					user_id: this.user.id,
 				})
-				.catch((error) => {
+				.catch(error => {
 					console.log(error);
 					this.toggleLoading(false, true);
 
@@ -532,12 +550,12 @@ export default {
 
 		callStripeAPI(params) {
 			this.$axios.$post('/checkout/stripe', params).then(
-				(response) => {
+				response => {
 					if (response && response.data && !response.data.error) {
 						return this.onCallStripeSuccess();
 					}
 				},
-				(error) => {
+				error => {
 					this.toggleLoading(false, true);
 					if (error.response && error.response.data) {
 						this.$swal({

@@ -2,7 +2,7 @@
 	<form
 		class="flex flex-col pt-3 md:pt-8"
 		:class="{ shaker: error }"
-		@submit.prevent="login()"
+		@submit.prevent="login"
 	>
 		<div class="flex flex-col pt-4">
 			<label for="email" class="text-lg">Email</label>
@@ -35,11 +35,11 @@
 		<button
 			id="loginButton"
 			type="submit"
-			:disabled="$v.$invalid"
+			:disabled="formValid||loading"
 			class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed"
 		>
 			Log In
-			<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+			<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
 		</button>
 	</form>
 </template>
@@ -67,13 +67,17 @@ export default {
 			required,
 		},
 	},
+	computed: {
+		formValid() {
+			return this.$v.email.$invalid && this.$v.password.$invalid;
+		},
+	},
 	methods: {
 		...mapActions({
 			storePermissions: 'user/storePermissions',
 		}),
 
 		async login() {
-			const { redirect_url, expect_token } = this.$route.query;
 			this.error = false;
 			this.loading = true;
 			this.$axios
@@ -81,34 +85,53 @@ export default {
 					email: this.email,
 					password: this.password,
 				})
-				.then(({ data }) => {
-					this.loading = false;
-					// console.log(data);
-					this.$cookies.set('s_token', data.access_token, {
-						path: '/',
+				.then(
+					response => {
+						if (response && response.data) {
+							const { data } = response;
+							const { user } = data;
+							const { access_token } = data;
 
-						maxAge: 60 * 60 * 24 * 7,
-						// secure: true,
-					});
-					mixpanel.track('User Logged', {
-						User: data.user.name,
-						'Login time': new Date().toLocaleString(),
-					});
+							// return promise and resolve true when cookies and mixpanel process finish
+							return new Promise(res => {
+								this.$cookies.set('s_token', access_token, {
+									path: '/',
+									maxAge: 60 * 60 * 24 * 7,
+								});
+								mixpanel.identify(user.email);
 
-					mixpanel.identify(data.user.name);
+								mixpanel.track('User Logged', {
+									User: user.name,
+									'Login time': new Date().toLocaleString(),
+								});
+								res(true);
+							}).then(_ => {
+								const {
+									redirect_url,
+									expect_token,
+								} = this.$route.query;
 
-					if (redirect_url) {
-						const outURL = `http://${redirect_url}?token=${data.access_token}`;
-						return window.location.replace(outURL);
+								if (redirect_url) {
+									const outURL = `http://${redirect_url}?token=${access_token}`;
+									return window.location.replace(outURL);
+								}
+								
+								window.location.replace(
+									`${process.env.WALULEL_LINK}/products?token=${access_token}`
+								);
+							});
+						}
+					},
+					error => {
+						const { message, response } = error;
+						if (response && response.data) {
+							this.errorMessage = response.data.error;
+						}
+						this.error = true;
 					}
-					this.$router.push('/profile');
-				})
-				.catch(({ message, response }) => {
+				)
+				.finally(() => {
 					this.loading = false;
-					if (response && response.data) {
-						this.errorMessage = response.data.error;
-					}
-					this.error = true;
 				});
 		},
 	},
