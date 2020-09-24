@@ -49,10 +49,6 @@ describe('LoginForm.vue', () => {
 		wrapper = createWrapper();
 	});
 
-	it('html should render correctly', () => {
-		expect(wrapper.html()).toMatchSnapshot();
-	});
-
 	it('After user clicks submit button, $v.$invalid return true?', () => {
 		const loginBtn = wrapper.find('button#loginButton');
 		loginBtn.trigger('submit');
