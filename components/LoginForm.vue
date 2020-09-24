@@ -18,14 +18,27 @@
 
 		<div class="flex flex-col pt-4">
 			<label for="password" class="text-lg">Password</label>
-			<input
-				type="password"
-				id="password"
-				v-model="$v.password.$model"
-				placeholder="Password"
-				required
-				class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
-			/>
+			<div class="flex">
+				<input
+					:type="showPassword ? 'text' : 'password'"
+					id="password"
+					v-model="$v.password.$model"
+					placeholder="Password"
+					required
+					class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+				/>
+				<button
+					class="py-2 px-3 focus:outline-none"
+					@click="showHidePassword"
+					type="button"
+				>
+					<i
+						:class="
+							showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'
+						"
+					></i>
+				</button>
+			</div>
 		</div>
 		<p class="text-xs text-red-500 font-bold mt-2 text-center" v-if="error">
 			<i class="fas fa-exclamation-triangle"></i>
@@ -55,6 +68,7 @@ export default {
 			loading: false,
 			error: false,
 			errorMessage: 'Incorrect username/password.',
+			showPassword: false,
 		};
 	},
 	components: {},
@@ -76,6 +90,9 @@ export default {
 		...mapActions({
 			storePermissions: 'user/storePermissions',
 		}),
+		showHidePassword() {
+			this.showPassword = !this.showPassword;
+		},
 
 		async login() {
 			const { redirect_url, expect_token } = this.$route.query;
