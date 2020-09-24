@@ -153,14 +153,14 @@
 					:disabled="$v.$invalid"
 				>
 					UPDATE
-					<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+					<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
 				</button>
-				<button
-					class="block w-1/2 bg-black text-white font-bold p-2 rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-gray-700"
-					type="submit"
+				<nuxt-link
+					class="block w-1/2 bg-gray-700 text-white font-bold p-2 text-center rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-black"
+					to="/profile"
 				>
 					CANCEL
-				</button>
+				</nuxt-link>
 			</div>
 		</form>
 	</div>

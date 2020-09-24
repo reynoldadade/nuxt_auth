@@ -6,6 +6,6 @@ exports[`LoginForm.vue html should render correctly 1`] = `
   <div class=\\"flex flex-col pt-4\\"><label for=\\"password\\" class=\\"text-lg\\">Password</label> <input type=\\"password\\" id=\\"password\\" placeholder=\\"Password\\" required=\\"required\\" class=\\"shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline\\"></div>
   <!----> <button id=\\"loginButton\\" type=\\"submit\\" disabled=\\"disabled\\" class=\\"bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed\\">
     Log In
-    <!----></button>
+    <i class=\\"fas fa-circle-notch fa-spin\\" style=\\"display: none;\\"></i></button>
 </form>"
 `;
