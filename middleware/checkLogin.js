@@ -13,6 +13,7 @@ export default ({ app, env, route, redirect }) => {
 			// );
 		} else {
 			if (route.path !== '/') {
+				app.$cookies.removeAll();
 				return redirect('/');
 			} else {
 				console.log('/');
