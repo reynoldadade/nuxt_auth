@@ -48,7 +48,7 @@
 		<button
 			id="loginButton"
 			type="submit"
-			:disabled="formValid||loading"
+			:disabled="formValid || loading"
 			class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed"
 		>
 			Log In
@@ -132,8 +132,8 @@ export default {
 									const outURL = `http://${redirect_url}?token=${access_token}`;
 									return window.location.replace(outURL);
 								}
-								
-								window.location.replace(
+
+								return window.location.replace(
 									`${process.env.WALULEL_LINK}/products?token=${access_token}`
 								);
 							});
@@ -147,7 +147,7 @@ export default {
 						this.error = true;
 					}
 				)
-				.catch(_=>null)
+				.catch(_ => null)
 				.finally(() => {
 					this.loading = false;
 				});
