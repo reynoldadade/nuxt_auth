@@ -8,9 +8,6 @@ export default ({ app, env, route, redirect }) => {
 				return window.location.replace(
 					env.WALULEL_LINK + '/products/?token=' + token
 				);
-			// return window.location.replace(
-			// 	'http://localhost:3001/products/?token=' + token
-			// );
 		} else {
 			if (route.path !== '/') {
 				app.$cookies.removeAll();

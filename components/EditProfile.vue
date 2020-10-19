@@ -125,12 +125,12 @@
 						id="grid-postcode"
 						type="text"
 						placeholder="90210"
-						v-model="$v.form.post_code.$model"
+						v-model="$v.form.postcode.$model"
 						required
 					/>
 					<p
 						class="text-grey-dark text-xs italic"
-						v-if="$v.form.post_code.$error"
+						v-if="$v.form.postcode.$error"
 					>
 						Postcode is required
 					</p>
@@ -180,7 +180,7 @@ export default {
 			this.form.phone_number = this.profile.phone_number;
 		}
 
-		this.form.post_code = this.profile.postcode;
+		this.form.postcode = this.profile.postcode;
 		this.form.country = this.profile.country;
 	},
 	computed: {
@@ -208,7 +208,7 @@ export default {
 				username: '',
 				phone_number: '',
 
-				post_code: '',
+				postcode: '',
 				country: '',
 			},
 		};
@@ -226,7 +226,7 @@ export default {
 				required,
 			},
 
-			post_code: {
+			postcode: {
 				required,
 			},
 			country: {
