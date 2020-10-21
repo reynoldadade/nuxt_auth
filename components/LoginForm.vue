@@ -12,7 +12,7 @@
 				v-model="$v.email.$model"
 				placeholder="your@email.com"
 				required
-				class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+				class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
 			/>
 		</div>
 
@@ -25,10 +25,10 @@
 					v-model="$v.password.$model"
 					placeholder="Password"
 					required
-					class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+					class="appearance-none border-t border-l border-b border-r-0 rounded-l w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
 				/>
 				<button
-					class="py-2 px-3 focus:outline-none"
+					class="py-1 px-3 focus:outline-none  leading-tight appearance-none mt-1 border-t border-r border-b rounded-r border-l-0"
 					@click="showHidePassword"
 					type="button"
 				>
