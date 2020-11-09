@@ -27,6 +27,7 @@ export default {
 			: '/';
 
 		if (logout) {
+			console.log('logout here');
 			this.$cookies.removeAll();
 			window.localStorage.clear();
 			return this.$router.push('/');

@@ -18,8 +18,8 @@ export default function({ $axios, redirect, $cookies }) {
 	$axios.onError(error => {
 		if (error.response) {
 			switch (error.response.status) {
-				case 401:
-					return redirect('/');
+				// case 401:
+					// return redirect('/');
 				case 404:
 					return redirect('/404');
 

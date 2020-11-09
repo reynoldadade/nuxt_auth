@@ -125,12 +125,12 @@
 						id="grid-postcode"
 						type="text"
 						placeholder="90210"
-						v-model="$v.form.post_code.$model"
+						v-model="$v.form.postcode.$model"
 						required
 					/>
 					<p
 						class="text-grey-dark text-xs italic"
-						v-if="$v.form.post_code.$error"
+						v-if="$v.form.postcode.$error"
 					>
 						Postcode is required
 					</p>
@@ -153,14 +153,14 @@
 					:disabled="$v.$invalid"
 				>
 					UPDATE
-					<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+					<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
 				</button>
-				<button
-					class="block w-1/2 bg-black text-white font-bold p-2 rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-gray-700"
-					type="submit"
+				<nuxt-link
+					class="block w-1/2 bg-gray-700 text-white font-bold p-2 text-center rounded disabled:opacity-75 disabled:cursor-not-allowed m-2 hover:bg-black"
+					to="/profile"
 				>
 					CANCEL
-				</button>
+				</nuxt-link>
 			</div>
 		</form>
 	</div>
@@ -180,7 +180,7 @@ export default {
 			this.form.phone_number = this.profile.phone_number;
 		}
 
-		this.form.post_code = this.profile.postcode;
+		this.form.postcode = this.profile.postcode;
 		this.form.country = this.profile.country;
 	},
 	computed: {
@@ -208,7 +208,7 @@ export default {
 				username: '',
 				phone_number: '',
 
-				post_code: '',
+				postcode: '',
 				country: '',
 			},
 		};
@@ -226,7 +226,7 @@ export default {
 				required,
 			},
 
-			post_code: {
+			postcode: {
 				required,
 			},
 			country: {

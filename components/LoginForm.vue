@@ -2,7 +2,7 @@
 	<form
 		class="flex flex-col pt-3 md:pt-8"
 		:class="{ shaker: error }"
-		@submit.prevent="login()"
+		@submit.prevent="login"
 	>
 		<div class="flex flex-col pt-4">
 			<label for="email" class="text-lg">Email</label>
@@ -12,20 +12,33 @@
 				v-model="$v.email.$model"
 				placeholder="your@email.com"
 				required
-				class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+				class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
 			/>
 		</div>
 
 		<div class="flex flex-col pt-4">
 			<label for="password" class="text-lg">Password</label>
-			<input
-				type="password"
-				id="password"
-				v-model="$v.password.$model"
-				placeholder="Password"
-				required
-				class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
-			/>
+			<div class="flex">
+				<input
+					:type="showPassword ? 'text' : 'password'"
+					id="password"
+					v-model="$v.password.$model"
+					placeholder="Password"
+					required
+					class="appearance-none border-t border-l border-b border-r-0 rounded-l w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+				/>
+				<button
+					class="py-1 px-3 focus:outline-none  leading-tight appearance-none mt-1 border-t border-r border-b rounded-r border-l-0"
+					@click="showHidePassword"
+					type="button"
+				>
+					<i
+						:class="
+							showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'
+						"
+					></i>
+				</button>
+			</div>
 		</div>
 		<p class="text-xs text-red-500 font-bold mt-2 text-center" v-if="error">
 			<i class="fas fa-exclamation-triangle"></i>
@@ -35,11 +48,11 @@
 		<button
 			id="loginButton"
 			type="submit"
-			:disabled="formValid"
+			:disabled="formValid || loading"
 			class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed"
 		>
 			Log In
-			<i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+			<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
 		</button>
 	</form>
 </template>
@@ -55,6 +68,7 @@ export default {
 			loading: false,
 			error: false,
 			errorMessage: 'Incorrect username/password.',
+			showPassword: false,
 		};
 	},
 	components: {},
@@ -76,9 +90,11 @@ export default {
 		...mapActions({
 			storePermissions: 'user/storePermissions',
 		}),
+		showHidePassword() {
+			this.showPassword = !this.showPassword;
+		},
 
 		async login() {
-			const { redirect_url, expect_token } = this.$route.query;
 			this.error = false;
 			this.loading = true;
 			this.$axios
@@ -86,39 +102,54 @@ export default {
 					email: this.email,
 					password: this.password,
 				})
-				.then(({ data }) => {
-					this.loading = false;
-					// console.log(data);
-					this.$cookies.set('s_token', data.access_token, {
-						path: '/',
+				.then(
+					response => {
+						if (response && response.data) {
+							const { data } = response;
+							const { user } = data;
+							const { access_token } = data;
 
-						maxAge: 60 * 60 * 24 * 7,
-						// secure: true,
-					});
-					mixpanel.track('User Logged', {
-						User: data.user.name,
-						'Login time': new Date().toLocaleString(),
-					});
+							// return promise and resolve true when cookies and mixpanel process finish
+							return new Promise(res => {
+								this.$cookies.set('s_token', access_token, {
+									path: '/',
+									maxAge: 60 * 60 * 24 * 7,
+								});
+								mixpanel.identify(user.email);
 
-					mixpanel.identify(data.user.name);
+								mixpanel.track('User Logged', {
+									User: user.name,
+									'Login time': new Date().toLocaleString(),
+								});
+								res(true);
+							}).then(_ => {
+								const {
+									redirect_url,
+									expect_token,
+								} = this.$route.query;
 
-					if (redirect_url) {
-						const outURL = `http://${redirect_url}?token=${data.access_token}`;
-						return window.location.replace(outURL);
+								if (redirect_url) {
+									const outURL = `http://${redirect_url}?token=${access_token}`;
+									return window.location.replace(outURL);
+								}
+
+								return window.location.replace(
+									`${process.env.WALULEL_LINK}/products?token=${access_token}`
+								);
+							});
+						}
+					},
+					error => {
+						const { message, response } = error;
+						if (response && response.data) {
+							this.errorMessage = response.data.error;
+						}
+						this.error = true;
 					}
-					// this.$cookies.removeAll();
-					window.location.replace(
-						process.env.WALULEL_LINK +
-							'/products?token=' +
-							data.access_token
-					);
-				})
-				.catch(({ message, response }) => {
+				)
+				.catch(_ => null)
+				.finally(() => {
 					this.loading = false;
-					if (response && response.data) {
-						this.errorMessage = response.data.error;
-					}
-					this.error = true;
 				});
 		},
 	},
