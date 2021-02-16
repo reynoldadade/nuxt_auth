@@ -1,5 +1,5 @@
 <template>
-	<div class="text-center pt-5 pb-12">
+	<div class="text-center py-5">
 		<p>
 			{{ mainText }}
 			<nuxt-link :to="link" class="underline font-semibold">{{

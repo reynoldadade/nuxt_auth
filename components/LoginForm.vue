@@ -10,9 +10,9 @@
 				type="email"
 				id="email"
 				v-model="$v.email.$model"
-				placeholder="your@email.com"
+				placeholder="Enter your email address"
 				required
-				class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+				class="appearance-none border w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
 			/>
 		</div>
 
@@ -23,12 +23,12 @@
 					:type="showPassword ? 'text' : 'password'"
 					id="password"
 					v-model="$v.password.$model"
-					placeholder="Password"
+					placeholder="Enter your password"
 					required
-					class="appearance-none border-t border-l border-b border-r-0 rounded-l w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+					class="appearance-none border-t border-l border-b border-r-0  w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
 				/>
 				<button
-					class="py-1 px-3 focus:outline-none  leading-tight appearance-none mt-1 border-t border-r border-b rounded-r border-l-0"
+					class="py-1 px-3 focus:outline-none  leading-tight appearance-none mt-1 border-t border-r border-b  border-l-0"
 					@click="showHidePassword"
 					type="button"
 				>
@@ -45,21 +45,30 @@
 			{{ errorMessage }}
 		</p>
 
-		<button
-			id="loginButton"
-			type="submit"
-			:disabled="formValid || loading"
-			class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed"
-		>
-			Log In
-			<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
-		</button>
+		<Link
+			link="/resetPassword"
+			mainText="Forgot Password?"
+			linkText="Click Here."
+		/>
+
+		<div class="w-full flex justify-around">
+			<button
+				id="loginButton"
+				type="submit"
+				:disabled="formValid || loading"
+				class="bg-black text-white font-bold rounded-full text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed w-2/3"
+			>
+				Log In
+				<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
+			</button>
+		</div>
 	</form>
 </template>
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
 import { mapActions } from 'vuex';
+import Link from '~/components/common/Link';
 export default {
 	data() {
 		return {
@@ -71,7 +80,9 @@ export default {
 			showPassword: false,
 		};
 	},
-	components: {},
+	components: {
+		Link,
+	},
 	validations: {
 		email: {
 			required,
