@@ -30,8 +30,14 @@
 				<div>Legal Notices</div>
 			</div>
 		</div>
-		<div class="xs:hidden md:w-1/2 flex justify-around">
-			<object type="image/svg+xml" data="/WaCommunicate.svg" class="logo">
+		<div
+			class="xs:hidden md:w-1/2 flex flex-col justify-around items-center"
+		>
+			<object
+				type="image/svg+xml"
+				data="/WaCommunicate.svg"
+				class="logo mb-5"
+			>
 				404 logo
 				<!-- fallback image in CSS -->
 				<style>
@@ -41,6 +47,10 @@
 					}
 				</style>
 			</object>
+			<div class="w-2/3 text-center">
+				WaCommunicate is a social network designed for the neighbourhood
+				community
+			</div>
 		</div>
 	</div>
 </template>
