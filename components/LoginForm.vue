@@ -56,7 +56,8 @@
 				id="loginButton"
 				type="submit"
 				:disabled="formValid || loading"
-				class="bg-black text-white font-bold rounded-full text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed w-2/3"
+				class="text-white font-bold rounded-full text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed w-2/3"
+				:class="`bg-${getUiConfig.color}`"
 			>
 				Log In
 				<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
@@ -67,7 +68,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Link from '~/components/common/Link';
 export default {
 	data() {
@@ -93,6 +94,9 @@ export default {
 		},
 	},
 	computed: {
+		...mapGetters({
+			getUiConfig: 'components/getUiConfig',
+		}),
 		formValid() {
 			return this.$v.email.$invalid && this.$v.password.$invalid;
 		},

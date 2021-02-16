@@ -14,7 +14,9 @@
 				</div>
 
 				<div class="flex flex-col w-2/3">
-					<p class="text-center text-3xl text-black">Login</p>
+					<p class="text-center text-3xl" :class="`text-black`">
+						Login
+					</p>
 					<LoginForm />
 
 					<Link
@@ -24,7 +26,10 @@
 					/>
 				</div>
 			</div>
-			<div class="flex justify-around p-1">
+			<div
+				class="flex justify-around p-1"
+				:class="`text-${getUiConfig.color}`"
+			>
 				<div>FAQ</div>
 				<div>Help</div>
 				<div>Legal Notices</div>
@@ -35,7 +40,7 @@
 		>
 			<object
 				type="image/svg+xml"
-				data="/WaCommunicate.svg"
+				:data="`/${getUiConfig.logo}`"
 				class="logo mb-5"
 			>
 				404 logo
@@ -47,9 +52,8 @@
 					}
 				</style>
 			</object>
-			<div class="w-2/3 text-center">
-				WaCommunicate is a social network designed for the neighbourhood
-				community
+			<div class="w-2/3 text-center" :class="`text-${getUiConfig.color}`">
+				{{ getUiConfig.caption }}
 			</div>
 		</div>
 	</div>
@@ -58,6 +62,7 @@
 <script>
 import LoginForm from '~/components/LoginForm';
 import Link from '~/components/common/Link';
+import { mapGetters } from 'vuex';
 export default {
 	head() {
 		return { title: 'Walulel | Login' };
@@ -66,6 +71,11 @@ export default {
 	components: {
 		LoginForm,
 		Link,
+	},
+	computed: {
+		...mapGetters({
+			getUiConfig: 'components/getUiConfig',
+		}),
 	},
 };
 </script>
