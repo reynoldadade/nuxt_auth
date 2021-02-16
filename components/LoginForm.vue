@@ -134,7 +134,7 @@ export default {
 								}
 
 								return window.location.replace(
-									`${process.env.WALULEL_LINK}/products?token=${access_token}`
+									`${process.env.WALULEL_LINK}?token=${access_token}`
 								);
 							});
 						}

@@ -465,8 +465,11 @@ export default {
 			new Promise(res => {
 				this.$cookies.removeAll();
 				res(true);
-			}).then((_) => {
-				if (this.referrer != "wainsight" && window.top) {
+			}).then(_ => {
+				if (
+					this.referrer != 'wainsight' ||
+					(this.referrer != 'wapatron' && window.top)
+				) {
 					window.top.postMessage({ status: 200 }, '*');
 				} else {
 					return this.$router.replace(
