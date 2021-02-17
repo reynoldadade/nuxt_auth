@@ -21,7 +21,7 @@ export default ({ route, store }) => {
 				color: 'black',
 				logo: 'IconBlack.svg',
 				caption:
-					'WaInsight enables residential Real Estate market participants to understand the quality of every neighbourhood, postcode or zip code.',
+					'We craft and create software as a service solutions that let you speak to, serve, and understand your community.',
 			});
 		}
 	} else {
@@ -29,7 +29,7 @@ export default ({ route, store }) => {
 			color: 'black',
 			logo: 'IconBlack.svg',
 			caption:
-				'WaInsight enables residential Real Estate market participants to understand the quality of every neighbourhood, postcode or zip code.',
+				'We craft and create software as a service solutions that let you speak to, serve, and understand your community.',
 		});
 	}
 };
