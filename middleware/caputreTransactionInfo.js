@@ -1,5 +1,6 @@
 export default function({ app, route }) {
 	const { package_id, payment_type, referrer, run_id } = route.query;
+	console.log(route.query);
 
 	if (package_id && payment_type) {
 		app.$cookies.set(
@@ -9,7 +10,7 @@ export default function({ app, route }) {
 				path: '/',
 				maxAge: 3600,
 				sameSite: 'none',
-				secure:true
+				secure: true,
 			}
 		);
 	}
@@ -28,7 +29,7 @@ function saveReferrer($cookies, referrer) {
 			path: '/',
 			maxAge: 3600,
 			sameSite: 'none',
-			secure:true
+			secure: true,
 		});
 	}
 }
@@ -39,7 +40,7 @@ function saveRun($cookies, run_id) {
 			path: '/',
 			maxAge: 3600,
 			sameSite: 'none',
-			secure:true
+			secure: true,
 		});
 	}
 }

@@ -28,7 +28,7 @@ export default {
 					rel: 'stylesheet',
 				},
 				{
-					href:'/css/styles.css',
+					href: '/css/styles.css',
 					rel: 'stylesheet',
 				},
 			],

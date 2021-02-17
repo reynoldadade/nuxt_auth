@@ -1,17 +1,26 @@
 <template>
-	<div class="text-center pt-5 pb-12">
+	<div class="text-center py-5">
 		<p>
 			{{ mainText }}
-			<nuxt-link :to="link" class="underline font-semibold">{{
-				linkText
-			}}</nuxt-link>
+			<nuxt-link
+				:to="link"
+				class="font-semibold"
+				:class="`text-${getUiConfig.color}`"
+				>{{ linkText }}</nuxt-link
+			>
 		</p>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
 	props: ['link', 'mainText', 'linkText'],
+	computed: {
+		...mapGetters({
+			getUiConfig: 'components/getUiConfig',
+		}),
+	},
 };
 </script>
 

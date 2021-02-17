@@ -467,11 +467,14 @@ export default {
 				res(true);
 			}).then(_ => {
 				if (
-					this.referrer != 'wainsight' ||
-					(this.referrer != 'wapatron' && window.top)
+					this.referrer != 'wainsight' &&
+					this.referrer != 'wapatron' &&
+					window.top
 				) {
 					window.top.postMessage({ status: 200 }, '*');
+					console.log('window.top run', this.referrer);
 				} else {
+					console.log('succcess run', this.referrer);
 					return this.$router.replace(
 						`/checkout/success?refer=${this.referrer}`
 					);
