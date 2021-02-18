@@ -19,7 +19,7 @@ export default {
             let url = process.env.WALULEL_LINK;
 			switch (refer) {
 				case 'wapatron':
-					return url = process.env.WAPATRON_LINK;
+					return url = process.env.WAPATRON_LINK + '/offers';
 				case 'wacommunicate':
 					return url = process.env.WACOMM_LINK;
 				case 'waartisan':
