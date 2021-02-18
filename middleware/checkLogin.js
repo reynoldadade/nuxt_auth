@@ -1,5 +1,4 @@
 export default ({ app, env, route, redirect }) => {
-	const redirectAuthUrl = '';
 	const { redirect_url } = route.query;
 	if (!redirect_url) {
 		const token = app.$cookies.get('s_token');
@@ -10,8 +9,6 @@ export default ({ app, env, route, redirect }) => {
 			if (route.path !== '/') {
 				app.$cookies.removeAll();
 				return redirect('/');
-			} else {
-				console.log('/');
 			}
 		}
 	}
