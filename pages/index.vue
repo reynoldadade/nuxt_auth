@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full flex flex-wrap h-screen items-center p-2">
 		<!-- Login Section -->
-		<div class="h-full w-1/2 flex flex-col justify-around">
+		<div class="h-full w-full md:w-1/2 flex flex-col  justify-around">
 			<div class="w-full flex flex-col items-center">
 				<div class="flex justify-around w-full">
 					<a href="#" class="">
@@ -12,8 +12,8 @@
 						/>
 					</a>
 				</div>
-
-				<div class="flex flex-col w-2/3">
+				<!-- flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32 -->
+				<div class="flex flex-col w-full md:w-full  lg:w-2/3">
 					<p class="text-center text-3xl" :class="`text-black`">
 						Login
 					</p>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 		<div
-			class="xs:hidden md:w-1/2 flex flex-col justify-around items-center"
+			class=" xs:hidden w-full md:w-1/2  flex flex-col  justify-around items-center "
 		>
 			<object
 				type="image/svg+xml"
@@ -52,7 +52,10 @@
 					}
 				</style>
 			</object>
-			<div class="w-2/3 text-center" :class="`text-${getUiConfig.color}`">
+			<div
+				class="w-full md:w-2/3 text-center"
+				:class="`text-${getUiConfig.color}`"
+			>
 				{{ getUiConfig.caption }}
 			</div>
 		</div>
