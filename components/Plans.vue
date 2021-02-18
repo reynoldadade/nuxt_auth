@@ -31,7 +31,7 @@
 					change plan
 				</button>
 				<a
-					class="block border-green-500 border-2 rounded uppercase text-green-500 p-1 m-2 hover:border-orange-500 hover:text-orange-500 flex-auto"
+					class="block border-green-500 border-2 rounded uppercase text-green-500 p-1 m-2 hover:border-yellow-500 hover:text-yellow-500 flex-auto"
 					:href="appLink"
 					role="button"
 					target="_blank"
