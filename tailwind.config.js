@@ -8,8 +8,8 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				'wa-orange': '#F37A39',
-				'wa-blue': '#497BC7',
+				waOrange: '#F37A39',
+				waBlue: '#497BC7',
 			},
 		},
 	},
