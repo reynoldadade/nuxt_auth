@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<div class="h-screen w-screen bg-blue-600 flex justify-center content-center flex-wrap">
+		<div
+			class="h-screen w-screen bg-blue-600 flex justify-center content-center flex-wrap"
+		>
 			<lottie-player
 				src="https://assets4.lottiefiles.com/packages/lf20_vU6KP7/Astronaut/astronaout.json"
 				background="transparent"
@@ -11,7 +13,9 @@
 			></lottie-player>
 		</div>
 
-		<div class="absolute w-screen bottom-0 mb-6 text-white text-center font-sans text-xl">
+		<div
+			class="absolute w-screen bottom-0 mb-6 text-white text-center font-sans text-xl"
+		>
 			<span class="opacity-50">Take me back to</span>
 			<nuxt-link class="border-b" to="/">Login</nuxt-link>
 		</div>
@@ -22,6 +26,13 @@
 export default {
 	head() {
 		return {
+			script: [
+				{
+					src:
+						'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+					body: true,
+				},
+			],
 			link: [
 				{
 					href:
@@ -29,7 +40,7 @@ export default {
 					rel: 'stylesheet',
 				},
 				{
-					href:'/css/styles.css',
+					href: '/css/styles.css',
 					rel: 'stylesheet',
 				},
 			],

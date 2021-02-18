@@ -1,43 +1,60 @@
 <template>
-	<div class="w-full flex flex-wrap">
+	<div class="w-full flex flex-wrap h-screen items-center p-2">
 		<!-- Login Section -->
-		<div class="w-full md:w-1/2 flex flex-col">
-			<div
-				class="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24"
-			>
-				<a href="#" class="">
-					<img
-						src="~assets/images/walulel_black.png"
-						alt=""
-						class="h-12 w-12"
-					/>
-				</a>
-			</div>
+		<div class="h-full w-1/2 flex flex-col justify-around">
+			<div class="w-full flex flex-col items-center">
+				<div class="flex justify-around w-full">
+					<a href="#" class="">
+						<img
+							src="~assets/images/walulel_black.png"
+							alt=""
+							class="h-12 w-12"
+						/>
+					</a>
+				</div>
 
+				<div class="flex flex-col w-2/3">
+					<p class="text-center text-3xl" :class="`text-black`">
+						Login
+					</p>
+					<LoginForm />
+
+					<Link
+						link="/register"
+						mainText="Don't have an account?"
+						linkText="Sign Up Here."
+					/>
+				</div>
+			</div>
 			<div
-				class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32"
+				class="flex justify-around p-1"
+				:class="`text-${getUiConfig.color}`"
 			>
-				<p class="text-center text-3xl text-black">Welcome</p>
-				<LoginForm />
-				<Link
-					link="/resetPassword"
-					mainText="Forgotten Password?"
-					linkText="Get help here."
-				/>
-				<hr class="h-2" />
-				<Link
-					link="/register"
-					mainText="Don't have an account?"
-					linkText="Register here."
-				/>
+				<div>FAQ</div>
+				<div>Help</div>
+				<div>Legal Notices</div>
 			</div>
 		</div>
-		<div class="xs:hidden md:w-1/2">
-			<!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_Advb2R.json"  background="transparent"  speed="1"  style="width: 100%; height: 100%;"  loop  autoplay></lottie-player> -->
-			<img
-				class="object-cover w-full h-screen hidden md:block"
-				src="~assets/images/home-splash.jpg"
-			/>
+		<div
+			class="xs:hidden md:w-1/2 flex flex-col justify-around items-center"
+		>
+			<object
+				type="image/svg+xml"
+				:data="`/${getUiConfig.logo}`"
+				class="logo mb-5"
+			>
+				404 logo
+				<!-- fallback image in CSS -->
+				<style>
+					.logo {
+						width: 50%;
+						height: 100%;
+					}
+				</style>
+			</object>
+			<div class="w-2/3 text-center" :class="`text-${getUiConfig.color}`">
+				{{ getUiConfig.caption }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -45,6 +62,7 @@
 <script>
 import LoginForm from '~/components/LoginForm';
 import Link from '~/components/common/Link';
+import { mapGetters } from 'vuex';
 export default {
 	head() {
 		return { title: 'Walulel | Login' };
@@ -53,6 +71,11 @@ export default {
 	components: {
 		LoginForm,
 		Link,
+	},
+	computed: {
+		...mapGetters({
+			getUiConfig: 'components/getUiConfig',
+		}),
 	},
 };
 </script>

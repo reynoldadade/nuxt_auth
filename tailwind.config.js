@@ -4,8 +4,18 @@
  ** Docs: https://tailwindcss.com/docs/configuration
  ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
  */
+
+const {
+	colors: { orange },
+} = require('tailwindcss/defaultTheme');
 module.exports = {
-	theme: {},
+	theme: {
+		extend: {
+			colors: {
+				orange: orange,
+			},
+		},
+	},
 	variants: {
 		opacity: ['disabled', 'responsive', 'focus', 'hover'],
 		cursor: ['responsive', 'hover', 'focus', 'disabled'],
