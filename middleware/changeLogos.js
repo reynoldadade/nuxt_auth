@@ -11,7 +11,7 @@ export default ({ route, store }) => {
 			});
 		} else if (redirect_url.includes('insight')) {
 			return store.dispatch('components/setUiConfig', {
-				color: 'blue-500',
+				color: 'black',
 				logo: 'WaInsight.svg',
 				caption:
 					'WaInsight enables residential Real Estate market participants to understand the quality of every neighbourhood, postcode or zip code.',
