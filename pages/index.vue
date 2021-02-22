@@ -4,19 +4,22 @@
 		<div class="h-full w-full md:w-1/2 flex flex-col  justify-around">
 			<div class="w-full flex flex-col items-center">
 				<div class="flex justify-around w-full">
-					<a href="#" class="">
+					<a href="/" class="">
 						<img
-							src="~assets/images/walulel_black.png"
+							src="/images/walulel_black.png"
 							alt=""
-							class="h-12 w-12"
+							class="w-16 mb-5"
 						/>
 					</a>
 				</div>
 				<!-- flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32 -->
 				<div class="flex flex-col w-full md:w-full  lg:w-2/3">
-					<p class="text-center text-3xl" :class="`text-black`">
-						Login
-					</p>
+					<h1
+						class="text-center text-3xl font-bold"
+						:class="`text-black`"
+					>
+						Log in
+					</h1>
 					<LoginForm />
 
 					<Link

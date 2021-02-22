@@ -4,7 +4,7 @@
 			<!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_Advb2R.json"  background="transparent"  speed="1"  style="width: 100%; height: 100%;"  loop  autoplay></lottie-player> -->
 			<img
 				class="object-cover w-full h-screen hidden md:block"
-				src="~assets/images/home-splash.jpg"
+				src="/images/home-splash.jpg"
 			/>
 		</div>
 		<RegisterComponent />
