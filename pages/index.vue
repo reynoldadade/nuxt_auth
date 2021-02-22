@@ -1,7 +1,7 @@
 <template>
 	<div class="w-full flex flex-wrap h-screen items-center p-2">
 		<!-- Login Section -->
-		<div class="h-full w-full md:w-1/2 flex flex-col  justify-around">
+		<div class="h-full w-full lg:w-1/2 flex flex-col  justify-around">
 			<div class="w-full flex flex-col items-center">
 				<div class="flex justify-around w-full">
 					<a href="/" class="">
@@ -13,7 +13,9 @@
 					</a>
 				</div>
 				<!-- flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32 -->
-				<div class="flex flex-col w-full md:w-full  lg:w-2/3">
+				<div
+					class="flex flex-col w-11/12 sm:w-5/6 md:w-4/6 lg:w-3/4 xl:w-2/3"
+				>
 					<h1
 						class="text-center text-3xl font-bold"
 						:class="`text-black`"
@@ -61,14 +63,14 @@
 			</div>
 		</div>
 		<div
-			class="_product-logo xs:hidden w-full h-full md:w-1/2 flex flex-col justify-center items-center "
+			class="_product-logo hidden lg:flex w-full h-full md:w-1/2 flex-col justify-center items-center "
 		>
 			<img
 				:src="`/${getUiConfig.logo}`"
 				class="logo mb-5"
 				:class="{
-					'w-3/5': getUiConfig.logo === 'WaInsight.svg',
-					'w-2/4': getUiConfig.logo === 'WaCommunicate.svg',
+					'w-3/5 xl:w-2/4': getUiConfig.logo === 'WaInsight.svg',
+					'w-2/4 xl:w-2/5': getUiConfig.logo === 'WaCommunicate.svg',
 					'w-1/4': getUiConfig.logo === 'IconBlack.svg',
 				}"
 			/>
@@ -112,9 +114,6 @@ export default {
 		...mapGetters({
 			getUiConfig: 'components/getUiConfig',
 		}),
-	},
-	mounted() {
-		console.log(this.getUiConfig);
 	},
 };
 </script>
