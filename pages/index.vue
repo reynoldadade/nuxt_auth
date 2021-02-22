@@ -76,7 +76,7 @@
 			/>
 			<p
 				class="w-full md:w-2/3 text-center"
-				:class="`text-${getUiConfig.color} text-lg`"
+				:class="`text-${getUiConfig.color} text-lg font-semibold`"
 			>
 				{{ getUiConfig.caption }}
 			</p>
