@@ -61,28 +61,23 @@
 			</div>
 		</div>
 		<div
-			class=" xs:hidden w-full md:w-1/2  flex flex-col  justify-around items-center "
+			class="_product-logo xs:hidden w-full h-full md:w-1/2 flex flex-col justify-center items-center "
 		>
-			<object
-				type="image/svg+xml"
-				:data="`/${getUiConfig.logo}`"
+			<img
+				:src="`/${getUiConfig.logo}`"
 				class="logo mb-5"
-			>
-				404 logo
-				<!-- fallback image in CSS -->
-				<style>
-					.logo {
-						width: 50%;
-						height: 100%;
-					}
-				</style>
-			</object>
-			<div
+				:class="{
+					'w-3/5': getUiConfig.logo === 'WaInsight.svg',
+					'w-2/4': getUiConfig.logo === 'WaCommunicate.svg',
+					'w-1/4': getUiConfig.logo === 'IconBlack.svg',
+				}"
+			/>
+			<p
 				class="w-full md:w-2/3 text-center"
-				:class="`text-${getUiConfig.color}`"
+				:class="`text-${getUiConfig.color} text-lg`"
 			>
 				{{ getUiConfig.caption }}
-			</div>
+			</p>
 		</div>
 	</div>
 </template>
@@ -118,7 +113,14 @@ export default {
 			getUiConfig: 'components/getUiConfig',
 		}),
 	},
+	mounted() {
+		console.log(this.getUiConfig);
+	},
 };
 </script>
 
-<style></style>
+<style scope>
+._product-logo {
+	background-color: #fbfbfb;
+}
+</style>
