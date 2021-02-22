@@ -20,6 +20,7 @@
 					>
 						Log in
 					</h1>
+
 					<LoginForm />
 
 					<Link
@@ -30,12 +31,33 @@
 				</div>
 			</div>
 			<div
-				class="flex justify-around p-1"
+				class="flex justify-center p-1"
 				:class="`text-${getUiConfig.color}`"
 			>
-				<div>FAQ</div>
-				<div>Help</div>
-				<div>Legal Notices</div>
+				<div>
+					<a
+						:href="siteDomain + '/faq'"
+						target="_blank"
+						class="_text-orange font-semibold"
+						>FAQ</a
+					>
+				</div>
+				<div class="ml-20">
+					<a
+						href="#"
+						target="_blank"
+						class="_text-orange font-semibold"
+						>Help</a
+					>
+				</div>
+				<div>
+					<a
+						:href="siteDomain + '/legal'"
+						target="_blank"
+						class="_text-orange ml-20 font-semibold"
+						>Legal Notices</a
+					>
+				</div>
 			</div>
 		</div>
 		<div
@@ -69,6 +91,8 @@
 import LoginForm from '~/components/LoginForm';
 import Link from '~/components/common/Link';
 import { mapGetters } from 'vuex';
+import getCorrectDomain from '~/assets/js/getCorrectDomain';
+
 export default {
 	head() {
 		return { title: 'Walulel | Login' };
@@ -77,6 +101,17 @@ export default {
 	components: {
 		LoginForm,
 		Link,
+	},
+	asyncData({ req }) {
+		let siteDomain = '';
+
+		if (process.server) {
+			siteDomain = getCorrectDomain(true, req);
+		} else {
+			siteDomain = getCorrectDomain(false, window);
+		}
+
+		return { siteDomain };
 	},
 	computed: {
 		...mapGetters({

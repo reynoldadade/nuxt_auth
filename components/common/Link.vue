@@ -5,7 +5,7 @@
 			<nuxt-link
 				:to="link"
 				class="font-semibold"
-				:class="`text-${getUiConfig.color}`"
+				:class="`text-${getUiConfig.color} _text-orange`"
 				>{{ linkText }}</nuxt-link
 			>
 		</p>

@@ -1,3 +1,7 @@
+* {
+	transition: all 0.3s ease;
+}
+
 body {
 	font-family: 'Karla', sans-serif;
 }
@@ -38,4 +42,24 @@ body {
 	100% {
 		transform: translate(1px, -2px) rotate(-1deg);
 	}
+}
+
+._bg-orange:disabled {
+	background-color: #ffb68f !important;
+}
+._bg-orange:disabled:hover {
+	background-color: #ffb68f !important;
+}
+._bg-orange {
+	background-color: #f37a39 !important;
+	color: #fff !important;
+}
+._bg-orange:hover {
+	background-color: rgb(194, 68, 0) !important;
+}
+._text-orange {
+	color: #f37a39 !important;
+}
+._text-orange:hover {
+	color: rgb(194, 68, 0) !important;
 }
