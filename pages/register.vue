@@ -1,6 +1,6 @@
 <template>
-	<div class="w-full flex flex-wrap">
-		<div class="xs:hidden md:w-1/2">
+	<div class="flex flex-wrap flex-row-reverse relative">
+		<div class="hidden lg:block lg:w-1/2 max-h-full">
 			<!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_Advb2R.json"  background="transparent"  speed="1"  style="width: 100%; height: 100%;"  loop  autoplay></lottie-player> -->
 			<img
 				class="object-cover w-full h-screen hidden md:block"
@@ -27,4 +27,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scope>
+._product-logo {
+	background-color: #fbfbfb;
+}
+</style>

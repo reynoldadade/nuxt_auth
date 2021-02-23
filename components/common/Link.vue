@@ -1,5 +1,5 @@
 <template>
-	<div class="text-center py-5">
+	<div class="py-5" :class="{ 'text-center': textCenter }">
 		<p>
 			{{ mainText }}
 			<nuxt-link
@@ -15,7 +15,25 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
-	props: ['link', 'mainText', 'linkText'],
+	props: {
+		link: {
+			type: String,
+			required: true,
+		},
+		mainText: {
+			type: String,
+			required: true,
+		},
+		linkText: {
+			type: String,
+			required: true,
+		},
+		textCenter: {
+			type: Boolean,
+			required: false,
+			default: true,
+		},
+	},
 	computed: {
 		...mapGetters({
 			getUiConfig: 'components/getUiConfig',
