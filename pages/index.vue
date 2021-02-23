@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<div
-			class="_product-logo hidden lg:flex w-full h-full md:w-1/2 flex-col justify-center items-center "
+			class="_product-logo hidden lg:flex w-full h-full md:w-1/2 flex-col justify-center items-center"
 		>
 			<img
 				:src="`/${getUiConfig.logo}`"

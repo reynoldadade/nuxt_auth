@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="_parent w-full lg:w-1/2 lg:h-screen flex items-center overflow-y-auto lg:fixed lg:left-0"
+		class="_parent w-full lg:w-1/2 lg:h-screen flex items-center overflow-y-auto lg:pt-44 2xl:pt-24"
 	>
 		<div
 			class="_wrapper bg-white px-8 pt-5 py-10 flex flex-col my-1 self-center w-full"
@@ -486,12 +486,6 @@ export default {
 				this.$v.form.tagged_products.$model = [];
 		}
 	},
-	watch: {
-		'$v.form.tagged_products.$model': (newVal, oldVal) => {
-			console.log('old-', oldVal);
-			console.log('new-', newVal);
-		},
-	},
 };
 </script>
 
@@ -508,5 +502,7 @@ export default {
 	body {
 		overflow-y: hidden !important;
 	}
+}
+@media screen and (min-height: 450px) {
 }
 </style>
