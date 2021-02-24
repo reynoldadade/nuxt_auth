@@ -1,11 +1,13 @@
 <template>
 	<div
-		class="_parent w-full lg:w-1/2 lg:h-screen flex items-center overflow-y-auto lg:pt-44 2xl:pt-24"
+		class="_parent w-full lg:w-1/2 lg:h-screen flex items-center overflow-y-auto relative"
 	>
 		<div
-			class="_wrapper bg-white px-8 pt-5 py-10 flex flex-col my-1 self-center w-full"
+			class="_wrapper bg-white px-8 pt-5 py-10 flex flex-col my-1 self-center w-full relative"
 		>
-			<div class="text-center lg:text-left md:w-5/6 md:mx-auto">
+			<div
+				class="text-center lg:text-left md:w-5/6 md:mx-auto lg:mt-44 xl:mt-20"
+			>
 				<a href="/">
 					<img
 						src="/images/walulel_black.png"
@@ -502,7 +504,5 @@ export default {
 	body {
 		overflow-y: hidden !important;
 	}
-}
-@media screen and (min-height: 450px) {
 }
 </style>

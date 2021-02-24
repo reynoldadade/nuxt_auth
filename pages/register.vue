@@ -42,9 +42,6 @@ export default {
 			getUiConfig: 'components/getUiConfig',
 		}),
 	},
-	mounted() {
-		console.log(this.getUiConfig);
-	},
 };
 </script>
 
