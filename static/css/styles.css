@@ -63,3 +63,19 @@ body {
 ._text-orange:hover {
 	color: rgb(194, 68, 0) !important;
 }
+
+.page-enter-active {
+	animation: PageAnimation 0.5s ease-in;
+}
+.page-leave-active {
+	animation: PageAnimation 0.5s ease-in reverse;
+}
+
+@keyframes PageAnimation {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
