@@ -26,7 +26,7 @@
 					<LoginForm />
 
 					<Link
-						link="/register"
+						:link="'/register' + urlQueries"
 						mainText="Don't have an account?"
 						linkText="Sign Up Here."
 					/>
@@ -114,6 +114,18 @@ export default {
 		...mapGetters({
 			getUiConfig: 'components/getUiConfig',
 		}),
+		urlQueries() {
+			let url_queries = '';
+
+			if (this.$route.query.redirect_url) {
+				url_queries += `?redirect_url=${this.$route.query.redirect_url}`;
+			}
+			if (this.$route.query.expect_token) {
+				url_queries += `?expect_token=${this.$route.query.expect_token}`;
+			}
+
+			return url_queries;
+		},
 	},
 };
 </script>

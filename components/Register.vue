@@ -17,7 +17,7 @@
 				</a>
 				<h1 class="font-bold text-2xl">Sign up</h1>
 				<Link
-					link="/"
+					:link="'/' + urlQueries"
 					mainText="Already have an account?"
 					linkText="Login here."
 					:textCenter="false"
@@ -322,6 +322,18 @@ export default {
 		...mapGetters({
 			countries: 'countries/getCountries',
 		}),
+		urlQueries() {
+			let url_queries = '';
+
+			if (this.$route.query.redirect_url) {
+				url_queries += `?redirect_url=${this.$route.query.redirect_url}`;
+			}
+			if (this.$route.query.expect_token) {
+				url_queries += `?expect_token=${this.$route.query.expect_token}`;
+			}
+
+			return url_queries;
+		},
 	},
 	components: {
 		'vue-tel-input': VueTelInput,
