@@ -39,4 +39,8 @@ export default {
 	},
 };
 </script>
-<style></style>
+<style>
+::selection {
+	background-color: rgb(255, 219, 160);
+}
+</style>

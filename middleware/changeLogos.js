@@ -1,6 +1,5 @@
 export default ({ route, store }) => {
 	const { redirect_url } = route.query;
-	console.log(route.query);
 	if (redirect_url) {
 		if (redirect_url.includes('communicate')) {
 			return store.dispatch('components/setUiConfig', {

@@ -155,7 +155,7 @@
 								class="_password1 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline relative"
 								id="grid-password"
 								:type="showPassword ? 'text' : 'password'"
-								placeholder="******************"
+								placeholder="Enter your password"
 								v-model="$v.form.password.$model"
 								required
 							/>
@@ -163,7 +163,11 @@
 								:class="
 									showPassword ? 'fa-eye' : 'fa-eye-slash'
 								"
-								class="_toggle-password fas absolute"
+								class="_toggle-password fas absolute cursor-pointer"
+								:title="
+									(showPassword ? 'Hide' : 'Show') +
+										' password'
+								"
 								@click="toggleShowPassword"
 							></i>
 						</div>
@@ -189,10 +193,10 @@
 						</label>
 						<div class="input-group relative">
 							<input
-								class="appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+								class="_password2 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 								id="grid-repeat-password"
 								:type="showPassword2 ? 'text' : 'password'"
-								placeholder="******************"
+								placeholder="Enter your password again"
 								v-model="$v.form.password_confirmation.$model"
 								required
 							/>
@@ -200,7 +204,11 @@
 								:class="
 									showPassword2 ? 'fa-eye' : 'fa-eye-slash'
 								"
-								class="_toggle-password fas absolute"
+								class="_toggle-password fas absolute cursor-pointer"
+								:title="
+									(showPassword2 ? 'Hide' : 'Show') +
+										' password'
+								"
 								@click="toggleShowPassword2"
 							></i>
 						</div>
@@ -285,7 +293,7 @@
 				</div>
 				<div class="text-center">
 					<button
-						class="text-white font-bold rounded-full text-lg p-2 mt-5 disabled:opacity-75 disabled:cursor-not-allowed w-2/3 _bg-orange"
+						class="text-white font-bold rounded-full text-lg p-2 mt-5 disabled:opacity-75 disabled:cursor-not-allowed w-2/3 _bg-orange outline-none border-0"
 						type="submit"
 						:disabled="$v.$invalid"
 					>
@@ -485,7 +493,7 @@ export default {
 				this.$v.form.tagged_products.$model = [targetProducts];
 				break;
 			default:
-				this.$v.form.tagged_products.$model = [];
+				this.$v.form.tagged_products.$model = ['WaCommunicate'];
 		}
 	},
 };
@@ -504,5 +512,15 @@ export default {
 	body {
 		overflow-y: hidden !important;
 	}
+}
+._parent::-webkit-scrollbar {
+	width: 8px;
+	background: #e9e9e9;
+}
+._parent::-webkit-scrollbar-thumb {
+	background: #ccc;
+}
+._parent::-webkit-scrollbar-thumb:active {
+	background: #888;
 }
 </style>
