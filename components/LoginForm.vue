@@ -70,6 +70,8 @@
 import { required, email } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
 import Link from '~/components/common/Link';
+import getCorrectDomain from '~/assets/js/getCorrectDomain';
+
 export default {
 	data() {
 		return {
@@ -142,15 +144,27 @@ export default {
 									redirect_url,
 									expect_token,
 								} = this.$route.query;
+								let destination = '';
 
-								if (redirect_url) {
-									const outURL = `http://${redirect_url}?token=${access_token}`;
-									return window.location.replace(outURL);
+								if (
+									redirect_url &&
+									/((staging\.)?wa-(communicate|insight)\.com)/.test(
+										redirect_url
+									)
+								) {
+									destination = `https://${redirect_url}?token=${access_token}`;
+								} else {
+									if (
+										getCorrectDomain(false, window) ===
+										'https://staging.walulel.com'
+									) {
+										destination = `https://staging.wa-communicate.com/?token=${access_token}`;
+									} else {
+										destination = `https://wa-communicate.com/?token=${access_token}`;
+									}
 								}
 
-								return window.location.replace(
-									`${process.env.WALULEL_LINK}?token=${access_token}`
-								);
+								return window.location.replace(destination);
 							});
 						}
 					},

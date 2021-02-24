@@ -293,7 +293,7 @@
 				</div>
 				<div class="text-center">
 					<button
-						class="text-white font-bold rounded-full text-lg p-2 mt-5 disabled:opacity-75 disabled:cursor-not-allowed w-2/3 _bg-orange outline-none border-0"
+						class="_submit-btn text-white font-bold rounded-full text-lg p-2 mt-5 disabled:opacity-75 disabled:cursor-not-allowed w-2/3 _bg-orange"
 						type="submit"
 						:disabled="$v.$invalid"
 					>
@@ -435,16 +435,16 @@ export default {
 					let destination = '';
 
 					const productInUrl =
-						this.$route.query.redirect_to &&
+						this.$route.query.redirect_url &&
 						/((staging\.)?wa-(communicate|insight)\.com)/.test(
-							this.$route.query.redirect_to
+							this.$route.query.redirect_url
 						);
 
 					if (
 						productInUrl &&
 						this.$v.form.tagged_products.$model.length !== 0
 					) {
-						destination = `https://${this.$route.query.redirect_to}`;
+						destination = `https://${this.$route.query.redirect_url}`;
 					} else {
 						if (
 							getCorrectDomain(false, window) ===
@@ -468,17 +468,17 @@ export default {
 		},
 	},
 	created() {
-		const { redirect_to } = this.$route.query;
+		const { redirect_url } = this.$route.query;
 
 		let targetProducts = '';
 		const productInUrl =
-			redirect_to &&
-			/((staging\.)?wa-(communicate|insight)\.com)/.test(redirect_to);
+			redirect_url &&
+			/((staging\.)?wa-(communicate|insight)\.com)/.test(redirect_url);
 
 		if (productInUrl) {
-			if (redirect_to.indexOf('wa-communicate') !== -1) {
+			if (redirect_url.indexOf('wa-communicate') !== -1) {
 				targetProducts = 'WaCommunicate';
-			} else if (redirect_to.indexOf('wa-insight') !== -1) {
+			} else if (redirect_url.indexOf('wa-insight') !== -1) {
 				targetProducts = 'WaInsight';
 			}
 		} else {
@@ -507,6 +507,10 @@ export default {
 ._toggle-password {
 	top: 11px;
 	right: 12px;
+}
+._submit-btn {
+	border: 0 !important;
+	outline: 0 !important;
 }
 @media screen and (min-width: 992px) {
 	body {
