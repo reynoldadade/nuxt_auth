@@ -499,13 +499,19 @@ export default {
 
 		switch (targetProducts) {
 			case 'WaCommunicate':
-				this.$v.form.tagged_products.$model = [targetProducts];
+				this.$v.form.tagged_products.$model = ['WaCommunicate'];
+				this.form.tagged_products = ['WaCommunicate'];
+				this.tagged_products = ['WaCommunicate'];
 				break;
 			case 'WaInsight':
-				this.$v.form.tagged_products.$model = [targetProducts];
+				this.$v.form.tagged_products.$model = ['WaInsight'];
+				this.form.tagged_products = ['WaInsight'];
+				this.tagged_products = ['WaInsight'];
 				break;
 			default:
 				this.$v.form.tagged_products.$model = ['WaCommunicate'];
+				this.form.tagged_products = ['WaCommunicate', 'WaInsight'];
+				this.tagged_products = ['WaCommunicate', 'WaInsight'];
 		}
 	},
 };

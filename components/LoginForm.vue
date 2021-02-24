@@ -146,25 +146,27 @@ export default {
 								} = this.$route.query;
 								let destination = '';
 
-								if (
-									redirect_url &&
-									/((staging\.)?wa-(communicate|insight)\.com)/.test(
-										redirect_url
-									)
-								) {
-									destination = `https://${redirect_url}?token=${access_token}`;
-								} else {
-									if (
-										getCorrectDomain(false, window) ===
-										'https://staging.walulel.com'
-									) {
-										destination = `https://staging.wa-communicate.com/?token=${access_token}`;
-									} else {
-										destination = `https://wa-communicate.com/?token=${access_token}`;
-									}
-								}
+								console.log(response.data);
 
-								return window.location.replace(destination);
+								// if (
+								// 	redirect_url &&
+								// 	/((staging\.)?wa-(communicate|insight)\.com)/.test(
+								// 		redirect_url
+								// 	)
+								// ) {
+								// 	destination = `https://${redirect_url}?token=${access_token}`;
+								// } else {
+								// 	if (
+								// 		getCorrectDomain(false, window) ===
+								// 		'https://staging.walulel.com'
+								// 	) {
+								// 		destination = `https://staging.wa-communicate.com/?token=${access_token}`;
+								// 	} else {
+								// 		destination = `https://wa-communicate.com/?token=${access_token}`;
+								// 	}
+								// }
+
+								// return window.location.replace(destination);
 							});
 						}
 					},
