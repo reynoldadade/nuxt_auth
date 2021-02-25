@@ -8,6 +8,7 @@ export default ({ req, app, env, route, redirect }) => {
 		if (token) {
 			const redirectDestination = getRedirectDestination(
 				req,
+				app.$cookies.get('user_country') === 'GH',
 				app.$cookies.get('interested_products')
 			);
 
@@ -24,7 +25,7 @@ export default ({ req, app, env, route, redirect }) => {
 	}
 };
 
-function getRedirectDestination(req, products) {
+function getRedirectDestination(req, userIsGhanaian, products) {
 	let domain = '';
 	let redirectDestination = '';
 
@@ -36,7 +37,11 @@ function getRedirectDestination(req, products) {
 
 	const isStaging = domain === 'https://staging.walulel.com';
 
-	redirectDestination = getDestinationAfterRegister(isStaging, products);
+	redirectDestination = getDestinationAfterRegister(
+		isStaging,
+		userIsGhanaian,
+		products
+	);
 
 	return redirectDestination;
 }

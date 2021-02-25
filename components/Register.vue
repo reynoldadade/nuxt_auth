@@ -463,8 +463,12 @@ export default {
 							getCorrectDomain(false, window) ===
 							'https://staging.walulel.com';
 
+						const userIsGhanaian =
+							this.$cookies.get('user_country') === 'GH';
+
 						destination = getDestinationAfterRegister(
 							isStaging,
+							userIsGhanaian,
 							this.form.tagged_products
 						);
 					}

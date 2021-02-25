@@ -1,8 +1,11 @@
-export default (isStaging, products) => {
-	const hasBothProducts = products.length === 2;
+export default (isStaging, isGhanaian, products) => {
+	const hasBothProductsOrNone =
+		products.length === 2 || products.length === 0;
 
-	if (hasBothProducts) {
-		return `https://${isStaging ? 'staging.' : ''}wa-communicate.com`;
+	if (hasBothProductsOrNone) {
+		return `https://${isStaging ? 'staging.' : ''}wa-${
+			isGhanaian ? 'communicate' : 'insight'
+		}.com`;
 	}
 
 	return `https://${

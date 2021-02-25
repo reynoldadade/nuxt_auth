@@ -138,6 +138,9 @@ export default {
 									product => product.name
 								);
 
+								const country = response.data.user.country;
+
+								// set user profiled products
 								this.$cookies.set(
 									'interested_products',
 									JSON.stringify(products),
@@ -146,6 +149,12 @@ export default {
 										maxAge: 60 * 60 * 24 * 7,
 									}
 								);
+
+								// set user country
+								this.$cookies.set('user_country', country, {
+									path: '/',
+									maxAge: 60 * 60 * 24 * 7,
+								});
 
 								mixpanel.track('User Logged', {
 									User: user.name,
@@ -157,7 +166,7 @@ export default {
 								let destination = '';
 
 								// return console.log(
-								// 	this.$cookies.get('interested_products')
+								// 	this.$cookies.get('user_country')
 								// );
 
 								if (
@@ -170,23 +179,50 @@ export default {
 								} else {
 									const {
 										tagged_products: products,
+										user,
 									} = response.data;
+
+									const userIsGhanaian =
+										user.country === 'GH';
+
 									const isStaging =
 										window.location.hostname ===
 											'staging.secure.walulel.com' ||
 										/(localhost|((\d{1,3}\.){3}(\d{1,3})))(:\d{1,})?/.test(
 											window.location.hostname
 										);
-									if (products.length === 2) {
-										destination = `https://${
-											isStaging ? 'staging.' : ''
-										}wa-communicate.com/?token=${access_token}`;
-									} else {
-										destination = `https://${
-											isStaging ? 'staging.' : ''
-										}wa-${products[0].slug.slice(
-											2
-										)}.com/?token=${access_token}`;
+
+									switch (products.length) {
+										case 2:
+											destination = `https://${
+												isStaging ? 'staging.' : ''
+											}wa-${
+												userIsGhanaian
+													? 'communicate'
+													: 'insight'
+											}.com/?token=${access_token}`;
+											break;
+
+										case 1:
+											destination = `https://${
+												isStaging ? 'staging.' : ''
+											}wa-${products[0].slug.slice(
+												2
+											)}.com/?token=${access_token}`;
+											break;
+
+										case 0:
+											destination = `https://${
+												isStaging ? 'staging.' : ''
+											}wa-${
+												userIsGhanaian
+													? 'communicate'
+													: 'insight'
+											}.com/?token=${access_token}`;
+											break;
+
+										default:
+											break;
 									}
 								}
 
