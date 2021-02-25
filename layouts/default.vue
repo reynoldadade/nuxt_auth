@@ -13,6 +13,11 @@ import Vue from 'vue';
 import global from '~/mixins/global.js';
 Vue.mixin(global);
 export default {
+	transition: {
+		name: 'page',
+		mode: 'out-in',
+	},
+
 	middleware: ['changeLogos'],
 
 	head() {
