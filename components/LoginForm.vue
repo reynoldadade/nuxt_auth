@@ -57,7 +57,7 @@
 				type="submit"
 				:disabled="formValid || loading"
 				class="text-white font-bold rounded-full text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed w-2/3"
-				:class="`bg-${getUiConfig.color}`"
+				:class="`bg-${getUiConfig.color} _bg-orange`"
 			>
 				Log In
 				<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
@@ -70,6 +70,8 @@
 import { required, email } from 'vuelidate/lib/validators';
 import { mapActions, mapGetters } from 'vuex';
 import Link from '~/components/common/Link';
+import getCorrectDomain from '~/assets/js/getCorrectDomain';
+
 export default {
 	data() {
 		return {
@@ -132,25 +134,99 @@ export default {
 								});
 								mixpanel.identify(user.email);
 
+								const products = response.data.tagged_products.map(
+									product => product.name
+								);
+
+								const country = response.data.user.country;
+
+								// set user profiled products
+								this.$cookies.set(
+									'interested_products',
+									JSON.stringify(products),
+									{
+										path: '/',
+										maxAge: 60 * 60 * 24 * 7,
+									}
+								);
+
+								// set user country
+								this.$cookies.set('user_country', country, {
+									path: '/',
+									maxAge: 60 * 60 * 24 * 7,
+								});
+
 								mixpanel.track('User Logged', {
 									User: user.name,
 									'Login time': new Date().toLocaleString(),
 								});
 								res(true);
 							}).then(_ => {
-								const {
-									redirect_url,
-									expect_token,
-								} = this.$route.query;
+								const { redirect_url } = this.$route.query;
+								let destination = '';
 
-								if (redirect_url) {
-									const outURL = `http://${redirect_url}?token=${access_token}`;
-									return window.location.replace(outURL);
+								// return console.log(
+								// 	this.$cookies.get('user_country')
+								// );
+
+								if (
+									redirect_url &&
+									/((staging\.)?wa-(communicate|insight)\.com)/.test(
+										redirect_url
+									)
+								) {
+									destination = `https://${redirect_url}?token=${access_token}`;
+								} else {
+									const {
+										tagged_products: products,
+										user,
+									} = response.data;
+
+									const userIsGhanaian =
+										user.country === 'GH';
+
+									const isStaging =
+										window.location.hostname ===
+											'staging.secure.walulel.com' ||
+										/(localhost|((\d{1,3}\.){3}(\d{1,3})))(:\d{1,})?/.test(
+											window.location.hostname
+										);
+
+									switch (products.length) {
+										case 2:
+											destination = `https://${
+												isStaging ? 'staging.' : ''
+											}wa-${
+												userIsGhanaian
+													? 'communicate'
+													: 'insight'
+											}.com/?token=${access_token}`;
+											break;
+
+										case 1:
+											destination = `https://${
+												isStaging ? 'staging.' : ''
+											}wa-${products[0].slug.slice(
+												2
+											)}.com/?token=${access_token}`;
+											break;
+
+										case 0:
+											destination = `https://${
+												isStaging ? 'staging.' : ''
+											}wa-${
+												userIsGhanaian
+													? 'communicate'
+													: 'insight'
+											}.com/?token=${access_token}`;
+											break;
+
+										default:
+											break;
+									}
 								}
 
-								return window.location.replace(
-									`${process.env.WALULEL_LINK}?token=${access_token}`
-								);
+								return window.location.replace(destination);
 							});
 						}
 					},

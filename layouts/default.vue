@@ -13,6 +13,11 @@ import Vue from 'vue';
 import global from '~/mixins/global.js';
 Vue.mixin(global);
 export default {
+	transition: {
+		name: 'page',
+		mode: 'out-in',
+	},
+
 	middleware: ['changeLogos'],
 
 	head() {
@@ -39,4 +44,8 @@ export default {
 	},
 };
 </script>
-<style></style>
+<style>
+::selection {
+	background-color: rgb(255, 219, 160);
+}
+</style>
