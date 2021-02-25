@@ -1,11 +1,23 @@
 <template>
-	<div class="w-full flex flex-wrap">
-		<div class="xs:hidden md:w-1/2">
-			<!-- <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_Advb2R.json"  background="transparent"  speed="1"  style="width: 100%; height: 100%;"  loop  autoplay></lottie-player> -->
+	<div class="flex flex-wrap flex-row-reverse relative">
+		<div
+			class="_product-logo hidden lg:flex lg:w-1/2 max-h-full flex-col justify-center items-center"
+		>
 			<img
-				class="object-cover w-full h-screen hidden md:block"
-				src="~assets/images/home-splash.jpg"
+				:src="`/${getUiConfig.logo}`"
+				class="logo mb-5"
+				:class="{
+					'w-3/5 xl:w-2/4': getUiConfig.logo === 'WaInsight.svg',
+					'w-2/4 xl:w-2/5': getUiConfig.logo === 'WaCommunicate.svg',
+					'w-1/4': getUiConfig.logo === 'IconBlack.svg',
+				}"
 			/>
+			<p
+				class="w-full md:w-2/3 text-center mt-8"
+				:class="`text-${getUiConfig.color} text-lg font-semibold`"
+			>
+				{{ getUiConfig.caption }}
+			</p>
 		</div>
 		<RegisterComponent />
 	</div>
@@ -13,6 +25,7 @@
 
 <script>
 import RegisterComponent from '@/components/Register';
+import { mapGetters } from 'vuex';
 export default {
 	name: 'register',
 	layout: 'default',
@@ -24,7 +37,16 @@ export default {
 	components: {
 		RegisterComponent,
 	},
+	computed: {
+		...mapGetters({
+			getUiConfig: 'components/getUiConfig',
+		}),
+	},
 };
 </script>
 
-<style></style>
+<style scope>
+._product-logo {
+	background-color: #fbfbfb;
+}
+</style>

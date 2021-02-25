@@ -3,11 +3,7 @@
 		class="flex p-3 justify-between text-blue-700 font-bold bg-white shadow"
 	>
 		<div class="flex-1">
-			<img
-				src="~assets/images/walulel_black.png"
-				alt=""
-				class="h-12 w-12"
-			/>
+			<img src="/images/walulel_black.png" alt="" class="h-12 w-12" />
 		</div>
 		<div class="flex-1 relative justify-end flex flex-end">
 			<div @mouseover="isOpen = true" @mouseleave="isOpen = false">

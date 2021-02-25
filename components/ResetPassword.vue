@@ -2,11 +2,7 @@
 	<div>
 		<div class="text-center">
 			<a class="">
-				<img
-					src="~assets/images/walulel_black.png"
-					alt=""
-					class="h-12 w-12"
-				/>
+				<img src="/images/walulel_black.png" alt="" class="h-12 w-12" />
 			</a>
 			<p class="font-bold text-xl mb-2">Reset Password</p>
 		</div>
