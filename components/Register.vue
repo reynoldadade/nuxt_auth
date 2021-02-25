@@ -315,6 +315,7 @@ import { mapGetters } from 'vuex';
 import { VueTelInput } from 'vue-tel-input';
 import Link from '@/components/common/Link';
 import getCorrectDomain from '~/assets/js/getCorrectDomain';
+import getDestinationAfterRegister from '~/assets/js/getDestinationAfterRegister';
 
 export default {
 	name: 'registerComponent',
@@ -458,14 +459,14 @@ export default {
 					) {
 						destination = `https://${this.$route.query.redirect_url}`;
 					} else {
-						if (
+						const isStaging =
 							getCorrectDomain(false, window) ===
-							'https://staging.walulel.com'
-						) {
-							destination = 'https://staging.wa-communicate.com';
-						} else {
-							destination = 'https://wa-communicate.com';
-						}
+							'https://staging.walulel.com';
+
+						destination = getDestinationAfterRegister(
+							isStaging,
+							this.form.tagged_products
+						);
 					}
 
 					window.location.replace(destination);
@@ -509,7 +510,10 @@ export default {
 				this.tagged_products = ['WaInsight'];
 				break;
 			default:
-				this.$v.form.tagged_products.$model = ['WaCommunicate'];
+				this.$v.form.tagged_products.$model = [
+					'WaCommunicate',
+					'WaInsight',
+				];
 				this.form.tagged_products = ['WaCommunicate', 'WaInsight'];
 				this.tagged_products = ['WaCommunicate', 'WaInsight'];
 		}

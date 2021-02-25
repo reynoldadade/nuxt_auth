@@ -134,39 +134,61 @@ export default {
 								});
 								mixpanel.identify(user.email);
 
+								const products = response.data.tagged_products.map(
+									product => product.name
+								);
+
+								this.$cookies.set(
+									'interested_products',
+									JSON.stringify(products),
+									{
+										path: '/',
+										maxAge: 60 * 60 * 24 * 7,
+									}
+								);
+
 								mixpanel.track('User Logged', {
 									User: user.name,
 									'Login time': new Date().toLocaleString(),
 								});
 								res(true);
 							}).then(_ => {
-								const {
-									redirect_url,
-									expect_token,
-								} = this.$route.query;
+								const { redirect_url } = this.$route.query;
 								let destination = '';
 
-								console.log(response.data);
+								// return console.log(
+								// 	this.$cookies.get('interested_products')
+								// );
 
-								// if (
-								// 	redirect_url &&
-								// 	/((staging\.)?wa-(communicate|insight)\.com)/.test(
-								// 		redirect_url
-								// 	)
-								// ) {
-								// 	destination = `https://${redirect_url}?token=${access_token}`;
-								// } else {
-								// 	if (
-								// 		getCorrectDomain(false, window) ===
-								// 		'https://staging.walulel.com'
-								// 	) {
-								// 		destination = `https://staging.wa-communicate.com/?token=${access_token}`;
-								// 	} else {
-								// 		destination = `https://wa-communicate.com/?token=${access_token}`;
-								// 	}
-								// }
+								if (
+									redirect_url &&
+									/((staging\.)?wa-(communicate|insight)\.com)/.test(
+										redirect_url
+									)
+								) {
+									destination = `https://${redirect_url}?token=${access_token}`;
+								} else {
+									const {
+										tagged_products: products,
+									} = response.data;
+									const isStaging =
+										window.location.hostname ===
+											'staging.secure.walulel.com' ||
+										/(localhost|((\d{1,3}\.){3}(\d{1,3})))(:\d{1,})?/.test(
+											window.location.hostname
+										);
+									if (products.length === 2) {
+										destination = `https://staging.wa-communicate.com/?token=${access_token}`;
+									} else {
+										destination = `https://${
+											isStaging ? 'staging.' : ''
+										}wa-${products[0].slug.slice(
+											2
+										)}.com/?token=${access_token}`;
+									}
+								}
 
-								// return window.location.replace(destination);
+								return window.location.replace(destination);
 							});
 						}
 					},
