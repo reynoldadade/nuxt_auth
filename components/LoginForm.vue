@@ -178,7 +178,9 @@ export default {
 											window.location.hostname
 										);
 									if (products.length === 2) {
-										destination = `https://staging.wa-communicate.com/?token=${access_token}`;
+										destination = `https://${
+											isStaging ? 'staging.' : ''
+										}wa-communicate.com/?token=${access_token}`;
 									} else {
 										destination = `https://${
 											isStaging ? 'staging.' : ''
