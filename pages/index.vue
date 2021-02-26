@@ -38,7 +38,7 @@
 			>
 				<div>
 					<a
-						:href="siteDomain + '/faq'"
+						:href="siteDomain + '/faqs'"
 						target="_blank"
 						class="_text-orange font-semibold"
 						>FAQ</a
