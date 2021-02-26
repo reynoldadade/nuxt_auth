@@ -38,20 +38,20 @@
 			>
 				<div>
 					<a
-						:href="siteDomain + '/faq'"
+						:href="siteDomain + '/faqs'"
 						target="_blank"
 						class="_text-orange font-semibold"
 						>FAQ</a
 					>
 				</div>
-				<div class="ml-20">
+				<!-- <div class="ml-20">
 					<a
 						href="#"
 						target="_blank"
 						class="_text-orange font-semibold"
 						>Help</a
 					>
-				</div>
+				</div> -->
 				<div>
 					<a
 						:href="siteDomain + '/legal'"

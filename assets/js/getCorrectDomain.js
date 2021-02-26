@@ -11,7 +11,7 @@ export default (isServer, hostSourceObj) => {
 	if (/(staging\.secure|localhost|((\d{1,3}\.){3}(\d{1,3})))/.test(host)) {
 		domain = 'https://staging.walulel.com';
 	} else {
-		domain = 'https://www.walulel.com';
+		domain = 'https://walulel.com';
 	}
 
 	return domain;

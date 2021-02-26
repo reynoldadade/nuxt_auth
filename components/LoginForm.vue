@@ -56,8 +56,7 @@
 				id="loginButton"
 				type="submit"
 				:disabled="formValid || loading"
-				class="text-white font-bold rounded-full text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed w-2/3"
-				:class="`bg-${getUiConfig.color} _bg-orange`"
+				class="text-white font-bold rounded-full text-lg hover:bg-gray-700 p-2 mt-8 disabled:opacity-75 disabled:cursor-not-allowed w-2/3 _bg-orange"
 			>
 				Log In
 				<i class="fas fa-circle-notch fa-spin" v-show="loading"></i>
