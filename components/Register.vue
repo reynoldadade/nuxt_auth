@@ -2,9 +2,7 @@
 	<div
 		class="_parent w-full lg:w-1/2 lg:h-screen flex flex-col items-center overflow-y-auto relative"
 	>
-		<div
-			class="text-center lg:text-left pt-10 md:w-5/6 md:mx-auto"
-		>
+		<div class="text-center lg:text-left pt-10 md:w-5/6 md:mx-auto">
 			<a href="/">
 				<img
 					src="/images/walulel_black.png"
@@ -428,35 +426,7 @@ export default {
 				});
 
 				setTimeout(() => {
-					let destination = '';
-
-					const productInUrl =
-						this.$route.query.redirect_url &&
-						/((staging\.)?wa-(communicate|insight)\.com)/.test(
-							this.$route.query.redirect_url
-						);
-
-					if (
-						productInUrl &&
-						this.$v.form.tagged_products.$model.length !== 0
-					) {
-						destination = `https://${this.$route.query.redirect_url}`;
-					} else {
-						const isStaging =
-							getCorrectDomain(false, window) ===
-							'https://staging.walulel.com';
-
-						const userIsGhanaian =
-							this.$cookies.get('user_country') === 'GH';
-
-						destination = getDestinationAfterRegister(
-							isStaging,
-							userIsGhanaian,
-							this.form.tagged_products
-						);
-					}
-
-					window.location.replace(destination);
+					this.$router.push('/');
 				}, 5000);
 			}
 		},
