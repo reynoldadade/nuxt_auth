@@ -72,6 +72,12 @@ import Link from '~/components/common/Link';
 import getCorrectDomain from '~/assets/js/getCorrectDomain';
 
 export default {
+	props: {
+		urlQueries: {
+			type: String,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			email: '',
@@ -168,12 +174,7 @@ export default {
 								// 	this.$cookies.get('user_country')
 								// );
 
-								if (
-									redirect_url &&
-									/((staging\.)?wa-(communicate|insight)\.com)/.test(
-										redirect_url
-									)
-								) {
+								if (redirect_url) {
 									destination = `https://${redirect_url}?token=${access_token}`;
 								} else {
 									const {

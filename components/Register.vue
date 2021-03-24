@@ -308,10 +308,7 @@ export default {
 			let url_queries = '';
 
 			if (this.$route.query.redirect_url) {
-				url_queries += `?redirect_url=${this.$route.query.redirect_url}`;
-			}
-			if (this.$route.query.expect_token) {
-				url_queries += `?expect_token=${this.$route.query.expect_token}`;
+				url_queries += `?redirect_url=${this.$route.query.redirect_url}&expect_token=true`;
 			}
 
 			return url_queries;
@@ -426,7 +423,7 @@ export default {
 				});
 
 				setTimeout(() => {
-					this.$router.push('/');
+					this.$router.push('/' + this.urlQueries);
 				}, 5000);
 			}
 		},
