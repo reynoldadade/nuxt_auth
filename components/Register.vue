@@ -2,9 +2,7 @@
 	<div
 		class="_parent w-full lg:w-1/2 lg:h-screen flex flex-col items-center overflow-y-auto relative"
 	>
-		<div
-			class="text-center lg:text-left pt-10 md:w-5/6 md:mx-auto"
-		>
+		<div class="text-center lg:text-left pt-10 md:w-5/6 md:mx-auto">
 			<a href="/">
 				<img
 					src="/images/walulel_black.png"
@@ -310,10 +308,7 @@ export default {
 			let url_queries = '';
 
 			if (this.$route.query.redirect_url) {
-				url_queries += `?redirect_url=${this.$route.query.redirect_url}`;
-			}
-			if (this.$route.query.expect_token) {
-				url_queries += `?expect_token=${this.$route.query.expect_token}`;
+				url_queries += `?redirect_url=${this.$route.query.redirect_url}&expect_token=true`;
 			}
 
 			return url_queries;
@@ -428,35 +423,7 @@ export default {
 				});
 
 				setTimeout(() => {
-					let destination = '';
-
-					const productInUrl =
-						this.$route.query.redirect_url &&
-						/((staging\.)?wa-(communicate|insight)\.com)/.test(
-							this.$route.query.redirect_url
-						);
-
-					if (
-						productInUrl &&
-						this.$v.form.tagged_products.$model.length !== 0
-					) {
-						destination = `https://${this.$route.query.redirect_url}`;
-					} else {
-						const isStaging =
-							getCorrectDomain(false, window) ===
-							'https://staging.walulel.com';
-
-						const userIsGhanaian =
-							this.$cookies.get('user_country') === 'GH';
-
-						destination = getDestinationAfterRegister(
-							isStaging,
-							userIsGhanaian,
-							this.form.tagged_products
-						);
-					}
-
-					window.location.replace(destination);
+					this.$router.push('/' + this.urlQueries);
 				}, 5000);
 			}
 		},
