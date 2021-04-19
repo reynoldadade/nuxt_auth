@@ -175,7 +175,7 @@ export default {
 								// );
 
 								if (redirect_url) {
-									destination = `${redirect_url}?token=${access_token}`;
+									destination = `http://${redirect_url}?token=${access_token}`;
 								} else {
 									const {
 										tagged_products: products,
