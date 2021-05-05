@@ -18,31 +18,57 @@
 				:textCenter="false"
 			/>
 		</div>
-		<form @submit.prevent="register" class="w-11/12 md:w-5/6 md:mx-auto">
+		<form @submit.prevent="register" class="w-11/12 md:mx-auto">
 			<div class="-mx-3 md:flex mb-6">
-				<div class="md:w-full px-3 mb-6 md:mb-0">
-					<label
-						class="block tracking-wide text-grey-darker text-sm font-bold mb-1"
-						for="grid-full-name"
-					>
-						Full Name
-					</label>
-					<input
-						class="appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-						id="grid-full-name"
-						type="text"
-						placeholder="Jorge Washingthings"
-						v-model="$v.form.name.$model"
-						required
-					/>
-					<p
-						class="text-red-500 text-xs italic"
-						v-if="$v.form.name.$error"
-					>
-						Please fill out this field.
-					</p>
-				</div>
-				<div class="hidden md:w-1/2 px-3">
+				<div class="_names w-full px-3 grid grid-cols-2 gap-2">
+          <div class='w-full'>
+            <label
+              class="block tracking-wide text-grey-darker text-sm font-bold mb-1"
+              for="grid-first-name"
+            >
+              First name
+            </label>
+            <input
+              class="appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="grid-first-name"
+              type="text"
+              placeholder="Enter first name"
+              v-model="$v.form.first_name.$model"
+              required
+            />
+            <p
+              class="text-red-500 text-xs italic"
+              v-if="$v.form.first_name.$error"
+            >
+              Please fill out this field.
+            </p>
+          </div>
+
+          <div class='w-full'>
+            <label
+              class="block tracking-wide text-grey-darker text-sm font-bold mb-1"
+              for="grid-last-name"
+            >
+              Last name
+            </label>
+            <input
+              class="block appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="grid-last-name"
+              type="text"
+              placeholder="Enter last name"
+              v-model="$v.form.last_name.$model"
+              required
+            />
+            <p
+              class="text-red-500 text-xs italic"
+              v-if="$v.form.last_name.$error"
+            >
+              Please fill out this field.
+            </p>
+          </div>
+        </div>
+
+				<div class="hidden md:w-1/2">
 					<label
 						class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
 						for="grid-product"
@@ -58,6 +84,7 @@
 						>
 							<input
 								type="checkbox"
+                id="grid-product"
 								name="products"
 								v-model="$v.form.tagged_products.$model"
 								:value="products"
@@ -148,7 +175,7 @@
 							class="_password1 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline relative"
 							id="grid-password"
 							:type="showPassword ? 'text' : 'password'"
-							placeholder="Enter your password"
+							placeholder="Enter password"
 							v-model="$v.form.password.$model"
 							required
 						/>
@@ -186,7 +213,7 @@
 							class="_password2 appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 							id="grid-repeat-password"
 							:type="showPassword2 ? 'text' : 'password'"
-							placeholder="Enter your password again"
+							placeholder="Enter password again"
 							v-model="$v.form.password_confirmation.$model"
 							required
 						/>
@@ -291,6 +318,7 @@
 </template>
 
 <script>
+import _ from "lodash"
 import { required, email, sameAs, minLength } from 'vuelidate/lib/validators';
 import { mapGetters } from 'vuex';
 import { VueTelInput } from 'vue-tel-input';
@@ -313,7 +341,24 @@ export default {
 
 			return url_queries;
 		},
+    full_name() {
+		  let name = ""
+		  if (this.form.first_name.length && this.form.last_name.length) {
+		    name = this.form.first_name + " " + this.form.last_name
+      } else if (this.form.first_name.length && !this.form.last_name.length) {
+        name = this.form.first_name
+      } else if (!this.form.first_name.length && this.form.last_name.length) {
+        name = this.form.last_name
+      }
+
+		  return name
+    }
 	},
+  watch: {
+    full_name(name) {
+      this.form = {...this.form, name}
+    }
+  },
 	components: {
 		'vue-tel-input': VueTelInput,
 		Link,
@@ -331,7 +376,10 @@ export default {
 				tagged_products: '',
 				phone_number: '',
 			},
+
 			form: {
+			  first_name: "",
+        last_name: "",
 				name: '',
 				username: '',
 				phone_number: '',
@@ -347,7 +395,11 @@ export default {
 	},
 	validations: {
 		form: {
-			name: {
+			first_name: {
+				required,
+				minLength: minLength(3),
+			},
+      last_name: {
 				required,
 				minLength: minLength(3),
 			},
@@ -388,9 +440,13 @@ export default {
 				phone_number: '',
 			};
 			//format form
-			this.form.phone_number = this.form.phone_number.replace(/\s+/g, '');
+      const form = _.cloneDeep(this.form)
+			form.phone_number = form.phone_number.replace(/\s+/g, '');
+      delete form.first_name
+      delete form.last_name
+
 			const response = await this.$axios
-				.$post('/auth/register', this.form)
+				.$post('/auth/register', form)
 				.catch(({ message, response }) => {
 					this.error = true;
 					this.registrationError = 'Your form has a few problems';
@@ -502,5 +558,11 @@ export default {
 }
 ._parent::-webkit-scrollbar-thumb:active {
 	background: #888;
+}
+
+@media (min-width: 768px) {
+  form {
+    max-width: 450px;
+  }
 }
 </style>

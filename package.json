@@ -29,6 +29,7 @@
 	},
 	"devDependencies": {
 		"@fortawesome/free-solid-svg-icons": "^5.14.0",
+		"@nuxt/types": "~2.15.0",
 		"@nuxtjs/tailwindcss": "^3.4.2",
 		"@tailwindcss/postcss7-compat": "^2.0.3",
 		"@vue/test-utils": "^1.0.0-beta.27",
