@@ -142,11 +142,12 @@
             <vue-tel-input
               class='appearance-none border w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
               id='grid-telephone'
-              validCharactersOnly
-              :mode="'international'"
               placeholder='Enter phone number'
-              v-model='$v.form.phone_number.$model'
               :name="'telephone'"
+              :mode="'international'"
+              :onlyCountries="['GH', 'GB']"
+              validCharactersOnly
+              v-model='$v.form.phone_number.$model'
             ></vue-tel-input>
           </client-only>
           <p
@@ -438,7 +439,7 @@ export default {
         sameAsPassword: sameAs('password'),
       },
       post_code: {
-        required: this.isUK,
+        required: false,
       },
       country: {
         required,
