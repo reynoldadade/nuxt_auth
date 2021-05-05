@@ -2,15 +2,17 @@
 	<div
 		class="_parent w-full lg:w-1/2 lg:h-screen flex flex-col items-center overflow-y-auto relative"
 	>
-		<div class="text-center lg:text-left pt-10 md:w-5/6 md:mx-auto">
-			<a href="/">
-				<img
-					src="/images/walulel_black.png"
-					alt="walulel logo"
-					class="inline-block w-16 mb-5"
-				/>
-			</a>
-			<h1 class="font-bold text-2xl">Sign up</h1>
+		<div class="_heading text-center lg:text-left pt-10 md:w-5/6 md:mx-auto">
+			<div class='lg:flex items-center mb-3'>
+        <a href="/">
+          <img
+            src="/images/walulel_black.png"
+            alt="walulel logo"
+            class="inline-block w-16 lg:mr-5"
+          />
+        </a>
+        <h1 class="font-bold text-2xl mt-3 lg:mt-0">Sign up</h1>
+      </div>
 			<Link
 				:link="'/' + urlQueries"
 				mainText="Already have an account?"
@@ -561,7 +563,7 @@ export default {
 }
 
 @media (min-width: 768px) {
-  form {
+  form, ._heading {
     max-width: 450px;
   }
 }
