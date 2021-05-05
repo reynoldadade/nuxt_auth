@@ -273,7 +273,10 @@
             Select a country
           </p>
         </div>
-        <div class='md:w-1/3 px-3 mt-5 md:mt-0'>
+        <div
+          v-show='isUK'
+          class='md:w-1/3 px-3 mt-5 md:mt-0'
+        >
           <label
             class='block tracking-wide text-grey-darker text-sm font-bold mb-2'
             for='grid-postcode'
@@ -286,7 +289,7 @@
             type='text'
             placeholder='90210'
             v-model='$v.form.post_code.$model'
-            required
+            :required='isUK'
           />
           <p
             class='text-red-500 text-xs italic'
@@ -351,6 +354,9 @@ export default {
         return _countries.findIndex(c => c === country.code) !== -1;
       });
     },
+    isUK() {
+      return this.form.country === 'GB'
+    },
     full_name() {
       let name = '';
       if (this.form.first_name.length && this.form.last_name.length) {
@@ -396,7 +402,7 @@ export default {
         email: '',
         password: '',
         password_confirmation: '',
-        post_code: '',
+        post_code: null,
         country: 'GB',
         tagged_products: ['WaCommunicate', 'WaInsight'],
       },
@@ -432,7 +438,7 @@ export default {
         sameAsPassword: sameAs('password'),
       },
       post_code: {
-        required,
+        required: this.isUK,
       },
       country: {
         required,
