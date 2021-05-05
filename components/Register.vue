@@ -22,8 +22,8 @@
 		</div>
 		<form @submit.prevent="register" class="w-11/12 md:mx-auto">
 			<div class="-mx-3 md:flex mb-6">
-				<div class="_names w-full px-3 grid grid-cols-2 gap-2">
-          <div class='w-full'>
+				<div class="_names w-full px-3 flex flex-col lg:grid grid-cols-2 gap-2">
+          <div class='w-full mb-3 lg:mb-0'>
             <label
               class="block tracking-wide text-grey-darker text-sm font-bold mb-1"
               for="grid-first-name"
