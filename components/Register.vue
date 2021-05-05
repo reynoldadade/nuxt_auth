@@ -117,7 +117,7 @@
             class='appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             id='grid-email'
             type='email'
-            placeholder='nobody@somebody.com'
+            placeholder='Enter email'
             v-model='$v.form.email.$model'
             required
           />
@@ -316,7 +316,7 @@
           type='submit'
           :disabled='$v.$invalid'
         >
-          Register
+          Sign up
           <i class='fas fa-circle-notch fa-spin' v-if='loading'></i>
         </button>
       </div>
@@ -404,7 +404,7 @@ export default {
         password: '',
         password_confirmation: '',
         post_code: null,
-        country: 'GB',
+        country: 'GH',
         tagged_products: ['WaCommunicate', 'WaInsight'],
       },
       tagged_products: ['WaCommunicate', 'WaInsight'],
