@@ -179,9 +179,10 @@ export default {
 
 								if (redirect_url) {
 									if (shareLink) {
-										return (destination = `http://${redirect_url}?token=${access_token}$shareLink=${shareLink}`);
+										destination = `http://${redirect_url}?token=${access_token}&shareLink=${shareLink}`;
+									} else {
+										destination = `http://${redirect_url}?token=${access_token}`;
 									}
-									return (destination = `http://${redirect_url}?token=${access_token}`);
 								} else {
 									const {
 										tagged_products: products,
