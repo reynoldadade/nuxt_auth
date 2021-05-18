@@ -15,7 +15,7 @@ export default ({ req, app, env, route, redirect }) => {
 			if (route.path !== '/profile')
 				if (shareLink) {
 					return window.location.replace(
-						`${redirectDestination}?token=${token}&shareLink=${share}`
+						`${redirectDestination}?token=${token}&shareLink=${shareLink}`
 					);
 				}
 			return window.location.replace(
