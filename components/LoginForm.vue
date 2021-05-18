@@ -167,7 +167,10 @@ export default {
 								});
 								res(true);
 							}).then(_ => {
-								const { redirect_url } = this.$route.query;
+								const {
+									redirect_url,
+									shareLink,
+								} = this.$route.query;
 								let destination = '';
 
 								// return console.log(
@@ -175,7 +178,10 @@ export default {
 								// );
 
 								if (redirect_url) {
-									destination = `http://${redirect_url}?token=${access_token}`;
+									if (shareLink) {
+										return (destination = `http://${redirect_url}?token=${access_token}$shareLink=${shareLink}`);
+									}
+									return (destination = `http://${redirect_url}?token=${access_token}`);
 								} else {
 									const {
 										tagged_products: products,
