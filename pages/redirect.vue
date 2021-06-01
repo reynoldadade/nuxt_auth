@@ -21,9 +21,10 @@ export default {
 			expect_token,
 			refresh_token,
 			logout,
+			shareLink,
 		} = this.$route.query;
 		const loginUrl = redirect_url
-			? `/?redirect_url=${redirect_url}&expect_token=${expect_token}`
+			? `/?redirect_url=${redirect_url}&expect_token=${expect_token}&shareLink=${shareLink}`
 			: '/';
 
 		if (logout) {
@@ -44,7 +45,7 @@ export default {
 			 */
 			//Check redirect url query availability
 			if (redirect_url) {
-				const outURL = `http://${redirect_url}?token=${access_token}`;
+				const outURL = `http://${redirect_url}?token=${access_token}&shareLink=${shareLink}`;
 				return window.location.replace(outURL);
 			}
 			return this.$router.push('/profile');

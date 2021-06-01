@@ -2,7 +2,7 @@ import getCorrectDomain from '../assets/js/getCorrectDomain';
 import getDestinationAfterRegister from '~/assets/js/getDestinationAfterRegister';
 
 export default ({ req, app, env, route, redirect }) => {
-	const { redirect_url } = route.query;
+	const { redirect_url, shareLink } = route.query;
 	if (!redirect_url) {
 		const token = app.$cookies.get('s_token');
 		if (token) {
@@ -13,9 +13,14 @@ export default ({ req, app, env, route, redirect }) => {
 			);
 
 			if (route.path !== '/profile')
-				return window.location.replace(
-					`${redirectDestination}?token=${token}`
-				);
+				if (shareLink) {
+					return window.location.replace(
+						`${redirectDestination}?token=${token}&shareLink=${shareLink}`
+					);
+				}
+			return window.location.replace(
+				`${redirectDestination}?token=${token}`
+			);
 		} else {
 			if (route.path !== '/') {
 				app.$cookies.removeAll();

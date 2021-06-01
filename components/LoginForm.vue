@@ -72,6 +72,12 @@ import Link from '~/components/common/Link';
 import getCorrectDomain from '~/assets/js/getCorrectDomain';
 
 export default {
+	props: {
+		urlQueries: {
+			type: String,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			email: '',
@@ -161,20 +167,22 @@ export default {
 								});
 								res(true);
 							}).then(_ => {
-								const { redirect_url } = this.$route.query;
+								const {
+									redirect_url,
+									shareLink,
+								} = this.$route.query;
 								let destination = '';
 
 								// return console.log(
 								// 	this.$cookies.get('user_country')
 								// );
 
-								if (
-									redirect_url &&
-									/((staging\.)?wa-(communicate|insight)\.com)/.test(
-										redirect_url
-									)
-								) {
-									destination = `https://${redirect_url}?token=${access_token}`;
+								if (redirect_url) {
+									if (shareLink) {
+										destination = `http://${redirect_url}?token=${access_token}&shareLink=${shareLink}`;
+									} else {
+										destination = `http://${redirect_url}?token=${access_token}`;
+									}
 								} else {
 									const {
 										tagged_products: products,
